@@ -18,7 +18,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
-    'iliam9103.pythonanywhere.com',  # ← اسم کاربری خودت رو بذار
+    '.pythonanywhere.com',
     '127.0.0.1',
     'localhost',
 ]
@@ -131,3 +131,7 @@ LOGIN_REDIRECT_URL = 'core:home'
 LOGOUT_REDIRECT_URL = 'core:home'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.pythonanywhere.com',
+]
