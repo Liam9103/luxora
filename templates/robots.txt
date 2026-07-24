@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /accounts/login/
+Disallow: /accounts/signup/
+Disallow: /cart/
+
+Sitemap: https://iliam9103.pythonanywhere.com/sitemap.xml
