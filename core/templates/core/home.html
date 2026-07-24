@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .hero-luxora {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        background:
+            linear-gradient(180deg, rgba(6,6,10,0.4) 0%, rgba(6,6,10,0.85) 100%),
+            url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000') center/cover no-repeat;
+        overflow: hidden;
+    }
+    .hero-luxora::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(6,6,10,0.9) 0%, transparent 60%);
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(212, 175, 55, 0.1);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        color: var(--gold);
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 25px;
+    }
+    .hero-title {
+        font-size: 4.2rem;
+        font-weight: 800;
+        line-height: 1.15;
+        margin-bottom: 25px;
+    }
+    .hero-title .highlight {
+        background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+        font-size: 1.15rem;
+        color: var(--text-muted);
+        max-width: 500px;
+        margin-bottom: 40px;
+        line-height: 1.8;
+    }
+    .hero-stats {
+        display: flex;
+        gap: 45px;
+        margin-top: 60px;
+    }
+    .hero-stats .stat-num {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--gold);
+        font-family: 'Poppins', sans-serif;
+    }
+    .hero-stats .stat-label { color: var(--text-muted); font-size: 0.9rem; }
+    .scroll-indicator {
+        position: absolute;
+        bottom: 40px; left: 50%;
+        transform: translateX(-50%);
+        color: var(--text-muted);
+        z-index: 2;
+        animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+        0%, 100% { transform: translate(-50%, 0); }
+        50% { transform: translate(-50%, 10px); }
+    }
+
+    /* Section titles */
+    .section-tag {
+        color: var(--gold);
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        margin-bottom: 12px;
+        display: block;
+    }
+    .section-title {
+        font-size: 2.6rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+    .section-desc { color: var(--text-muted); max-width: 550px; }
+
+    /* Brands strip */
+    .brands-section {
+        padding: 60px 0;
+        border-top: 1px solid var(--border-glass);
+        border-bottom: 1px solid var(--border-glass);
+    }
+    .brand-pill {
+        background: var(--bg-card);
+        border: 1px solid var(--border-glass);
+        padding: 18px 35px;
+        border-radius: 16px;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 150px;
+    }
+    .brand-pill:hover {
+        border-color: var(--gold);
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-gold);
+    }
+    .brand-pill img { max-height: 40px; filter: grayscale(1) brightness(2); transition: var(--transition); }
+    .brand-pill:hover img { filter: none; }
+    .brand-pill span { color: var(--text-light); font-weight: 700; font-family: 'Poppins', sans-serif; }
+
+    .cars-section { padding: 110px 0; }
+
+    .cta-banner {
+        background: linear-gradient(135deg, #1B1B29, #14141F);
+        border: 1px solid var(--border-glass);
+        border-radius: 32px;
+        padding: 70px;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+    }
+    .cta-banner::before {
+        content: '';
+        position: absolute;
+        top: -50%; right: -10%;
+        width: 400px; height: 400px;
+        background: radial-gradient(circle, rgba(212,175,55,0.15), transparent 70%);
+        border-radius: 50%;
+    }
+
+    @media (max-width: 768px) {
+        .hero-title { font-size: 2.5rem; }
+        .hero-stats { flex-wrap: wrap; gap: 25px; }
+    }
+</style>
+
+<!-- HERO -->
+<section class="hero-luxora">
+    <div class="container hero-content">
+        <div class="row">
+            <div class="col-lg-7" data-aos="fade-up">
+                <span class="hero-badge"><i class="bi bi-patch-check-fill"></i> Certified Premium Dealership</span>
+                <h1 class="hero-title">Discover Your <span class="highlight">Dream Machine</span> Today</h1>
+                <p class="hero-sub">Explore an exclusive curated collection of the world's finest automobiles. Uncompromising quality, verified authenticity, and a seamless buying experience.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{% url 'cars:gallery' %}" class="btn-luxora">
+                        Explore Gallery <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'core:about' %}" class="btn-luxora-outline">
+                        <i class="bi bi-play-circle"></i> Learn More
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div><div class="stat-num">500+</div><div class="stat-label">Cars Sold</div></div>
+                    <div><div class="stat-num">1200+</div><div class="stat-label">Happy Clients</div></div>
+                    <div><div class="stat-num">15+</div><div class="stat-label">Top Brands</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-indicator"><i class="bi bi-mouse fs-3"></i></div>
+</section>
+
+<!-- BRANDS -->
+<section class="brands-section">
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-center gap-4">
+            {% for brand in brands %}
+                <div class="brand-pill" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+                    {% if brand.logo %}
+                        <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
+                    {% else %}
+                        <span>{{ brand.name }}</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED CARS -->
+<section class="cars-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="section-tag">Handpicked Selection</span>
+            <h2 class="section-title">Featured Vehicles</h2>
+            <p class="section-desc mx-auto">Our top-rated and most desired vehicles, chosen for exceptional quality and performance.</p>
+        </div>
+        <div class="row g-4">
+            {% for car in featured_cars %}
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+                {% include 'cars/_car_card.html' %}
+            </div>
+            {% empty %}
+            <p class="text-center" style="color: var(--text-muted);">No featured vehicles at the moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- LATEST CARS -->
+<section class="cars-section" style="background: var(--bg-dark); border-top: 1px solid var(--border-glass); border-bottom: 1px solid var(--border-glass);">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="section-tag">Fresh Arrivals</span>
+            <h2 class="section-title">Latest Additions</h2>
+            <p class="section-desc mx-auto">Just added to our collection — be the first to grab these exclusive rides.</p>
+        </div>
+        <div class="row g-4">
+            {% for car in latest_cars %}
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+                {% include 'cars/_car_card.html' %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{% url 'cars:gallery' %}" class="btn-luxora-outline">View Full Gallery <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cars-section">
+    <div class="container">
+        <div class="cta-banner" data-aos="zoom-in">
+            <h2 class="section-title">Ready to Find Your Perfect Ride?</h2>
+            <p class="section-desc mx-auto mb-4">Join thousands of satisfied customers who found their dream car with LUXORA.</p>
+            <a href="{% url 'cars:gallery' %}" class="btn-luxora">Start Browsing <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

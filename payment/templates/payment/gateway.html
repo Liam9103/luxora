@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<style>
+    .gateway-wrapper {
+        padding: 130px 0 80px;
+        display: flex;
+        justify-content: center;
+    }
+    .bank-card {
+        width: 100%;
+        max-width: 480px;
+        background: linear-gradient(145deg, #14141F, #0A0A12);
+        border: 1px solid rgba(212,175,55,0.25);
+        border-radius: 28px;
+        padding: 45px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    }
+    .bank-card::before {
+        content: '';
+        position: absolute; top: -80px; right: -80px;
+        width: 250px; height: 250px;
+        background: radial-gradient(circle, rgba(212,175,55,0.2), transparent 70%);
+        border-radius: 50%;
+    }
+    .bank-header { text-align: center; margin-bottom: 35px; position: relative; z-index: 1; }
+    .bank-header i { font-size: 2.8rem; color: var(--gold); }
+    .bank-header h4 { margin: 12px 0 6px; }
+    .bank-header .amount { color: var(--gold); font-weight: 800; font-size: 1.3rem; font-family: 'Poppins', sans-serif; }
+
+    .virtual-card {
+        background: linear-gradient(135deg, #2b2b3d, #1a1a26);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 18px;
+        padding: 25px;
+        margin-bottom: 30px;
+        position: relative;
+        min-height: 160px;
+    }
+    .virtual-card .chip { width: 45px; height: 32px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); border-radius: 6px; margin-bottom: 25px; }
+    .virtual-card .card-num { font-family: 'Poppins', monospace; font-size: 1.3rem; letter-spacing: 3px; color: #fff; margin-bottom: 20px; min-height: 30px; }
+    .virtual-card .card-bottom { display: flex; justify-content: space-between; color: #ccc; font-size: 0.85rem; }
+    .virtual-card .visa { position: absolute; top: 25px; right: 25px; font-size: 1.5rem; font-style: italic; font-weight: 800; color: #fff; }
+
+    .form-group-lux { margin-bottom: 20px; position: relative; z-index: 1; }
+    .form-group-lux label { display: block; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 8px; }
+    .form-group-lux input {
+        width: 100%;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--border-glass);
+        color: var(--text-light);
+        padding: 13px 16px;
+        border-radius: 14px;
+        font-family: 'Poppins', monospace;
+        letter-spacing: 1px;
+    }
+    .form-group-lux input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,175,55,0.15); }
+    .form-row { display: flex; gap: 15px; }
+    .form-row .form-group-lux { flex: 1; }
+
+    .fake-note {
+        text-align: center; color: var(--text-muted); font-size: 0.8rem;
+        margin-top: 20px; position: relative; z-index: 1;
+    }
+</style>
+
+<div class="container">
+    <div class="gateway-wrapper">
+        <div class="bank-card" data-aos="flip-left">
+            <div class="bank-header">
+                <i class="bi bi-bank2"></i>
+                <h4>LUXORA Secure Pay</h4>
+                <div class="amount">${{ total|intcomma }}</div>
+            </div>
+
+            <div class="virtual-card">
+                <span class="visa">VISA</span>
+                <div class="chip"></div>
+                <div class="card-num" id="cardPreview">•••• •••• •••• ••••</div>
+                <div class="card-bottom">
+                    <span id="namePreview">FULL NAME</span>
+                    <span id="expPreview">MM/YY</span>
+                </div>
+            </div>
+
+            <form method="post" id="payForm">
+                {% csrf_token %}
+                <div class="form-group-lux">
+                    <label>Card Number</label>
+                    <input type="text" name="card_number" id="cardInput" maxlength="19" placeholder="4242 4242 4242 4242" required>
+                </div>
+                <div class="form-group-lux">
+                    <label>Cardholder Name</label>
+                    <input type="text" id="nameInput" placeholder="JOHN DOE" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group-lux">
+                        <label>Expiry Date</label>
+                        <input type="text" id="expInput" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div class="form-group-lux">
+                        <label>CVV</label>
+                        <input type="password" placeholder="•••" maxlength="4" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-luxora w-100 mt-3">
+                    <i class="bi bi-lock-fill"></i> Pay ${{ total|intcomma }}
+                </button>
+            </form>
+            <p class="fake-note"><i class="bi bi-shield-check"></i> This is a simulated payment gateway. No real transaction occurs.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const cardInput = document.getElementById('cardInput');
+    const cardPreview = document.getElementById('cardPreview');
+    const nameInput = document.getElementById('nameInput');
+    const namePreview = document.getElementById('namePreview');
+    const expInput = document.getElementById('expInput');
+    const expPreview = document.getElementById('expPreview');
+
+    cardInput.addEventListener('input', e => {
+        let v = e.target.value.replace(/\D/g, '').slice(0, 16);
+        e.target.value = v.replace(/(.{4})/g, '$1 ').trim();
+        cardPreview.textContent = e.target.value || '•••• •••• •••• ••••';
+    });
+    nameInput.addEventListener('input', e => {
+        namePreview.textContent = e.target.value.toUpperCase() || 'FULL NAME';
+    });
+    expInput.addEventListener('input', e => {
+        let v = e.target.value.replace(/\D/g, '').slice(0, 4);
+        if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+        e.target.value = v;
+        expPreview.textContent = v || 'MM/YY';
+    });
+</script>
+{% endblock %}

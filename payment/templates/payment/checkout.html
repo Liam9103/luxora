@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<style>
+    .checkout-wrapper { padding: 130px 0 80px; }
+    .checkout-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-glass);
+        border-radius: 26px;
+        padding: 45px;
+        max-width: 550px;
+        margin: 0 auto;
+    }
+    .checkout-card h3 { text-align: center; margin-bottom: 35px; }
+    .checkout-list { list-style: none; padding: 0; margin-bottom: 25px; }
+    .checkout-list li {
+        display: flex; justify-content: space-between;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--border-glass);
+        color: var(--text-muted);
+    }
+    .checkout-list li.total {
+        font-weight: 800; color: var(--gold); font-size: 1.2rem;
+        border-bottom: none; padding-top: 20px;
+    }
+    .secure-note {
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.82rem;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container checkout-wrapper">
+    <div class="checkout-card" data-aos="zoom-in">
+        <h3>Order Summary</h3>
+        <ul class="checkout-list">
+            {% for item in cart %}
+            <li><span>{{ item.car }}</span><span>${{ item.price|intcomma }}</span></li>
+            {% endfor %}
+            <li class="total"><span>Total</span><span>${{ cart.get_total_price|intcomma }}</span></li>
+        </ul>
+        <form method="post">
+            {% csrf_token %}
+            <button class="btn-luxora w-100"><i class="bi bi-shield-lock"></i> Continue to Secure Payment</button>
+        </form>
+        <p class="secure-note"><i class="bi bi-lock-fill"></i> 256-bit SSL encrypted transaction</p>
+    </div>
+</div>
+{% endblock %}

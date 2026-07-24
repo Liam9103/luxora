@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<style>
+    .profile-wrapper { padding: 130px 0 80px; }
+    .profile-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-glass);
+        border-radius: 24px;
+        padding: 35px;
+        text-align: center;
+    }
+    .profile-avatar {
+        width: 120px; height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--gold);
+        margin-bottom: 18px;
+    }
+    .profile-card h4 { margin-bottom: 4px; }
+    .profile-card .email { color: var(--text-muted); margin-bottom: 25px; }
+    .profile-form { text-align: left; }
+    .profile-form label { color: var(--text-muted); font-size: 0.82rem; display: block; margin: 14px 0 6px; }
+    .profile-form input[type="text"], .profile-form input[type="file"] {
+        width: 100%;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--border-glass);
+        color: var(--text-light);
+        padding: 11px 15px;
+        border-radius: 12px;
+    }
+    .profile-form input:focus { outline: none; border-color: var(--gold); }
+
+    .orders-title { font-size: 1.6rem; margin-bottom: 25px; }
+    .order-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-glass);
+        border-radius: 18px;
+        padding: 22px;
+        margin-bottom: 16px;
+    }
+    .order-card .top { display: flex; justify-content: space-between; align-items: center; }
+    .order-card .track { font-weight: 700; font-family: 'Poppins', monospace; }
+    .status-badge {
+        padding: 4px 14px; border-radius: 30px;
+        font-size: 0.75rem; font-weight: 700;
+    }
+    .status-paid { background: rgba(16,185,129,0.15); color: #10B981; }
+    .status-pending { background: rgba(251,191,36,0.15); color: #FBBF24; }
+    .status-failed { background: rgba(255,71,87,0.15); color: #ff4757; }
+    .order-card .amount { color: var(--gold); font-weight: 700; margin-top: 10px; }
+</style>
+
+<div class="container profile-wrapper">
+    <div class="row g-5">
+        <div class="col-lg-4" data-aos="fade-right">
+            <div class="profile-card">
+                <img src="{{ request.user.profile.avatar_url }}" class="profile-avatar" alt="{{ request.user.username }}">
+                <h4>{{ request.user.first_name }} {{ request.user.last_name }}</h4>
+                <p class="email">{{ request.user.email }}</p>
+                <form method="post" enctype="multipart/form-data" class="profile-form">
+                    {% csrf_token %}
+                    <label>Profile Picture</label>
+                    {{ form.avatar }}
+                    <label>Phone Number</label>
+                    {{ form.phone }}
+                    <button class="btn-luxora w-100 mt-4">Update Profile</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-8" data-aos="fade-left">
+            <h4 class="orders-title">Order History</h4>
+            {% for order in orders %}
+            <div class="order-card">
+                <div class="top">
+                    <span class="track">#{{ order.tracking_code }}</span>
+                    <span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span>
+                </div>
+                <div class="amount">${{ order.total_price|intcomma }}</div>
+                <small style="color: var(--text-muted);">{{ order.created_at|date:"M d, Y" }}</small>
+            </div>
+            {% empty %}
+            <p style="color: var(--text-muted);">You haven't placed any orders yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

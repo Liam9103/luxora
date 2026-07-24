@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .auth-page {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 130px 20px 60px;
+        position: relative;
+    }
+    .auth-page::before {
+        content: '';
+        position: absolute;
+        top: 10%; left: 50%;
+        transform: translateX(-50%);
+        width: 500px; height: 500px;
+        background: radial-gradient(circle, rgba(124,92,255,0.1), transparent 70%);
+        pointer-events: none;
+    }
+    .auth-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-glass);
+        border-radius: 28px;
+        padding: 50px;
+        width: 100%;
+        max-width: 480px;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    }
+    .auth-icon {
+        width: 70px; height: 70px;
+        background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+        border-radius: 18px;
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 24px;
+        transform: rotate(-8deg);
+    }
+    .auth-icon i { font-size: 1.8rem; color: #06060A; }
+    .auth-card h3 { text-align: center; font-size: 1.8rem; margin-bottom: 6px; }
+    .auth-card .subtitle { text-align: center; color: var(--text-muted); font-size: 0.92rem; margin-bottom: 32px; }
+
+    .form-row-split { display: flex; gap: 15px; }
+    .form-row-split .form-field { flex: 1; }
+    .form-field { margin-bottom: 20px; }
+    .form-field label {
+        display: block; font-size: 0.82rem; color: var(--text-muted);
+        margin-bottom: 8px; font-weight: 500;
+    }
+    .auth-input {
+        width: 100%;
+        background: rgba(255,255,255,0.04);
+        border: 1.5px solid var(--border-glass);
+        color: var(--text-light);
+        padding: 13px 18px;
+        border-radius: 14px;
+        font-size: 0.95rem;
+        transition: var(--transition);
+    }
+    .auth-input:focus {
+        outline: none;
+        border-color: var(--gold);
+        background: rgba(255,255,255,0.06);
+        box-shadow: 0 0 0 4px rgba(212,175,55,0.12);
+    }
+    .auth-input::placeholder { color: #5a5a68; }
+    .field-errors {
+        color: #ff4757; font-size: 0.8rem; margin-top: 6px;
+        list-style: none; padding: 0;
+    }
+    .auth-divider {
+        text-align: center; color: var(--text-muted); font-size: 0.88rem;
+        margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border-glass);
+    }
+    .auth-divider a { color: var(--gold); font-weight: 600; text-decoration: none; }
+    .auth-divider a:hover { text-decoration: underline; }
+</style>
+
+<div class="auth-page">
+    <div class="auth-card" data-aos="zoom-in">
+        <div class="auth-icon"><i class="bi bi-person-plus"></i></div>
+        <h3>Create Your Account</h3>
+        <p class="subtitle">Join LUXORA and start your journey today</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-row-split">
+                <div class="form-field">
+                    <label>First Name</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}<ul class="field-errors">{{ form.first_name.errors }}</ul>{% endif %}
+                </div>
+                <div class="form-field">
+                    <label>Last Name</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}<ul class="field-errors">{{ form.last_name.errors }}</ul>{% endif %}
+                </div>
+            </div>
+            <div class="form-field">
+                <label>Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}<ul class="field-errors">{{ form.username.errors }}</ul>{% endif %}
+            </div>
+            <div class="form-field">
+                <label>Email Address</label>
+                {{ form.email }}
+                {% if form.email.errors %}<ul class="field-errors">{{ form.email.errors }}</ul>{% endif %}
+            </div>
+            <div class="form-field">
+                <label>Password</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}<ul class="field-errors">{{ form.password1.errors }}</ul>{% endif %}
+            </div>
+            <div class="form-field">
+                <label>Confirm Password</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}<ul class="field-errors">{{ form.password2.errors }}</ul>{% endif %}
+            </div>
+            <button type="submit" class="btn-luxora w-100 mt-2">
+                <i class="bi bi-person-check"></i> Create Account
+            </button>
+        </form>
+
+        <div class="auth-divider">
+            Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

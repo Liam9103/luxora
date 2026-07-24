@@ -1,0 +1,102 @@
+{% load humanize %}
+<style>
+    .lux-car-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-glass);
+        border-radius: 22px;
+        overflow: hidden;
+        transition: var(--transition);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .lux-car-card:hover {
+        transform: translateY(-10px);
+        border-color: rgba(212, 175, 55, 0.4);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5), var(--shadow-gold);
+    }
+    .lux-car-img-wrap {
+        position: relative;
+        height: 210px;
+        overflow: hidden;
+    }
+    .lux-car-img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+    .lux-car-card:hover .lux-car-img { transform: scale(1.12); }
+    .lux-car-img-wrap::after {
+        content: '';
+        position: absolute; inset: 0;
+        background: linear-gradient(180deg, transparent 50%, rgba(20,20,31,0.9) 100%);
+    }
+    .lux-badge {
+        position: absolute; top: 14px;
+        padding: 5px 14px;
+        border-radius: 50px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        z-index: 2;
+        font-family: 'Poppins', sans-serif;
+    }
+    .lux-badge.featured { left: 14px; background: var(--gold); color: #000; }
+    .lux-badge.sold { right: 14px; background: #ff4757; color: #fff; }
+    .lux-car-body { padding: 22px; flex: 1; display: flex; flex-direction: column; }
+    .lux-car-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
+    .lux-car-meta { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px; }
+    .lux-car-meta i { color: var(--gold); margin-right: 4px; }
+    .lux-rating { color: var(--gold); font-size: 0.85rem; margin-bottom: 14px; }
+    .lux-rating .count { color: var(--text-muted); }
+    .lux-car-price {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 16px;
+    }
+    .lux-btn-detail {
+        margin-top: auto;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--border-glass);
+        color: var(--text-light);
+        padding: 11px;
+        border-radius: 14px;
+        text-align: center;
+        font-weight: 600;
+        text-decoration: none;
+        transition: var(--transition);
+        display: block;
+    }
+    .lux-btn-detail:hover {
+        background: var(--gold);
+        color: #000;
+        border-color: var(--gold);
+    }
+</style>
+
+<div class="lux-car-card">
+    <div class="lux-car-img-wrap">
+        <img src="{{ car.main_image.url }}" class="lux-car-img" alt="{{ car }}">
+        {% if car.is_featured %}<span class="lux-badge featured">FEATURED</span>{% endif %}
+        {% if car.status == 'sold' %}<span class="lux-badge sold">SOLD</span>{% endif %}
+    </div>
+    <div class="lux-car-body">
+        <h5 class="lux-car-title">{{ car.brand.name }} {{ car.model_name }}</h5>
+        <div class="lux-car-meta">
+            <i class="bi bi-calendar3"></i> {{ car.year }} &nbsp;|&nbsp;
+            <i class="bi bi-speedometer2"></i> {{ car.mileage|intcomma }} mi
+        </div>
+        <div class="lux-rating">
+            {% for i in "12345" %}
+                {% if forloop.counter <= car.average_rating %}<i class="bi bi-star-fill"></i>{% else %}<i class="bi bi-star"></i>{% endif %}
+            {% endfor %}
+            <span class="count">({{ car.review_count }})</span>
+        </div>
+        <div class="lux-car-price">${{ car.price|intcomma }}</div>
+        <a href="{% url 'cars:detail' car.pk %}" class="lux-btn-detail">View Details <i class="bi bi-arrow-right"></i></a>
+    </div>
+</div>

@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .gallery-hero {
+        padding: 140px 0 60px;
+        text-align: center;
+        background: linear-gradient(180deg, rgba(124,92,255,0.08), transparent);
+    }
+    .gallery-hero h1 { font-size: 2.8rem; margin-bottom: 12px; }
+    .gallery-hero p { color: var(--text-muted); }
+
+    .filter-panel {
+        background: var(--bg-card);
+        border: 1px solid var(--border-glass);
+        border-radius: 24px;
+        padding: 30px;
+        position: sticky;
+        top: 100px;
+    }
+    .filter-panel h5 {
+        font-size: 1.1rem;
+        margin-bottom: 22px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .filter-panel h5 i { color: var(--gold); }
+    .filter-group { margin-bottom: 18px; }
+    .filter-group label {
+        display: block;
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+    .filter-panel select, .filter-panel input {
+        width: 100%;
+        background: rgba(255,255,255,0.04) !important;
+        border: 1px solid var(--border-glass) !important;
+        color: var(--text-light) !important;
+        border-radius: 12px !important;
+        padding: 10px 14px !important;
+        font-size: 0.9rem;
+    }
+    .filter-panel select:focus, .filter-panel input:focus {
+        outline: none;
+        border-color: var(--gold) !important;
+        box-shadow: 0 0 0 3px rgba(212,175,55,0.15) !important;
+    }
+    .filter-panel option { background: var(--bg-card); }
+
+    .empty-state {
+        text-align: center;
+        padding: 80px 0;
+        color: var(--text-muted);
+    }
+    .empty-state i { font-size: 4rem; color: var(--gold); opacity: 0.4; margin-bottom: 20px; }
+
+    .pagination { --bs-pagination-bg: transparent; }
+    .page-link {
+        background: var(--bg-card) !important;
+        border: 1px solid var(--border-glass) !important;
+        color: var(--text-light) !important;
+        margin: 0 4px;
+        border-radius: 12px !important;
+    }
+    .page-item.active .page-link {
+        background: var(--gold) !important;
+        border-color: var(--gold) !important;
+        color: #000 !important;
+    }
+</style>
+
+<section class="gallery-hero">
+    <div class="container" data-aos="fade-up">
+        <h1>Explore Our <span style="color: var(--gold);">Collection</span></h1>
+        <p>Find the perfect car that matches your style, budget, and needs.</p>
+    </div>
+</section>
+
+<div class="container pb-5">
+    <div class="row g-4">
+        <div class="col-lg-3" data-aos="fade-right">
+            <div class="filter-panel">
+                <h5><i class="bi bi-sliders"></i> Advanced Search</h5>
+                <form method="get">
+                    <div class="filter-group">
+                        <label>Brand</label>
+                        {{ filter.form.brand }}
+                    </div>
+                    <div class="filter-group">
+                        <label>Model</label>
+                        {{ filter.form.model_name }}
+                    </div>
+                    <div class="filter-group">
+                        <label>Min Price ($)</label>
+                        {{ filter.form.min_price }}
+                    </div>
+                    <div class="filter-group">
+                        <label>Max Price ($)</label>
+                        {{ filter.form.max_price }}
+                    </div>
+                    <div class="filter-group">
+                        <label>From Year</label>
+                        {{ filter.form.min_year }}
+                    </div>
+                    <div class="filter-group">
+                        <label>Fuel Type</label>
+                        {{ filter.form.fuel_type }}
+                    </div>
+                    <div class="filter-group">
+                        <label>Transmission</label>
+                        {{ filter.form.transmission }}
+                    </div>
+                    <button class="btn-luxora w-100 mb-2">Apply Filters</button>
+                    <a href="{% url 'cars:gallery' %}" class="btn-ghost w-100 text-center d-block">Clear All</a>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <div class="row g-4">
+                {% for car in page_obj %}
+                <div class="col-md-4" data-aos="fade-up">
+                    {% include 'cars/_car_card.html' %}
+                </div>
+                {% empty %}
+                <div class="col-12 empty-state">
+                    <i class="bi bi-emoji-frown"></i>
+                    <p class="fs-5">No vehicles match your search criteria.</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if page_obj.paginator.num_pages > 1 %}
+            <nav class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a></li>
+                    {% endif %}
+                    <li class="page-item active"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+                    {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
