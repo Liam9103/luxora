@@ -24,24 +24,24 @@
     <meta name="google-site-verification" content="Bq9ASj8AOQxdsvpR8PsV92LG8CqZ5jyppUNlNfuq0vw" />
     <link rel="canonical" href="https://iliam9103.pythonanywhere.com{{ request.path }}">
 
-    <!-- Open Graph (Facebook, Telegram, WhatsApp) -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="LUXORA | Premium Car Dealership">
     <meta property="og:description" content="Discover the finest luxury vehicles at LUXORA. Premium cars, exceptional service.">
     <meta property="og:url" content="https://iliam9103.pythonanywhere.com">
     <meta property="og:site_name" content="LUXORA">
-    <meta property="og:image" content="https://iliam9103.pythonanywhere.com{% static 'favicon.ico' %}">
+    <meta property="og:image" content="https://iliam9103.pythonanywhere.com{% static 'images/luxora-logo.png' %}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="LUXORA | Premium Car Dealership">
     <meta name="twitter:description" content="Discover premium luxury vehicles at LUXORA.">
-    <meta name="twitter:image" content="https://iliam9103.pythonanywhere.com{% static 'favicon.ico' %}">
+    <meta name="twitter:image" content="https://iliam9103.pythonanywhere.com{% static 'images/luxora-logo.png' %}">
 
     <!-- Favicon & Touch Icons -->
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
-    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
-    <link rel="apple-touch-icon" href="{% static 'favicon.ico' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/luxora-logo.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/luxora-logo.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/luxora-logo.png' %}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -136,32 +136,66 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-glass);
-            padding: 18px 0;
+            padding: 12px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
             transition: var(--transition);
         }
         .navbar-luxora.scrolled {
-            padding: 10px 0;
+            padding: 8px 0;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
 
-        .brand-logo {
+        /* ---------- LOGO NAVBAR ---------- */
+        .brand-logo-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .brand-logo-nav:hover {
+            transform: scale(1.03);
+        }
+        .brand-logo-nav img {
+            height: 55px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.4));
+            transition: var(--transition);
+        }
+        .brand-logo-nav:hover img {
+            filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.7));
+        }
+
+        /* اگه می‌خوای متن LUXORA کنار لوگو هم باشه: */
+        .brand-text {
             font-family: 'Poppins', sans-serif;
             font-weight: 800;
-            font-size: 1.7rem;
-            letter-spacing: 2px;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
             background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
-        .brand-logo i { -webkit-text-fill-color: var(--gold); }
+
+        /* ---------- LOGO FOOTER ---------- */
+        .brand-logo-footer {
+            display: inline-block;
+            transition: var(--transition);
+        }
+        .brand-logo-footer:hover {
+            transform: scale(1.05);
+        }
+        .brand-logo-footer img {
+            max-width: 200px;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.4));
+            margin-bottom: 15px;
+        }
 
         .nav-link-custom {
             color: var(--text-muted) !important;
@@ -322,6 +356,12 @@
         }
 
         .swal-custom { border-radius: 20px !important; font-family: 'Inter', sans-serif !important; }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            .brand-logo-nav img { height: 45px; }
+            .brand-logo-footer img { max-width: 160px; }
+        }
     </style>
 
     {% block extra_css %}{% endblock %}
@@ -330,10 +370,11 @@
 
     <nav class="navbar navbar-expand-lg navbar-luxora" id="mainNavbar">
         <div class="container">
-            <a class="brand-logo" href="{% url 'core:home' %}">
-                <img src="{% static 'favicon.ico' %}" alt="LUXORA Icon" style="width: 28px; height: 28px; object-fit: contain;">
-                LUXORA
+            <!-- Logo Navbar -->
+            <a class="brand-logo-nav" href="{% url 'core:home' %}">
+                <img src="{% static 'images/luxora-logo.png' %}" alt="LUXORA - Premium Car Dealership">
             </a>
+            
             <button class="navbar-toggler border-0 text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <i class="bi bi-list text-white fs-2"></i>
             </button>
@@ -370,9 +411,9 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-4">
-                    <a class="brand-logo mb-3 d-inline-flex" href="{% url 'core:home' %}">
-                        <img src="{% static 'favicon.ico' %}" alt="LUXORA Icon" style="width: 28px; height: 28px; object-fit: contain;">
-                        LUXORA
+                    <!-- Logo Footer -->
+                    <a class="brand-logo-footer" href="{% url 'core:home' %}">
+                        <img src="{% static 'images/luxora-logo.png' %}" alt="LUXORA Logo">
                     </a>
                     <p>The ultimate destination for premium and luxury vehicles. Curated collection, verified quality, unmatched experience.</p>
                     <div class="mt-3">
