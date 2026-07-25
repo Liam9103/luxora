@@ -137,3 +137,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 CSRF_TRUSTED_ORIGINS = [
     'https://*.pythonanywhere.com',
 ]
+
+# django.contrib.sites requires a SITE_ID. Default to env var or 1 for local development.
+SITE_ID = int(os.getenv('SITE_ID', '1'))

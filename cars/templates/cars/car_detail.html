@@ -93,9 +93,9 @@
         <div class="col-lg-6" data-aos="fade-right">
             <div id="carCarousel" class="carousel slide detail-carousel" data-bs-ride="carousel">
                 <div class="carousel-inner">
-                    <div class="carousel-item active"><img src="{{ car.main_image.url }}" class="d-block w-100"></div>
-                    {% for img in car.gallery_images.all %}
-                    <div class="carousel-item"><img src="{{ img.image.url }}" class="d-block w-100"></div>
+                    <div class="carousel-item active"><img src="{{ car.main_image.url }}" class="d-block w-100" alt="{{ car }}" loading="lazy"></div>
+                        {% for img in car.gallery_images.all %}
+                        <div class="carousel-item"><img src="{{ img.image.url }}" class="d-block w-100" alt="{{ car }} photo" loading="lazy"></div>
                     {% endfor %}
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
@@ -127,6 +127,16 @@
 
             <p class="detail-desc">{{ car.description }}</p>
             <div class="detail-price">${{ car.price|intcomma }}</div>
+
+<div class="d-flex flex-wrap gap-2 mb-3">
+                {% if user.is_authenticated %}
+                <a href="{% url 'cars:toggle_wishlist' car.pk %}" class="btn-ghost">
+                    <i class="bi bi-heart{% if in_wishlist %}-fill{% endif %}"></i> {% if in_wishlist %}Saved to Wishlist{% else %}Save to Wishlist{% endif %}
+                </a>
+                {% else %}
+                <a href="{% url 'accounts:login' %}" class="btn-ghost">Login to save wishlist</a>
+                {% endif %}
+            </div>
 
             {% if car.status == 'available' %}
                 {% if user.is_authenticated %}

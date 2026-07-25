@@ -120,17 +120,19 @@
         </div>
 
         <div class="col-lg-9">
-            <div class="row g-4">
-                {% for car in page_obj %}
-                <div class="col-md-4" data-aos="fade-up">
-                    {% include 'cars/_car_card.html' %}
+            <div id="galleryResults">
+                <div class="row g-4">
+                    {% for car in page_obj %}
+                    <div class="col-md-4" data-aos="fade-up">
+                        {% include 'cars/_car_card.html' %}
+                    </div>
+                    {% empty %}
+                    <div class="col-12 empty-state">
+                        <i class="bi bi-emoji-frown"></i>
+                        <p class="fs-5">No vehicles match your search criteria.</p>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% empty %}
-                <div class="col-12 empty-state">
-                    <i class="bi bi-emoji-frown"></i>
-                    <p class="fs-5">No vehicles match your search criteria.</p>
-                </div>
-                {% endfor %}
             </div>
 
             {% if page_obj.paginator.num_pages > 1 %}
@@ -149,4 +151,17 @@
         </div>
     </div>
 </div>
+<script>
+    // live search for gallery (reuses navbar q param)
+    (function(){
+        const container = document.getElementById('galleryResults');
+        const search = document.querySelector('.nav-search input[name="q"]');
+        if(!container || !search) return;
+        let t;
+        search.addEventListener('input', function(){ clearTimeout(t); t = setTimeout(()=>{
+            fetch('{% url "cars:ajax_search" %}?q='+encodeURIComponent(search.value))
+                .then(r=>r.json()).then(j=>{ container.innerHTML = j.html; AOS.refresh(); });
+        }, 350); });
+    })();
+</script>
 {% endblock %}

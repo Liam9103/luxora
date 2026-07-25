@@ -1,0 +1,13 @@
+{% load humanize %}
+<div class="row g-4">
+    {% for car in cars %}
+    <div class="col-md-4" data-aos="fade-up">
+        {% include 'cars/_car_card.html' %}
+    </div>
+    {% empty %}
+    <div class="col-12 text-center" style="color: var(--text-muted); padding: 60px;">
+        <i class="bi bi-emoji-frown fs-1" style="color: var(--gold); opacity: 0.35;"></i>
+        <p class="fs-5">No vehicles found.</p>
+    </div>
+    {% endfor %}
+</div>

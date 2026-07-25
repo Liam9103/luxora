@@ -59,7 +59,7 @@
         {% for item in cart %}
         <div class="cart-row" data-aos="fade-up">
             <div class="cart-item-info">
-                <img src="{{ item.car.main_image.url }}" alt="{{ item.car }}">
+                <img src="{{ item.car.main_image.url }}" alt="{{ item.car }}" loading="lazy">
                 <div>
                     <h6>{{ item.car }}</h6>
                     <small style="color: var(--text-muted);">{{ item.car.year }} • {{ item.car.color }}</small>

@@ -80,7 +80,7 @@
 
 <div class="lux-car-card">
     <div class="lux-car-img-wrap">
-        <img src="{{ car.main_image.url }}" class="lux-car-img" alt="{{ car }}">
+        <img src="{{ car.main_image.url }}" class="lux-car-img" alt="{{ car }}" loading="lazy">
         {% if car.is_featured %}<span class="lux-badge featured">FEATURED</span>{% endif %}
         {% if car.status == 'sold' %}<span class="lux-badge sold">SOLD</span>{% endif %}
     </div>
@@ -97,6 +97,9 @@
             <span class="count">({{ car.review_count }})</span>
         </div>
         <div class="lux-car-price">${{ car.price|intcomma }}</div>
+        <div class="d-flex gap-2 mt-2">
+<a href="{% url 'cars:toggle_wishlist' car.pk %}" class="btn-ghost flex-grow-1 text-center">Wishlist</a>
+        </div>
         <a href="{% url 'cars:detail' car.pk %}" class="lux-btn-detail">View Details <i class="bi bi-arrow-right"></i></a>
     </div>
 </div>

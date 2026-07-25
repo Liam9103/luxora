@@ -68,6 +68,12 @@ class Car(models.Model):
     def review_count(self):
         return self.reviews.count()
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['status', 'created_at']),
+            models.Index(fields=['model_name']),
+        ]
+
 
 class CarImage(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='gallery_images')
@@ -75,3 +81,16 @@ class CarImage(models.Model):
 
     def __str__(self):
         return f"image {self.car}"
+
+
+class WishlistItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlist_items')
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='wishlist_items')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'car')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user.username} -> {self.car}"

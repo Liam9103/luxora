@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Brand, Car, CarImage
+from .models import Brand, Car, CarImage, WishlistItem
 
 
 class CarImageInline(admin.TabularInline):
@@ -18,3 +18,9 @@ class CarAdmin(admin.ModelAdmin):
     list_filter = ['brand', 'status', 'fuel_type', 'transmission', 'is_featured']
     search_fields = ['model_name', 'brand__name']
     inlines = [CarImageInline]
+
+
+@admin.register(WishlistItem)
+class WishlistItemAdmin(admin.ModelAdmin):
+    list_display = ['user', 'car', 'created_at']
+    search_fields = ['user__username', 'car__model_name']

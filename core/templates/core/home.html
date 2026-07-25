@@ -179,7 +179,7 @@
             {% for brand in brands %}
                 <div class="brand-pill" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:1 }}00">
                     {% if brand.logo %}
-                        <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
+                        <img src="{{ brand.logo.url }}" alt="{{ brand.name }}" loading="lazy">
                     {% else %}
                         <span>{{ brand.name }}</span>
                     {% endif %}
@@ -230,6 +230,119 @@
     </div>
 </section>
 
+<!-- CONSULTATION + FINANCE -->
+<section class="cars-section" style="background: var(--bg-dark); border-top: 1px solid var(--border-glass);">
+    <div class="container">
+        <div class="row g-4 align-items-stretch">
+            <div class="col-lg-7" data-aos="fade-right">
+                <div class="cta-banner text-start" style="padding: 40px;">
+                    <span class="section-tag">Personalized Assistance</span>
+                    <h2 class="section-title">Need help finding the right car?</h2>
+                    <p class="section-desc mb-4">Tell us what you want and our team will help you pick the ideal vehicle, financing option, and delivery plan.</p>
+                    <form method="post" action="{% url 'core:consultation_request' %}" class="row g-3">
+                        {% csrf_token %}
+                        <div class="col-md-6">
+                            <input type="text" name="full_name" class="form-control" placeholder="Your full name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="email" name="email" class="form-control" placeholder="Your email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="phone" class="form-control" placeholder="Your phone" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="preferred_car" class="form-control" placeholder="Preferred vehicle">
+                        </div>
+                        <div class="col-12">
+                            <textarea name="message" class="form-control" rows="3" placeholder="Tell us about your goals or budget"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn-luxora">Request Consultation</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-5" data-aos="fade-left">
+                <div class="cta-banner text-start" style="padding: 40px;">
+                    <span class="section-tag">Finance Calculator</span>
+                    <h3 class="section-title" style="font-size: 1.7rem;">Estimate your monthly payment</h3>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label text-muted">Vehicle Price</label>
+                            <input type="number" id="priceInput" class="form-control" value="80000" min="1000">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label text-muted">Down Payment</label>
+                            <input type="number" id="downInput" class="form-control" value="20000" min="0">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label text-muted">Years</label>
+                            <input type="number" id="yearsInput" class="form-control" value="5" min="1" max="10">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-muted">Interest Rate (%)</label>
+                            <input type="number" id="rateInput" class="form-control" value="6" min="0" step="0.1">
+                        </div>
+                        <div class="col-12">
+                            <div class="p-3 rounded-3" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass);">
+                                <div class="text-muted small">Estimated monthly payment</div>
+                                <div id="paymentResult" class="fs-2 fw-bold" style="color: var(--gold);">$0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TRUST / FAQ -->
+<section class="cars-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6" data-aos="fade-up">
+                <div class="cta-banner text-start" style="padding: 40px;">
+                    <span class="section-tag">Why buyers trust LUXORA</span>
+                    <h3 class="section-title" style="font-size: 1.7rem;">Premium service, transparent process, fast delivery</h3>
+                    <ul style="color: var(--text-muted); line-height: 2;">
+                        <li>Verified vehicles with full history support</li>
+                        <li>Flexible financing and consultation support</li>
+                        <li>Fast delivery and concierge-level guidance</li>
+                        <li>Trusted reviews and clear pricing</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="cta-banner text-start" style="padding: 40px;">
+                    <span class="section-tag">Frequently Asked Questions</span>
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item" style="background: transparent; border-color: var(--border-glass);">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" style="background: transparent; color: var(--text-light);">
+                                    Can I reserve a car before purchase?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body" style="color: var(--text-muted);">Yes. You can save a vehicle to your wishlist and contact our team for reservation details.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item" style="background: transparent; border-color: var(--border-glass);">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" style="background: transparent; color: var(--text-light);">
+                                    Do you offer financing help?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body" style="color: var(--text-muted);">Yes. Our advisors can guide you through rates, down payments, and monthly payment planning.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- CTA -->
 <section class="cars-section">
     <div class="container">
@@ -240,5 +353,24 @@
         </div>
     </div>
 </section>
+
+<script>
+    function calculatePayment() {
+        const price = parseFloat(document.getElementById('priceInput').value || 0);
+        const down = parseFloat(document.getElementById('downInput').value || 0);
+        const years = parseFloat(document.getElementById('yearsInput').value || 1);
+        const rate = parseFloat(document.getElementById('rateInput').value || 0);
+        const principal = Math.max(price - down, 0);
+        const monthlyRate = rate / 100 / 12;
+        const months = years * 12;
+        const payment = monthlyRate > 0 ? (principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months)) : principal / months;
+        document.getElementById('paymentResult').textContent = '$' + payment.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    }
+
+    ['priceInput','downInput','yearsInput','rateInput'].forEach(id => {
+        document.getElementById(id)?.addEventListener('input', calculatePayment);
+    });
+    calculatePayment();
+</script>
 
 {% endblock %}
