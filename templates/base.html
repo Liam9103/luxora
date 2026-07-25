@@ -2,7 +2,7 @@
 <!--
     LUXORA - Premium Car Dealership
     Designed & Developed by: Ilia Pirmarzabad
-    Contact: Ilia Pirmarzabad@gmail.com
+    Contact: iliapirmarzabad@gmail.com
 -->
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -27,14 +27,14 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="LUXORA | Premium Car Dealership">
     <meta property="og:description" content="Discover the finest luxury vehicles at LUXORA. Premium cars, exceptional service.">
-
     <meta property="og:site_name" content="LUXORA">
- 
+    <meta property="og:image" content="https://iliam9103.pythonanywhere.com{% static 'images/luxora-logo.png' %}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="LUXORA | Premium Car Dealership">
     <meta name="twitter:description" content="Discover premium luxury vehicles at LUXORA.">
+    <meta name="twitter:image" content="https://iliam9103.pythonanywhere.com{% static 'images/luxora-logo.png' %}">
 
     <!-- Favicon & Touch Icons -->
     <link rel="shortcut icon" type="image/png" href="{% static 'images/luxora-logo.png' %}">
@@ -55,543 +55,503 @@
         :root {
             --gold: #D4AF37;
             --gold-light: #F4E5C2;
-            {% load static %}
-            <!--
-                LUXORA - Premium Car Dealership
-                Designed & Developed by: Ilia Pirmarzabad
-                Contact: Ilia Pirmarzabad@gmail.com
-            -->
-            <!DOCTYPE html>
-            <html lang="en" dir="ltr">
-            <head>
-                <!-- Basic Meta -->
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            --gold-dark: #A8842C;
+            --accent-purple: #7C5CFF;
+            --accent-glow: #9D7FFF;
+            --bg-black: #06060A;
+            --bg-dark: #0D0D14;
+            --bg-card: #14141F;
+            --bg-card-hover: #1B1B29;
+            --text-light: #F5F5F7;
+            --text-muted: #9797A8;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --shadow-gold: 0 10px 40px rgba(212, 175, 55, 0.25);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
 
-                <!-- Title -->
-                <title>{% block title %}LUXORA | Premium Car Dealership{% endblock %}</title>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-                <!-- SEO Meta Tags -->
-                <meta name="description" content="LUXORA - Premium Car Dealership offering luxury and sports vehicles with exceptional quality and elegance.">
-                <meta name="keywords" content="luxury cars, premium cars, sports cars, car dealership, LUXORA, buy car">
-                <meta name="author" content="Ilia Pirmarzabad">
-                <meta name="developer" content="Ilia Pirmarzabad - Full Stack Django Developer">
-                <meta name="robots" content="index, follow">
-                <meta name="googlebot" content="index, follow">
-                <meta name="google-site-verification" content="Bq9ASj8AOQxdsvpR8PsV92LG8CqZ5jyppUNlNfuq0vw" />
+        html { scroll-behavior: smooth; }
 
-                <!-- Open Graph -->
-                <meta property="og:type" content="website">
-                <meta property="og:title" content="LUXORA | Premium Car Dealership">
-                <meta property="og:description" content="Discover the finest luxury vehicles at LUXORA. Premium cars, exceptional service.">
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-black);
+            color: var(--text-light);
+            overflow-x: hidden;
+            position: relative;
+        }
 
-                <meta property="og:site_name" content="LUXORA">
- 
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(124, 92, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
 
-                <!-- Twitter Card -->
-                <meta name="twitter:card" content="summary_large_image">
-                <meta name="twitter:title" content="LUXORA | Premium Car Dealership">
-                <meta name="twitter:description" content="Discover premium luxury vehicles at LUXORA.">
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -15%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
 
-                <!-- Favicon & Touch Icons -->
-                <link rel="shortcut" type="image/png" href="{% static 'images/luxora-logo.png' %}">
-                <link rel="icon" type="image/png" href="{% static 'images/luxora-logo.png' %}">
-                <link rel="apple-touch-icon" href="{% static 'images/luxora-logo.png' %}">
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
 
-                <!-- Google Fonts -->
-                <link rel="preconnect" href="https://fonts.googleapis.com">
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        main { position: relative; z-index: 1; min-height: 70vh; }
 
-                <!-- Bootstrap & Icons -->
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-                <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        ::selection { background: var(--gold); color: #000; }
 
-                <style>
-                    :root {
-                        --gold: #D4AF37;
-                        --gold-light: #F4E5C2;
-                        --gold-dark: #A8842C;
-                        --accent-purple: #7C5CFF;
-                        --accent-glow: #9D7FFF;
-                        --bg-black: #06060A;
-                        --bg-dark: #0D0D14;
-                        --bg-card: #14141F;
-                        --bg-card-hover: #1B1B29;
-                        --text-light: #F5F5F7;
-                        --text-muted: #9797A8;
-                        --border-glass: rgba(255, 255, 255, 0.08);
-                        --shadow-gold: 0 10px 40px rgba(212, 175, 55, 0.25);
-                        --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-                    }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--gold), var(--gold-dark));
+            border-radius: 10px;
+        }
 
-                    * {
-                        margin: 0;
-                        padding: 0;
-                        box-sizing: border-box;
-                    }
+        /* ---------- NAVBAR ---------- */
+        .navbar-luxora {
+            background: rgba(6, 6, 10, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+        .navbar-luxora.scrolled {
+            padding: 8px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
 
-                    html { scroll-behavior: smooth; }
+        /* ---------- LOGO NAVBAR ---------- */
+        .brand-logo-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .brand-logo-nav:hover {
+            transform: scale(1.03);
+        }
+        .brand-logo-nav img {
+            height: 55px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.4));
+            transition: var(--transition);
+        }
+        .brand-logo-nav:hover img {
+            filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.7));
+        }
 
-                    body {
-                        font-family: 'Inter', sans-serif;
-                        background: var(--bg-black);
-                        color: var(--text-light);
-                        overflow-x: hidden;
-                        position: relative;
-                    }
+        .brand-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-                    body::before {
-                        content: '';
-                        position: fixed;
-                        top: -20%;
-                        right: -10%;
-                        width: 600px;
-                        height: 600px;
-                        background: radial-gradient(circle, rgba(124, 92, 255, 0.15) 0%, transparent 70%);
-                        border-radius: 50%;
-                        z-index: 0;
-                        pointer-events: none;
-                    }
+        /* ---------- LOGO FOOTER ---------- */
+        .brand-logo-footer {
+            display: inline-block;
+            transition: var(--transition);
+        }
+        .brand-logo-footer:hover {
+            transform: scale(1.05);
+        }
+        .brand-logo-footer img {
+            max-width: 200px;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.4));
+            margin-bottom: 15px;
+        }
 
-                    body::after {
-                        content: '';
-                        position: fixed;
-                        bottom: -15%;
-                        left: -10%;
-                        width: 500px;
-                        height: 500px;
-                        background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
-                        border-radius: 50%;
-                        z-index: 0;
-                        pointer-events: none;
-                    }
+        .nav-link-custom {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 18px !important;
+            border-radius: 30px;
+            transition: var(--transition);
+            position: relative;
+        }
+        .nav-link-custom:hover, .nav-link-custom.active {
+            color: var(--text-light) !important;
+            background: rgba(255,255,255,0.06);
+        }
 
-                    h1, h2, h3, h4, h5, h6 {
-                        font-family: 'Poppins', sans-serif;
-                        font-weight: 700;
-                    }
+        /* Navbar search */
+        .nav-search { max-width: 360px; width: 100%; }
+        .nav-search .form-control {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-glass);
+            color: var(--text-light);
+            padding: 8px 12px;
+            border-radius: 999px;
+            transition: var(--transition);
+        }
+        .nav-search .form-control:focus {
+            box-shadow: 0 4px 18px rgba(124,92,255,0.06);
+            border-color: var(--gold);
+        }
 
-                    main { position: relative; z-index: 1; min-height: 70vh; }
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-glass);
+            color: var(--text-light);
+            transition: var(--transition);
+            position: relative;
+            text-decoration: none;
+        }
+        .icon-btn:hover {
+            background: var(--gold);
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-gold);
+        }
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--accent-purple);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg-black);
+        }
 
-                    ::selection { background: var(--gold); color: #000; }
+        /* ---------- BUTTONS ---------- */
+        .btn-luxora {
+            background: linear-gradient(135deg, var(--gold-light), var(--gold) 50%, var(--gold-dark));
+            color: #06060A !important;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 50px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-luxora::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
+            transition: 0.6s;
+        }
+        .btn-luxora:hover::before { left: 100%; }
+        .btn-luxora:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-gold);
+            color: #000 !important;
+        }
 
-                    /* Scrollbar */
-                    ::-webkit-scrollbar { width: 10px; }
-                    ::-webkit-scrollbar-track { background: var(--bg-dark); }
-                    ::-webkit-scrollbar-thumb {
-                        background: linear-gradient(180deg, var(--gold), var(--gold-dark));
-                        border-radius: 10px;
-                    }
+        .btn-luxora-outline {
+            background: transparent;
+            border: 1.5px solid var(--gold);
+            color: var(--gold) !important;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            padding: 11px 30px;
+            border-radius: 50px;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-luxora-outline:hover {
+            background: var(--gold);
+            color: #000 !important;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-gold);
+        }
 
-                    /* ---------- NAVBAR ---------- */
-                    .navbar-luxora {
-                        background: rgba(6, 6, 10, 0.75);
-                        backdrop-filter: blur(20px);
-                        -webkit-backdrop-filter: blur(20px);
-                        border-bottom: 1px solid var(--border-glass);
-                        padding: 12px 0;
-                        position: sticky;
-                        top: 0;
-                        z-index: 1000;
-                        transition: var(--transition);
-                    }
-                    .navbar-luxora.scrolled {
-                        padding: 8px 0;
-                        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-                    }
+        .btn-ghost {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-glass);
+            color: var(--text-light) !important;
+            padding: 9px 22px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        .btn-ghost:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
 
-                    /* ---------- LOGO NAVBAR ---------- */
-                    .brand-logo-nav {
-                        display: flex;
-                        align-items: center;
-                        gap: 12px;
-                        text-decoration: none;
-                        transition: var(--transition);
-                    }
-                    .brand-logo-nav:hover {
-                        transform: scale(1.03);
-                    }
-                    .brand-logo-nav img {
-                        height: 55px;
-                        width: auto;
-                        object-fit: contain;
-                        filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.4));
-                        transition: var(--transition);
-                    }
-                    .brand-logo-nav:hover img {
-                        filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.7));
-                    }
+        /* ---------- FOOTER ---------- */
+        .footer-luxora {
+            background: var(--bg-dark);
+            border-top: 1px solid var(--border-glass);
+            padding: 70px 0 25px;
+            position: relative;
+            z-index: 1;
+        }
+        .footer-luxora h5 {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+        .footer-luxora p, .footer-luxora a {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            text-decoration: none;
+            transition: var(--transition);
+            line-height: 2;
+        }
+        .footer-luxora a:hover { color: var(--gold); padding-left: 5px; }
+        .footer-social {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            margin-right: 8px;
+            transition: var(--transition);
+        }
+        .footer-social:hover {
+            background: var(--gold);
+            color: #000;
+            transform: translateY(-4px);
+        }
 
-                    /* اگه می‌خوای متن LUXORA کنار لوگو هم باشه: */
-                    .brand-text {
-                        font-family: 'Poppins', sans-serif;
-                        font-weight: 800;
-                        font-size: 1.5rem;
-                        letter-spacing: 3px;
-                        background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
-                        -webkit-background-clip: text;
-                        background-clip: text;
-                        -webkit-text-fill-color: transparent;
-                    }
+        .swal-custom { border-radius: 20px !important; font-family: 'Inter', sans-serif !important; }
 
-                    /* ---------- LOGO FOOTER ---------- */
-                    .brand-logo-footer {
-                        display: inline-block;
-                        transition: var(--transition);
-                    }
-                    .brand-logo-footer:hover {
-                        transform: scale(1.05);
-                    }
-                    .brand-logo-footer img {
-                        max-width: 200px;
-                        height: auto;
-                        object-fit: contain;
-                        filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.4));
-                        margin-bottom: 15px;
-                    }
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            .brand-logo-nav img { height: 45px; }
+            .brand-logo-footer img { max-width: 160px; }
+        }
+    </style>
 
-                    .nav-link-custom {
-                        color: var(--text-muted) !important;
-                        font-weight: 500;
-                        font-size: 0.95rem;
-                        padding: 8px 18px !important;
-                        border-radius: 30px;
-                        transition: var(--transition);
-                        position: relative;
-                    }
-                    .nav-link-custom:hover, .nav-link-custom.active {
-                        color: var(--text-light) !important;
-                        background: rgba(255,255,255,0.06);
-                    }
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
 
-                    /* Navbar search */
-                    .nav-search { max-width: 360px; width: 100%; }
-                    .nav-search .form-control {
-                        background: rgba(255,255,255,0.03);
-                        border: 1px solid var(--border-glass);
-                        color: var(--text-light);
-                        padding: 8px 12px;
-                        border-radius: 999px;
-                        transition: var(--transition);
-                    }
-                    .nav-search .form-control:focus { box-shadow: 0 4px 18px rgba(124,92,255,0.06); border-color: var(--gold); }
+    <nav class="navbar navbar-expand-lg navbar-luxora" id="mainNavbar">
+        <div class="container">
+            <!-- Logo Navbar -->
+            <a class="brand-logo-nav" href="{% url 'core:home' %}">
+                <img src="{% static 'images/luxora-logo.png' %}" alt="LUXORA - Premium Car Dealership">
+            </a>
 
-                    .icon-btn {
-                        width: 42px;
-                        height: 42px;
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        background: rgba(255,255,255,0.05);
-                        border: 1px solid var(--border-glass);
-                        color: var(--text-light);
-                        transition: var(--transition);
-                        position: relative;
-                        text-decoration: none;
-                    }
-                    .icon-btn:hover {
-                        background: var(--gold);
-                        color: #000;
-                        transform: translateY(-3px);
-                        box-shadow: var(--shadow-gold);
-                    }
-                    .cart-badge {
-                        position: absolute;
-                        top: -6px;
-                        right: -6px;
-                        background: var(--accent-purple);
-                        color: #fff;
-                        font-size: 0.65rem;
-                        font-weight: 700;
-                        width: 20px;
-                        height: 20px;
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        border: 2px solid var(--bg-black);
-                    }
-
-                    /* ---------- BUTTONS ---------- */
-                    .btn-luxora {
-                        background: linear-gradient(135deg, var(--gold-light), var(--gold) 50%, var(--gold-dark));
-                        color: #06060A !important;
-                        font-weight: 700;
-                        font-family: 'Poppins', sans-serif;
-                        border: none;
-                        padding: 12px 32px;
-                        border-radius: 50px;
-                        transition: var(--transition);
-                        position: relative;
-                        overflow: hidden;
-                        display: inline-flex;
-                        align-items: center;
-                        justify-content: center;
-                        gap: 8px;
-                        text-decoration: none;
-                    }
-                    .btn-luxora::before {
-                        content: '';
-                        position: absolute;
-                        top: 0; left: -100%;
-                        width: 100%; height: 100%;
-                        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
-                        transition: 0.6s;
-                    }
-                    .btn-luxora:hover::before { left: 100%; }
-                    .btn-luxora:hover {
-                        transform: translateY(-4px);
-                        box-shadow: var(--shadow-gold);
-                        color: #000 !important;
-                    }
-
-                    .btn-luxora-outline {
-                        background: transparent;
-                        border: 1.5px solid var(--gold);
-                        color: var(--gold) !important;
-                        font-weight: 600;
-                        font-family: 'Poppins', sans-serif;
-                        padding: 11px 30px;
-                        border-radius: 50px;
-                        transition: var(--transition);
-                        text-decoration: none;
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 8px;
-                    }
-                    .btn-luxora-outline:hover {
-                        background: var(--gold);
-                        color: #000 !important;
-                        transform: translateY(-3px);
-                        box-shadow: var(--shadow-gold);
-                    }
-
-                    .btn-ghost {
-                        background: rgba(255,255,255,0.05);
-                        border: 1px solid var(--border-glass);
-                        color: var(--text-light) !important;
-                        padding: 9px 22px;
-                        border-radius: 50px;
-                        font-weight: 500;
-                        transition: var(--transition);
-                        text-decoration: none;
-                    }
-                    .btn-ghost:hover {
-                        background: rgba(255,255,255,0.1);
-                        transform: translateY(-2px);
-                    }
-
-                    /* ---------- FOOTER ---------- */
-                    .footer-luxora {
-                        background: var(--bg-dark);
-                        border-top: 1px solid var(--border-glass);
-                        padding: 70px 0 25px;
-                        position: relative;
-                        z-index: 1;
-                    }
-                    .footer-luxora h5 {
-                        font-size: 1rem;
-                        margin-bottom: 20px;
-                        color: var(--text-light);
-                    }
-                    .footer-luxora p, .footer-luxora a {
-                        color: var(--text-muted);
-                        font-size: 0.92rem;
-                        text-decoration: none;
-                        transition: var(--transition);
-                        line-height: 2;
-                    }
-                    .footer-luxora a:hover { color: var(--gold); padding-left: 5px; }
-                    .footer-social {
-                        width: 40px; height: 40px;
-                        border-radius: 50%;
-                        background: rgba(255,255,255,0.05);
-                        display: inline-flex;
-                        align-items: center;
-                        justify-content: center;
-                        color: var(--text-light);
-                        margin-right: 8px;
-                        transition: var(--transition);
-                    }
-                    .footer-social:hover {
-                        background: var(--gold);
-                        color: #000;
-                        transform: translateY(-4px);
-                    }
-
-                    .swal-custom { border-radius: 20px !important; font-family: 'Inter', sans-serif !important; }
-
-                    /* ---------- RESPONSIVE ---------- */
-                    @media (max-width: 768px) {
-                        .brand-logo-nav img { height: 45px; }
-                        .brand-logo-footer img { max-width: 160px; }
-                    }
-                </style>
-
-                {% block extra_css %}{% endblock %}
-            </head>
-            <body>
-
-                <nav class="navbar navbar-expand-lg navbar-luxora" id="mainNavbar">
-                    <div class="container">
-                        <!-- Logo Navbar -->
-                        <a class="brand-logo-nav" href="{% url 'core:home' %}">
-                            <img src="{% static 'images/luxora-logo.png' %}" alt="LUXORA - Premium Car Dealership">
-                        </a>
-            
-                        <button class="navbar-toggler border-0 text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-                            <i class="bi bi-list text-white fs-2"></i>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navMenu">
-                            <ul class="navbar-nav mx-auto gap-lg-2 mt-3 mt-lg-0">
-                                <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'core:home' %}">Home</a></li>
-                                <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'cars:gallery' %}">Gallery</a></li>
-            <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'cars:wishlist' %}">Wishlist</a></li>
-                                <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'core:about' %}">About</a></li>
-                            </ul>
-                            <form class="d-none d-lg-flex align-items-center me-3 nav-search" method="get" action="{% url 'cars:gallery' %}">
-                                <input type="search" name="q" class="form-control form-control-sm" placeholder="Search models, brands..." aria-label="Search">
-                            </form>
-                            <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
-                                <a href="{% url 'cart:detail' %}" class="icon-btn">
-                                    <i class="bi bi-bag"></i>
-                                    <span class="cart-badge">{{ cart_items_count|default:0 }}</span>
-                                </a>
-                                {% if user.is_authenticated %}
-                                    <a href="{% url 'accounts:profile' %}" class="icon-btn"><i class="bi bi-person"></i></a>
-                                    <a href="{% url 'accounts:logout' %}" class="btn-ghost">Logout</a>
-                                {% else %}
-                                    <a href="{% url 'accounts:login' %}" class="btn-ghost">Login</a>
-                                    <a href="{% url 'accounts:signup' %}" class="btn-luxora">Sign Up</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-
-                <div id="toast-container"></div>
-
-                <main>
-                    {% block content %}{% endblock %}
-                </main>
-
-                <footer class="footer-luxora">
-                    <div class="container">
-                        <div class="row g-5">
-                            <div class="col-lg-4">
-                                <!-- Logo Footer -->
-                                <a class="brand-logo-footer" href="{% url 'core:home' %}">
-                                    <img src="{% static 'images/luxora-logo.png' %}" alt="LUXORA Logo">
-                                </a>
-                                <p>The ultimate destination for premium and luxury vehicles. Curated collection, verified quality, unmatched experience.</p>
-                                <div class="mt-3">
-                                    <a href="https://www.instagram.com/nova.skills.offical/" class="footer-social" target="_blank"><i class="bi bi-instagram"></i></a>
-                                    <a href="#" class="footer-social" target="_blank"><i class="bi bi-linkedin"></i></a>
-                                    <a href="https://www.youtube.com/@Nova_Skills" class="footer-social" target="_blank"><i class="bi bi-youtube"></i></a>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-6">
-                                <h5>Explore</h5>
-                                <p><a href="{% url 'core:home' %}">Home</a></p>
-                                <p><a href="{% url 'cars:gallery' %}">Gallery</a></p>
-                                <p><a href="{% url 'core:about' %}">About Us</a></p>
-                            </div>
-                            <div class="col-lg-2 col-6">
-            <h5>Account</h5>
-                                <p><a href="{% url 'accounts:profile' %}">My Profile</a></p>
-                                <p><a href="{% url 'cars:wishlist' %}">My Wishlist</a></p>
-                                <p><a href="{% url 'cart:detail' %}">My Cart</a></p>
-                            </div>
-                            <div class="col-lg-4">
-                                <h5>Contact Us</h5>
-                                <p><i class="bi bi-geo-alt me-2"></i> 5th Avenue, New York, USA</p>
-                                <p><i class="bi bi-telephone me-2"></i> +1 (800) 123-4567</p>
-                                <p><i class="bi bi-envelope me-2"></i> Ilia Pirmarzabad@gmail.com</p>
-                            </div>
-                        </div>
-                        <hr style="border-color: var(--border-glass); margin: 40px 0 20px;">
-                    </div>
-                    <div class="text-center mt-4 pt-4" style="border-top: 1px solid rgba(255,255,255,0.06);">
-                        <p style="font-size: 0.82rem; color: rgba(255,255,255,0.4); margin: 0;">
-                            &copy; {% now "Y" %} LUXORA. All rights reserved.
-                        </p>
-                        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-top: 8px;">
-                            Designed & Developed with <i class="bi bi-suit-heart-fill" style="color: #D4AF37;"></i> by 
-                            <strong style="color: #D4AF37;">Ilia Pirmarzabad</strong>
-                        </p>
-                    </div>
-                </footer>
-
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-                <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                <script>
-                    AOS.init({ duration: 900, once: true, easing: 'ease-out-cubic' });
-
-                    window.addEventListener('scroll', function () {
-                        document.getElementById('mainNavbar').classList.toggle('scrolled', window.scrollY > 40);
-                    });
-
-                    {% if messages %}
-                        {% for message in messages %}
-                            Swal.fire({
-                                toast: true,
-                                position: 'top-end',
-                                icon: '{{ message.tags|default:"info" }}',
-                                title: `{{ message }}`,
-                                showConfirmButton: false,
-                                timer: 4000,
-                                timerProgressBar: true,
-                                background: '#14141F',
-                                color: '#F5F5F7',
-                                customClass: { popup: 'swal-custom' }
-                            });
-                        {% endfor %}
+            <button class="navbar-toggler border-0 text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <i class="bi bi-list text-white fs-2"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav mx-auto gap-lg-2 mt-3 mt-lg-0">
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'core:home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'cars:gallery' %}">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'cars:wishlist' %}">Wishlist</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'core:about' %}">About</a></li>
+                </ul>
+                <form class="d-none d-lg-flex align-items-center me-3 nav-search" method="get" action="{% url 'cars:gallery' %}">
+                    <input type="search" name="q" class="form-control form-control-sm" placeholder="Search models, brands..." aria-label="Search">
+                </form>
+                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                    <a href="{% url 'cart:detail' %}" class="icon-btn">
+                        <i class="bi bi-bag"></i>
+                        <span class="cart-badge">{{ cart_items_count|default:0 }}</span>
+                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'accounts:profile' %}" class="icon-btn"><i class="bi bi-person"></i></a>
+                        <a href="{% url 'accounts:logout' %}" class="btn-ghost">Logout</a>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}" class="btn-ghost">Login</a>
+                        <a href="{% url 'accounts:signup' %}" class="btn-luxora">Sign Up</a>
                     {% endif %}
-                </script>
-                <script>
-                    // Navbar active link highlight
-                    (function(){
-                        try {
-                            const links = document.querySelectorAll('.nav-link-custom');
-                            links.forEach(a => { if (a.href === location.href || location.href.includes(a.getAttribute('href'))) a.classList.add('active'); });
-                        } catch(e){}
-                    })();
-                    // Debounced navbar search submit
-                    (function(){
-                        try{
-                            const input = document.querySelector('.nav-search input[name="q"]');
-                            if(!input) return;
-                            let t;
-                            input.addEventListener('input', function(e){ clearTimeout(t); t = setTimeout(()=>{ input.form.submit(); }, 600); });
-                            input.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); input.form.submit(); }});
-                        }catch(e){}
-                    })();
+                </div>
+            </div>
+        </div>
+    </nav>
 
-                    // Apply input styling to auth forms if not rendered with classes
-                    (function(){
-                        try{
-                            document.querySelectorAll('.auth-card input, .auth-card select, .auth-card textarea').forEach(el=>{
-                                if(!el.classList.contains('auth-input')) el.classList.add('auth-input');
-                            });
-                        }catch(e){}
-                    })();
-                </script>
-                {% load signature %}
-                {% dev_signature %}
+    <div id="toast-container"></div>
 
-                <script>
-                    console.log('%c🚀 LUXORA — Premium Car Dealership', 'font-size: 22px; font-weight: bold; color: #D4AF37; font-family: Poppins;');
-                    console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #D4AF37;');
-                    console.log('%cDesigned & Developed by: %cIlia Pirmarzabad', 'font-size: 14px; color: #fff;', 'color: #D4AF37; font-weight: bold; font-size: 15px;');
-                    console.log('%c💻 Full-Stack Django Developer', 'font-size: 12px; color: #F4E5C2;');
-                    console.log('%c📧 Contact: Ilia Pirmarzabad@gmail.com', 'font-size: 12px; color: #F4E5C2;');
-                    console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #D4AF37;');
-                </script>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
-                {% block extra_js %}{% endblock %}
-            </body>
-            </html>
+    <footer class="footer-luxora">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <!-- Logo Footer -->
+                    <a class="brand-logo-footer" href="{% url 'core:home' %}">
+                        <img src="{% static 'images/luxora-logo.png' %}" alt="LUXORA Logo">
+                    </a>
+                    <p>The ultimate destination for premium and luxury vehicles. Curated collection, verified quality, unmatched experience.</p>
+                    <div class="mt-3">
+                        <a href="https://www.instagram.com/nova.skills.offical/" class="footer-social" target="_blank"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="footer-social" target="_blank"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://www.youtube.com/@Nova_Skills" class="footer-social" target="_blank"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h5>Explore</h5>
+                    <p><a href="{% url 'core:home' %}">Home</a></p>
+                    <p><a href="{% url 'cars:gallery' %}">Gallery</a></p>
+                    <p><a href="{% url 'core:about' %}">About Us</a></p>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h5>Account</h5>
+                    <p><a href="{% url 'accounts:profile' %}">My Profile</a></p>
+                    <p><a href="{% url 'cars:wishlist' %}">My Wishlist</a></p>
+                    <p><a href="{% url 'cart:detail' %}">My Cart</a></p>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Contact Us</h5>
+                    <p><i class="bi bi-geo-alt me-2"></i> 5th Avenue, New York, USA</p>
+                    <p><i class="bi bi-telephone me-2"></i> +1 (800) 123-4567</p>
+                    <p><i class="bi bi-envelope me-2"></i> iliapirmarzabad@gmail.com</p>
+                </div>
+            </div>
+            <hr style="border-color: var(--border-glass); margin: 40px 0 20px;">
+        </div>
+        <div class="text-center mt-4 pt-4" style="border-top: 1px solid rgba(255,255,255,0.06);">
+            <p style="font-size: 0.82rem; color: rgba(255,255,255,0.4); margin: 0;">
+                &copy; {% now "Y" %} LUXORA. All rights reserved.
+            </p>
+            <p style="font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-top: 8px;">
+                Designed & Developed with <i class="bi bi-suit-heart-fill" style="color: #D4AF37;"></i> by
+                <strong style="color: #D4AF37;">Ilia Pirmarzabad</strong>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        AOS.init({ duration: 900, once: true, easing: 'ease-out-cubic' });
+
+        window.addEventListener('scroll', function () {
+            document.getElementById('mainNavbar').classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: '{{ message.tags|default:"info" }}',
+                    title: `{{ message }}`,
+                    showConfirmButton: false,
+                    timer: 4000,
+                    timerProgressBar: true,
+                    background: '#14141F',
+                    color: '#F5F5F7',
+                    customClass: { popup: 'swal-custom' }
+                });
+            {% endfor %}
+        {% endif %}
+    </script>
+
+    <script>
+        // Navbar active link highlight
+        (function(){
+            try {
+                const links = document.querySelectorAll('.nav-link-custom');
+                links.forEach(a => {
+                    if (a.href === location.href || location.href.includes(a.getAttribute('href'))) {
+                        a.classList.add('active');
+                    }
+                });
+            } catch(e){}
+        })();
+
+        // Debounced navbar search submit
+        (function(){
+            try{
+                const input = document.querySelector('.nav-search input[name="q"]');
+                if(!input) return;
+                let t;
+                input.addEventListener('input', function(e){
+                    clearTimeout(t);
+                    t = setTimeout(()=>{ input.form.submit(); }, 600);
+                });
+                input.addEventListener('keydown', function(e){
+                    if(e.key === 'Enter'){
+                        e.preventDefault();
+                        input.form.submit();
+                    }
+                });
+            }catch(e){}
+        })();
+
+        // Apply input styling to auth forms if not rendered with classes
+        (function(){
+            try{
+                document.querySelectorAll('.auth-card input, .auth-card select, .auth-card textarea').forEach(el=>{
+                    if(!el.classList.contains('auth-input')) el.classList.add('auth-input');
+                });
+            }catch(e){}
+        })();
+    </script>
+
+    {% load signature %}
+    {% dev_signature %}
+
+    <script>
+        console.log('%c🚀 LUXORA — Premium Car Dealership', 'font-size: 22px; font-weight: bold; color: #D4AF37; font-family: Poppins;');
+        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #D4AF37;');
+        console.log('%cDesigned & Developed by: %cIlia Pirmarzabad', 'font-size: 14px; color: #fff;', 'color: #D4AF37; font-weight: bold; font-size: 15px;');
+        console.log('%c💻 Full-Stack Django Developer', 'font-size: 12px; color: #F4E5C2;');
+        console.log('%c📧 Contact: iliapirmarzabad@gmail.com', 'font-size: 12px; color: #F4E5C2;');
+        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #D4AF37;');
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
