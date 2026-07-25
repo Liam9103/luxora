@@ -7,40 +7,48 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+    <!-- Basic Meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Ilia Pirmarzabad">
-    <meta name="developer" content="Ilia Pirmarzabad - Full Stack Django Developer">
+
+    <!-- Title -->
+    <title>{% block title %}LUXORA | Premium Car Dealership{% endblock %}</title>
+
     <!-- SEO Meta Tags -->
     <meta name="description" content="LUXORA - Premium Car Dealership offering luxury and sports vehicles with exceptional quality and elegance.">
     <meta name="keywords" content="luxury cars, premium cars, sports cars, car dealership, LUXORA, buy car">
     <meta name="author" content="Ilia Pirmarzabad">
+    <meta name="developer" content="Ilia Pirmarzabad - Full Stack Django Developer">
     <meta name="robots" content="index, follow">
     <meta name="googlebot" content="index, follow">
     <meta name="google-site-verification" content="Bq9ASj8AOQxdsvpR8PsV92LG8CqZ5jyppUNlNfuq0vw" />
     <link rel="canonical" href="https://iliam9103.pythonanywhere.com{{ request.path }}">
 
-    <!-- Open Graph -->
+    <!-- Open Graph (Facebook, Telegram, WhatsApp) -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="LUXORA | Premium Car Dealership">
     <meta property="og:description" content="Discover the finest luxury vehicles at LUXORA. Premium cars, exceptional service.">
     <meta property="og:url" content="https://iliam9103.pythonanywhere.com">
     <meta property="og:site_name" content="LUXORA">
+    <meta property="og:image" content="https://iliam9103.pythonanywhere.com{% static 'favicon.ico' %}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="LUXORA | Premium Car Dealership">
     <meta name="twitter:description" content="Discover premium luxury vehicles at LUXORA.">
+    <meta name="twitter:image" content="https://iliam9103.pythonanywhere.com{% static 'favicon.ico' %}">
 
-    <!-- Favicon -->
+    <!-- Favicon & Touch Icons -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
-    <title>{% block title %}LUXORA | Premium Car Dealership{% endblock %}</title>
+    <link rel="apple-touch-icon" href="{% static 'favicon.ico' %}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Bootstrap & Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
@@ -323,7 +331,8 @@
     <nav class="navbar navbar-expand-lg navbar-luxora" id="mainNavbar">
         <div class="container">
             <a class="brand-logo" href="{% url 'core:home' %}">
-                <i class="bi bi-gem"></i> LUXORA
+                <img src="{% static 'favicon.ico' %}" alt="LUXORA Icon" style="width: 28px; height: 28px; object-fit: contain;">
+                LUXORA
             </a>
             <button class="navbar-toggler border-0 text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <i class="bi bi-list text-white fs-2"></i>
@@ -358,48 +367,50 @@
     </main>
 
     <footer class="footer-luxora">
-    <div class="container">
-        <div class="row g-5">
-            <div class="col-lg-4">
-                <a class="brand-logo mb-3 d-inline-flex" href="{% url 'core:home' %}"><i class="bi bi-gem"></i> LUXORA</a>
-                <p>The ultimate destination for premium and luxury vehicles. Curated collection, verified quality, unmatched experience.</p>
-                <div class="mt-3">
-                    <a href="https://www.instagram.com/nova.skills.offical/" class="footer-social" target="_blank"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="footer-social" target="_blank"><i class="bi bi-linkedin"></i></a>
-                    <a href="https://www.youtube.com/@Nova_Skills" class="footer-social" target="_blank"><i class="bi bi-youtube"></i></a>
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <a class="brand-logo mb-3 d-inline-flex" href="{% url 'core:home' %}">
+                        <img src="{% static 'favicon.ico' %}" alt="LUXORA Icon" style="width: 28px; height: 28px; object-fit: contain;">
+                        LUXORA
+                    </a>
+                    <p>The ultimate destination for premium and luxury vehicles. Curated collection, verified quality, unmatched experience.</p>
+                    <div class="mt-3">
+                        <a href="https://www.instagram.com/nova.skills.offical/" class="footer-social" target="_blank"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="footer-social" target="_blank"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://www.youtube.com/@Nova_Skills" class="footer-social" target="_blank"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h5>Explore</h5>
+                    <p><a href="{% url 'core:home' %}">Home</a></p>
+                    <p><a href="{% url 'cars:gallery' %}">Gallery</a></p>
+                    <p><a href="{% url 'core:about' %}">About Us</a></p>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h5>Account</h5>
+                    <p><a href="{% url 'accounts:profile' %}">My Profile</a></p>
+                    <p><a href="{% url 'cart:detail' %}">My Cart</a></p>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Contact Us</h5>
+                    <p><i class="bi bi-geo-alt me-2"></i> 5th Avenue, New York, USA</p>
+                    <p><i class="bi bi-telephone me-2"></i> +1 (800) 123-4567</p>
+                    <p><i class="bi bi-envelope me-2"></i> iliapirmarzabad@gmail.com</p>
                 </div>
             </div>
-            <div class="col-lg-2 col-6">
-                <h5>Explore</h5>
-                <p><a href="{% url 'core:home' %}">Home</a></p>
-                <p><a href="{% url 'cars:gallery' %}">Gallery</a></p>
-                <p><a href="{% url 'core:about' %}">About Us</a></p>
-            </div>
-            <div class="col-lg-2 col-6">
-                <h5>Account</h5>
-                <p><a href="{% url 'accounts:profile' %}">My Profile</a></p>
-                <p><a href="{% url 'cart:detail' %}">My Cart</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h5>Contact Us</h5>
-                <p><i class="bi bi-geo-alt me-2"></i> 5th Avenue, New York, USA</p>
-                <p><i class="bi bi-telephone me-2"></i> +1 (800) 123-4567</p>
-                <p><i class="bi bi-envelope me-2"></i> hello@luxora.com</p>
-            </div>
+            <hr style="border-color: var(--border-glass); margin: 40px 0 20px;">
         </div>
-        <hr style="border-color: var(--border-glass); margin: 40px 0 20px;">
-        <!-- ❌ خط تکراری حذف شد -->
-    </div>
-    <div class="text-center mt-4 pt-4" style="border-top: 1px solid rgba(255,255,255,0.06);">
-        <p style="font-size: 0.82rem; color: rgba(255,255,255,0.4); margin: 0;">
-            © {% now "Y" %} LUXORA. All rights reserved.
-        </p>
-        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-top: 8px;">
-            Designed & Developed with <i class="bi bi-suit-heart-fill" style="color: #D4AF37;"></i> by 
-            <strong style="color: #D4AF37;">Ilia Pirmarzabad</strong>
-        </p>
-    </div>
-</footer>
+        <div class="text-center mt-4 pt-4" style="border-top: 1px solid rgba(255,255,255,0.06);">
+            <p style="font-size: 0.82rem; color: rgba(255,255,255,0.4); margin: 0;">
+                &copy; {% now "Y" %} LUXORA. All rights reserved.
+            </p>
+            <p style="font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-top: 8px;">
+                Designed & Developed with <i class="bi bi-suit-heart-fill" style="color: #D4AF37;"></i> by 
+                <strong style="color: #D4AF37;">Ilia Pirmarzabad</strong>
+            </p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -436,7 +447,7 @@
         console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #D4AF37;');
         console.log('%cDesigned & Developed by: %cIlia Pirmarzabad', 'font-size: 14px; color: #fff;', 'color: #D4AF37; font-weight: bold; font-size: 15px;');
         console.log('%c💻 Full-Stack Django Developer', 'font-size: 12px; color: #F4E5C2;');
-        console.log('%c📧 Contact: your-email@gmail.com', 'font-size: 12px; color: #F4E5C2;');
+        console.log('%c📧 Contact: iliapirmarzabad@gmail.com', 'font-size: 12px; color: #F4E5C2;');
         console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #D4AF37;');
     </script>
 
