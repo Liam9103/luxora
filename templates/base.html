@@ -57,16 +57,16 @@
             --gold-light: #F4E5C2;
             --gold-dark: #A8842C;
             --accent-purple: #7C5CFF;
-            --accent-glow: #9D7FFF;
+            --accent-blue: #42D8FF;
             --bg-black: #06060A;
-            --bg-dark: #0D0D14;
-            --bg-card: #14141F;
-            --bg-card-hover: #1B1B29;
+            --bg-dark: #0A0A14;
+            --bg-card: rgba(18, 18, 28, 0.88);
+            --bg-card-strong: #11111A;
             --text-light: #F5F5F7;
-            --text-muted: #9797A8;
+            --text-muted: #A7A7B5;
             --border-glass: rgba(255, 255, 255, 0.08);
-            --shadow-gold: 0 10px 40px rgba(212, 175, 55, 0.25);
-            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --shadow-gold: 0 20px 80px rgba(212, 175, 55, 0.22);
+            --transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         * {
@@ -79,7 +79,9 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg-black);
+            background: radial-gradient(circle at top right, rgba(124, 92, 255, 0.16), transparent 28%),
+                        radial-gradient(circle at 20% 10%, rgba(212, 175, 55, 0.14), transparent 22%),
+                        linear-gradient(180deg, #050508 0%, #08090F 100%);
             color: var(--text-light);
             overflow-x: hidden;
             position: relative;
@@ -88,11 +90,11 @@
         body::before {
             content: '';
             position: fixed;
-            top: -20%;
-            right: -10%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(124, 92, 255, 0.15) 0%, transparent 70%);
+            top: -14%;
+            left: -12%;
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, rgba(124, 92, 255, 0.22), transparent 62%);
             border-radius: 50%;
             z-index: 0;
             pointer-events: none;
@@ -101,11 +103,11 @@
         body::after {
             content: '';
             position: fixed;
-            bottom: -15%;
-            left: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            bottom: -18%;
+            right: -10%;
+            width: 580px;
+            height: 580px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.14), transparent 60%);
             border-radius: 50%;
             z-index: 0;
             pointer-events: none;
@@ -114,135 +116,125 @@
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
+            letter-spacing: 0.02em;
         }
 
         main { position: relative; z-index: 1; min-height: 70vh; }
 
         ::selection { background: var(--gold); color: #000; }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, var(--gold), var(--gold-dark));
-            border-radius: 10px;
+            background: linear-gradient(180deg, rgba(212,175,55,0.95), rgba(212,175,55,0.7));
+            border-radius: 999px;
         }
 
-        /* ---------- NAVBAR ---------- */
         .navbar-luxora {
-            background: rgba(6, 6, 10, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(8, 8, 14, 0.82);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--border-glass);
-            padding: 12px 0;
+            padding: 16px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
             transition: var(--transition);
         }
+
         .navbar-luxora.scrolled {
-            padding: 8px 0;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            padding: 10px 0;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+            background: rgba(6, 6, 10, 0.95);
         }
 
-        /* ---------- LOGO NAVBAR ---------- */
         .brand-logo-nav {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             text-decoration: none;
             transition: var(--transition);
         }
-        .brand-logo-nav:hover {
-            transform: scale(1.03);
-        }
+
+        .brand-logo-nav:hover { transform: translateY(-1px); }
+
         .brand-logo-nav img {
-            height: 55px;
+            height: 60px;
             width: auto;
-            object-fit: contain;
-            filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.4));
+            filter: drop-shadow(0 6px 16px rgba(212, 175, 55, 0.38));
             transition: var(--transition);
-        }
-        .brand-logo-nav:hover img {
-            filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.7));
         }
 
         .brand-text {
             font-family: 'Poppins', sans-serif;
             font-weight: 800;
             font-size: 1.5rem;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* ---------- LOGO FOOTER ---------- */
-        .brand-logo-footer {
-            display: inline-block;
-            transition: var(--transition);
-        }
-        .brand-logo-footer:hover {
-            transform: scale(1.05);
-        }
-        .brand-logo-footer img {
-            max-width: 200px;
-            height: auto;
-            object-fit: contain;
-            filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.4));
-            margin-bottom: 15px;
-        }
-
         .nav-link-custom {
             color: var(--text-muted) !important;
-            font-weight: 500;
-            font-size: 0.95rem;
-            padding: 8px 18px !important;
-            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.96rem;
+            padding: 10px 18px !important;
+            border-radius: 28px;
             transition: var(--transition);
             position: relative;
         }
-        .nav-link-custom:hover, .nav-link-custom.active {
+
+        .nav-link-custom:hover,
+        .nav-link-custom.active {
             color: var(--text-light) !important;
-            background: rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
         }
 
-        /* Navbar search */
-        .nav-search { max-width: 360px; width: 100%; }
+        .nav-search {
+            max-width: 360px;
+            width: 100%;
+        }
+
         .nav-search .form-control {
-            background: rgba(255,255,255,0.03);
+            background: rgba(255,255,255,0.04);
             border: 1px solid var(--border-glass);
             color: var(--text-light);
-            padding: 8px 12px;
+            padding: 10px 14px;
             border-radius: 999px;
             transition: var(--transition);
         }
+
         .nav-search .form-control:focus {
-            box-shadow: 0 4px 18px rgba(124,92,255,0.06);
-            border-color: var(--gold);
+            box-shadow: 0 0 0 6px rgba(124,92,255,0.1);
+            border-color: rgba(212, 175, 55, 0.75);
+            background: rgba(255,255,255,0.08);
         }
 
         .icon-btn {
-            width: 42px;
-            height: 42px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border-glass);
+            border: 1px solid rgba(255,255,255,0.12);
             color: var(--text-light);
             transition: var(--transition);
             position: relative;
             text-decoration: none;
         }
+
         .icon-btn:hover {
             background: var(--gold);
             color: #000;
             transform: translateY(-3px);
             box-shadow: var(--shadow-gold);
         }
+
         .cart-badge {
             position: absolute;
             top: -6px;
@@ -260,119 +252,187 @@
             border: 2px solid var(--bg-black);
         }
 
-        /* ---------- BUTTONS ---------- */
         .btn-luxora {
-            background: linear-gradient(135deg, var(--gold-light), var(--gold) 50%, var(--gold-dark));
+            background: linear-gradient(135deg, #f9df8f, #d4af37 55%, #b88d21);
+            background-size: 220% 220%;
             color: #06060A !important;
             font-weight: 700;
             font-family: 'Poppins', sans-serif;
             border: none;
-            padding: 12px 32px;
-            border-radius: 50px;
+            padding: 14px 34px;
+            border-radius: 999px;
             transition: var(--transition);
             position: relative;
             overflow: hidden;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             text-decoration: none;
         }
-        .btn-luxora::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
-            transition: 0.6s;
-        }
-        .btn-luxora:hover::before { left: 100%; }
+
         .btn-luxora:hover {
             transform: translateY(-4px);
             box-shadow: var(--shadow-gold);
-            color: #000 !important;
+            background-position: right center;
+            color: #06060A !important;
         }
 
         .btn-luxora-outline {
-            background: transparent;
+            background: rgba(255,255,255,0.04);
             border: 1.5px solid var(--gold);
             color: var(--gold) !important;
             font-weight: 600;
             font-family: 'Poppins', sans-serif;
-            padding: 11px 30px;
-            border-radius: 50px;
+            padding: 12px 30px;
+            border-radius: 999px;
             transition: var(--transition);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
+
         .btn-luxora-outline:hover {
-            background: var(--gold);
-            color: #000 !important;
+            background: rgba(212,175,55,0.12);
+            color: #fff !important;
             transform: translateY(-3px);
-            box-shadow: var(--shadow-gold);
+            box-shadow: 0 20px 45px rgba(212,175,55,0.18);
         }
 
         .btn-ghost {
             background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border-glass);
+            border: 1px solid rgba(255,255,255,0.08);
             color: var(--text-light) !important;
-            padding: 9px 22px;
-            border-radius: 50px;
+            padding: 10px 22px;
+            border-radius: 999px;
             font-weight: 500;
             transition: var(--transition);
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
+
         .btn-ghost:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.12);
             transform: translateY(-2px);
         }
 
-        /* ---------- FOOTER ---------- */
+        .glass-panel {
+            background: rgba(12, 12, 22, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 32px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+        }
+
+        .section-tag {
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 0.82rem;
+            margin-bottom: 12px;
+            display: inline-block;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 2.8vw, 3.4rem);
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.1;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            max-width: 620px;
+            line-height: 1.9;
+        }
+
         .footer-luxora {
-            background: var(--bg-dark);
-            border-top: 1px solid var(--border-glass);
-            padding: 70px 0 25px;
+            background: rgba(8, 8, 12, 0.9);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 80px 0 25px;
             position: relative;
             z-index: 1;
         }
-        .footer-luxora h5 {
-            font-size: 1rem;
-            margin-bottom: 20px;
-            color: var(--text-light);
-        }
-        .footer-luxora p, .footer-luxora a {
+
+        .footer-luxora p,
+        .footer-luxora a {
             color: var(--text-muted);
             font-size: 0.92rem;
             text-decoration: none;
             transition: var(--transition);
             line-height: 2;
         }
-        .footer-luxora a:hover { color: var(--gold); padding-left: 5px; }
+
+        .footer-separator {
+            border-color: var(--border-glass);
+            margin: 40px 0 20px;
+        }
+
+        .footer-copy {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.4);
+            margin: 0;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .text-gold {
+            color: var(--gold);
+        }
+
+        .footer-subcopy {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.35);
+            margin-top: 8px;
+        }
+
+        .footer-heart {
+            color: var(--gold);
+        }
+
+        .footer-luxora a:hover {
+            color: var(--gold);
+            padding-left: 6px;
+        }
+
         .footer-social {
-            width: 40px; height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: rgba(255,255,255,0.05);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             color: var(--text-light);
-            margin-right: 8px;
+            margin-right: 10px;
             transition: var(--transition);
         }
+
         .footer-social:hover {
             background: var(--gold);
             color: #000;
             transform: translateY(-4px);
         }
 
-        .swal-custom { border-radius: 20px !important; font-family: 'Inter', sans-serif !important; }
+        .swal-custom {
+            border-radius: 24px !important;
+            font-family: 'Inter', sans-serif !important;
+            background: rgba(12, 12, 24, 0.95) !important;
+            color: var(--text-light) !important;
+        }
 
-        /* ---------- RESPONSIVE ---------- */
         @media (max-width: 768px) {
-            .brand-logo-nav img { height: 45px; }
-            .brand-logo-footer img { max-width: 160px; }
+            .brand-logo-nav img { height: 48px; }
+            .nav-search { display: none; }
+            .nav-link-custom { padding: 10px 12px !important; }
         }
     </style>
 
@@ -457,16 +517,17 @@
                     <p><i class="bi bi-envelope me-2"></i> iliapirmarzabad@gmail.com</p>
                 </div>
             </div>
-            <hr style="border-color: var(--border-glass); margin: 40px 0 20px;">
+            <hr class="footer-separator">
         </div>
-        <div class="text-center mt-4 pt-4" style="border-top: 1px solid rgba(255,255,255,0.06);">
-            <p style="font-size: 0.82rem; color: rgba(255,255,255,0.4); margin: 0;">
+        <div class="text-center mt-4 pt-4 footer-bottom">
+            <p class="footer-copy">
                 &copy; {% now "Y" %} LUXORA. All rights reserved.
             </p>
-            <p style="font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-top: 8px;">
-                Designed & Developed with <i class="bi bi-suit-heart-fill" style="color: #D4AF37;"></i> by
-                <strong style="color: #D4AF37;">Ilia Pirmarzabad</strong>
+            <p class="footer-subcopy">
+                Designed & Developed with <i class="bi bi-suit-heart-fill footer-heart"></i> by
+                <strong class="text-gold">Ilia Pirmarzabad</strong>
             </p>
+        </div>
         </div>
     </footer>
 

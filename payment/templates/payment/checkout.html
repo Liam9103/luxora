@@ -5,30 +5,32 @@
 <style>
     .checkout-wrapper { padding: 130px 0 80px; }
     .checkout-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-glass);
-        border-radius: 26px;
-        padding: 45px;
-        max-width: 550px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 32px;
+        padding: 50px;
+        max-width: 560px;
         margin: 0 auto;
+        box-shadow: 0 34px 90px rgba(0,0,0,0.28);
+        backdrop-filter: blur(14px);
     }
-    .checkout-card h3 { text-align: center; margin-bottom: 35px; }
+    .checkout-card h3 { text-align: center; margin-bottom: 35px; font-size: 2rem; }
     .checkout-list { list-style: none; padding: 0; margin-bottom: 25px; }
     .checkout-list li {
         display: flex; justify-content: space-between;
-        padding: 14px 0;
-        border-bottom: 1px solid var(--border-glass);
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
         color: var(--text-muted);
     }
     .checkout-list li.total {
-        font-weight: 800; color: var(--gold); font-size: 1.2rem;
-        border-bottom: none; padding-top: 20px;
+        font-weight: 800; color: var(--gold); font-size: 1.25rem;
+        border-bottom: none; padding-top: 22px;
     }
     .secure-note {
         text-align: center;
         color: var(--text-muted);
         font-size: 0.82rem;
-        margin-top: 20px;
+        margin-top: 22px;
     }
 </style>
 

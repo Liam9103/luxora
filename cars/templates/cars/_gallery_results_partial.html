@@ -5,8 +5,8 @@
         {% include 'cars/_car_card.html' %}
     </div>
     {% empty %}
-    <div class="col-12 text-center" style="color: var(--text-muted); padding: 60px;">
-        <i class="bi bi-emoji-frown fs-1" style="color: var(--gold); opacity: 0.35;"></i>
+    <div class="col-12 text-center empty-result">
+        <i class="bi bi-emoji-frown fs-1"></i>
         <p class="fs-5">No vehicles found.</p>
     </div>
     {% endfor %}

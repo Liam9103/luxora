@@ -5,11 +5,12 @@
 <style>
     .profile-wrapper { padding: 130px 0 80px; }
     .profile-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-glass);
-        border-radius: 24px;
-        padding: 35px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 28px;
+        padding: 38px;
         text-align: center;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.24);
     }
     .profile-avatar {
         width: 120px; height: 120px;
@@ -27,24 +28,26 @@
         background: rgba(255,255,255,0.04);
         border: 1px solid var(--border-glass);
         color: var(--text-light);
-        padding: 11px 15px;
-        border-radius: 12px;
+        padding: 13px 16px;
+        border-radius: 14px;
     }
-    .profile-form input:focus { outline: none; border-color: var(--gold); }
+    .profile-form input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(212,175,55,0.12); }
 
-    .orders-title { font-size: 1.6rem; margin-bottom: 25px; }
+    .orders-title { font-size: 1.8rem; margin-bottom: 25px; }
     .order-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-glass);
-        border-radius: 18px;
-        padding: 22px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 22px;
+        padding: 24px;
         margin-bottom: 16px;
+        transition: var(--transition);
     }
-    .order-card .top { display: flex; justify-content: space-between; align-items: center; }
+    .order-card:hover { transform: translateY(-3px); border-color: rgba(212,175,55,0.25); }
+    .order-card .top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
     .order-card .track { font-weight: 700; font-family: 'Poppins', monospace; }
     .status-badge {
-        padding: 4px 14px; border-radius: 30px;
-        font-size: 0.75rem; font-weight: 700;
+        padding: 6px 16px; border-radius: 999px;
+        font-size: 0.78rem; font-weight: 700;
     }
     .status-paid { background: rgba(16,185,129,0.15); color: #10B981; }
     .status-pending { background: rgba(251,191,36,0.15); color: #FBBF24; }
@@ -78,10 +81,10 @@
                     <span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span>
                 </div>
                 <div class="amount">${{ order.total_price|intcomma }}</div>
-                <small style="color: var(--text-muted);">{{ order.created_at|date:"M d, Y" }}</small>
+                <small class="text-muted">{{ order.created_at|date:"M d, Y" }}</small>
             </div>
             {% empty %}
-            <p style="color: var(--text-muted);">You haven't placed any orders yet.</p>
+            <p class="text-muted">You haven't placed any orders yet.</p>
             {% endfor %}
         </div>
     </div>

@@ -3,31 +3,44 @@
 
 <style>
     .about-wrapper { padding: 130px 0 90px; }
-    .about-wrapper h1 { font-size: 2.8rem; margin-bottom: 20px; }
+    .about-wrapper h1 { font-size: 2.8rem; margin-bottom: 20px; line-height: 1.05; }
     .about-wrapper .lead-text { color: var(--text-muted); font-size: 1.1rem; line-height: 1.9; }
-    .about-stats { display: flex; gap: 50px; margin-top: 40px; }
-    .about-stats .num { font-size: 2.4rem; font-weight: 800; color: var(--gold); font-family: 'Poppins', sans-serif; }
+    .about-stats { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 40px; }
+    .about-stats .num { font-size: 2.6rem; font-weight: 800; color: var(--gold); font-family: 'Poppins', sans-serif; }
     .about-stats .label { color: var(--text-muted); }
-    .about-img { border-radius: 26px; overflow: hidden; border: 1px solid var(--border-glass); }
+    .about-img { border-radius: 28px; overflow: hidden; border: 1px solid var(--border-glass); box-shadow: 0 30px 75px rgba(0,0,0,0.24); }
 
-    .values-section { margin-top: 100px; }
+    .values-section { margin-top: 100px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
     .value-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-glass);
-        border-radius: 20px;
-        padding: 35px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 26px;
+        padding: 32px;
         text-align: center;
         height: 100%;
         transition: var(--transition);
+        position: relative;
+        overflow: hidden;
     }
-    .value-card:hover { transform: translateY(-8px); border-color: var(--gold); }
+    .value-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at top right, rgba(212,175,55,0.12), transparent 32%);
+        pointer-events: none;
+        border-radius: 26px;
+    }
+    .value-card * { position: relative; z-index: 1; }
+    .value-card:hover { transform: translateY(-6px); border-color: rgba(212,175,55,0.4); }
     .value-card i { font-size: 2.2rem; color: var(--gold); margin-bottom: 18px; }
+    .value-card h5 { margin-bottom: 14px; font-size: 1.05rem; }
+    .value-card p { color: var(--text-muted); line-height: 1.8; }
 </style>
 
 <div class="container about-wrapper">
     <div class="row align-items-center g-5">
         <div class="col-lg-6" data-aos="fade-right">
-            <span class="section-tag" style="color: var(--gold); font-weight: 600; letter-spacing: 3px; text-transform: uppercase; font-size: 0.85rem;">About Us</span>
+            <span class="section-tag">About Us</span>
             <h1>Redefining The Way You Buy Cars</h1>
             <p class="lead-text">For over a decade, LUXORA has been the trusted name in premium automobile sales. We combine cutting-edge technology with a passion for excellence to deliver an unmatched car-buying experience.</p>
             <div class="about-stats">
@@ -46,21 +59,21 @@
             <div class="value-card">
                 <i class="bi bi-patch-check"></i>
                 <h5>Verified Quality</h5>
-                <p style="color: var(--text-muted);">Every vehicle undergoes a rigorous 150-point inspection before listing.</p>
+                <p>Every vehicle undergoes a rigorous 150-point inspection before listing.</p>
             </div>
         </div>
         <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
             <div class="value-card">
                 <i class="bi bi-shield-check"></i>
                 <h5>Secure Transactions</h5>
-                <p style="color: var(--text-muted);">Bank-grade encryption ensures your payments are always safe.</p>
+                <p>Bank-grade encryption ensures your payments are always safe.</p>
             </div>
         </div>
         <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
             <div class="value-card">
                 <i class="bi bi-headset"></i>
                 <h5>24/7 Support</h5>
-                <p style="color: var(--text-muted);">Our dedicated team is always here to help with any questions.</p>
+                <p>Our dedicated team is always here to help with any questions.</p>
             </div>
         </div>
     </div>

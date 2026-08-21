@@ -5,11 +5,12 @@
 <style>
     .detail-wrapper { padding: 130px 0 80px; }
     .detail-carousel {
-        border-radius: 26px;
+        border-radius: 30px;
         overflow: hidden;
         border: 1px solid var(--border-glass);
+        box-shadow: 0 30px 80px rgba(0,0,0,0.26);
     }
-    .detail-carousel img { height: 460px; object-fit: cover; }
+    .detail-carousel img { min-height: 460px; object-fit: cover; }
     .carousel-control-prev, .carousel-control-next { width: 50px; }
     .carousel-control-prev-icon, .carousel-control-next-icon {
         background-color: rgba(0,0,0,0.5);
@@ -17,19 +18,19 @@
         padding: 18px;
     }
 
-    .detail-title { font-size: 2.4rem; margin-bottom: 8px; }
+    .detail-title { font-size: 2.6rem; margin-bottom: 10px; line-height: 1.05; }
     .detail-rating { color: var(--gold); margin-bottom: 25px; }
     .detail-rating .count { color: var(--text-muted); font-size: 0.9rem; }
 
-    .spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+    .spec-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 28px; }
     .spec-item {
-        background: var(--bg-card);
+        background: rgba(255,255,255,0.04);
         border: 1px solid var(--border-glass);
-        padding: 16px 18px;
-        border-radius: 16px;
+        padding: 18px 20px;
+        border-radius: 18px;
         transition: var(--transition);
     }
-    .spec-item:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .spec-item:hover { border-color: rgba(212,175,55,0.45); transform: translateY(-3px); }
     .spec-item i { color: var(--gold); margin-right: 8px; font-size: 1.1rem; }
     .spec-item .label { color: var(--text-muted); font-size: 0.78rem; display: block; margin-bottom: 4px; }
     .spec-item .value { font-weight: 600; }
@@ -37,54 +38,57 @@
     .detail-desc { color: var(--text-muted); line-height: 1.9; margin-bottom: 30px; }
 
     .detail-price {
-        font-size: 2.6rem;
+        font-size: 2.8rem;
         font-family: 'Poppins', sans-serif;
         font-weight: 800;
         background: linear-gradient(135deg, var(--gold-light), var(--gold));
-        -webkit-background-clip: text; background-clip: text;
+        -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 25px;
     }
 
-    /* Reviews */
-    .reviews-section { margin-top: 90px; }
-    .reviews-title { font-size: 1.8rem; margin-bottom: 30px; }
+    .review-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+
     .comment-form {
-        background: var(--bg-card);
+        background: rgba(255,255,255,0.04);
         border: 1px solid var(--border-glass);
-        border-radius: 22px;
+        border-radius: 24px;
         padding: 28px;
         margin-bottom: 30px;
     }
     .comment-form select, .comment-form textarea {
         width: 100%;
-        background: rgba(255,255,255,0.04);
+        background: rgba(255,255,255,0.05);
         border: 1px solid var(--border-glass);
         color: var(--text-light);
-        border-radius: 14px;
-        padding: 12px 16px;
+        border-radius: 16px;
+        padding: 14px 16px;
     }
     .comment-form select:focus, .comment-form textarea:focus {
-        outline: none; border-color: var(--gold);
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 4px rgba(212,175,55,0.12);
     }
-    .comment-form option { background: var(--bg-card); }
+    .comment-form option { background: rgba(18,18,28,0.98); }
 
     .review-card {
-        background: var(--bg-card);
+        background: rgba(255,255,255,0.03);
         border: 1px solid var(--border-glass);
-        border-radius: 18px;
-        padding: 22px;
+        border-radius: 22px;
+        padding: 24px;
         margin-bottom: 16px;
     }
-    .review-card .rev-header { display: flex; justify-content: space-between; align-items: center; }
+    .review-card .rev-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
     .review-card .username { font-weight: 700; }
     .review-card .stars { color: var(--gold); }
-    .review-card p { color: var(--text-muted); margin: 10px 0 6px; }
-    .review-card small { color: #666; }
+    .review-card p { color: var(--text-muted); margin: 14px 0 6px; }
+    .review-card small { color: #8b8b9a; }
 
     @media (max-width: 768px) {
-        .detail-title { font-size: 1.8rem; }
-        .detail-price { font-size: 2rem; }
+        .detail-title { font-size: 1.9rem; }
+        .detail-price { font-size: 2.3rem; }
+        .spec-grid { grid-template-columns: 1fr; }
     }
 </style>
 
@@ -145,7 +149,7 @@
                 <a href="{% url 'accounts:login' %}" class="btn-luxora">Login to Purchase</a>
                 {% endif %}
             {% else %}
-                <button class="btn-ghost" disabled style="opacity: 0.5;">This vehicle is sold out</button>
+                <button class="btn-ghost btn-disabled" disabled>This vehicle is sold out</button>
             {% endif %}
         </div>
     </div>
@@ -158,7 +162,7 @@
             <form method="post" class="comment-form">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label class="mb-2" style="color: var(--text-muted); font-size: 0.85rem;">Your Rating</label>
+                    <label class="mb-2 muted-label">Your Rating</label>
                     {{ form.rating }}
                 </div>
                 <div class="mb-3">
@@ -167,7 +171,7 @@
                 <button class="btn-luxora">Submit Review</button>
             </form>
             {% else %}
-            <p style="color: var(--text-muted);">Please <a href="{% url 'accounts:login' %}" style="color: var(--gold);">log in</a> to leave a review.</p>
+            <p class="text-muted">Please <a href="{% url 'accounts:login' %}" class="link-gold">log in</a> to leave a review.</p>
             {% endif %}
 
             {% for review in reviews %}

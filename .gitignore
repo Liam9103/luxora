@@ -1,29 +1,18 @@
 # Virtual Environment
-django3/
+Lib/
+Include/
+Scripts/
 venv/
-env/
+.venv/
 
-# Python
+# Python cache & bytecode
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
 
-# Django
-*.log
-db.sqlite3
-db.sqlite3-journal
-staticfiles/
-
-# Environment
+# Environment variables & SQLite
 .env
+db.sqlite3
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
+# Static files generated locally
+staticfiles/

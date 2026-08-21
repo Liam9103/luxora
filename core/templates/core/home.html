@@ -8,35 +8,38 @@
         align-items: center;
         position: relative;
         background:
-            linear-gradient(180deg, rgba(6,6,10,0.4) 0%, rgba(6,6,10,0.85) 100%),
+            linear-gradient(180deg, rgba(8, 8, 12, 0.92), rgba(8, 8, 12, 0.82)),
             url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000') center/cover no-repeat;
         overflow: hidden;
     }
-    .hero-luxora::after {
+    .hero-luxora::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(90deg, rgba(6,6,10,0.9) 0%, transparent 60%);
+        background: radial-gradient(circle at 25% 20%, rgba(124,92,255,0.18), transparent 25%),
+                    radial-gradient(circle at 80% 10%, rgba(212,175,55,0.16), transparent 22%);
+        pointer-events: none;
     }
     .hero-content { position: relative; z-index: 2; }
     .hero-badge {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        background: rgba(212, 175, 55, 0.1);
-        border: 1px solid rgba(212, 175, 55, 0.3);
+        gap: 10px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
         color: var(--gold);
-        padding: 8px 20px;
-        border-radius: 50px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        margin-bottom: 25px;
+        padding: 12px 24px;
+        border-radius: 999px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        backdrop-filter: blur(12px);
     }
     .hero-title {
-        font-size: 4.2rem;
-        font-weight: 800;
-        line-height: 1.15;
-        margin-bottom: 25px;
+        font-size: clamp(3rem, 5vw, 4.4rem);
+        font-weight: 900;
+        line-height: 1.05;
+        margin-bottom: 24px;
     }
     .hero-title .highlight {
         background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
@@ -47,25 +50,27 @@
     .hero-sub {
         font-size: 1.15rem;
         color: var(--text-muted);
-        max-width: 500px;
-        margin-bottom: 40px;
-        line-height: 1.8;
+        max-width: 600px;
+        margin-bottom: 42px;
+        line-height: 1.85;
     }
     .hero-stats {
         display: flex;
-        gap: 45px;
-        margin-top: 60px;
+        flex-wrap: wrap;
+        gap: 32px;
+        margin-top: 55px;
     }
     .hero-stats .stat-num {
-        font-size: 2.2rem;
+        font-size: 2.4rem;
         font-weight: 800;
         color: var(--gold);
         font-family: 'Poppins', sans-serif;
     }
-    .hero-stats .stat-label { color: var(--text-muted); font-size: 0.9rem; }
+    .hero-stats .stat-label { color: var(--text-muted); font-size: 0.95rem; }
     .scroll-indicator {
         position: absolute;
-        bottom: 40px; left: 50%;
+        bottom: 44px;
+        left: 50%;
         transform: translateX(-50%);
         color: var(--text-muted);
         z-index: 2;
@@ -73,75 +78,62 @@
     }
     @keyframes bounce {
         0%, 100% { transform: translate(-50%, 0); }
-        50% { transform: translate(-50%, 10px); }
+        50% { transform: translate(-50%, 12px); }
     }
 
-    /* Section titles */
-    .section-tag {
-        color: var(--gold);
-        font-weight: 600;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        margin-bottom: 12px;
-        display: block;
-    }
-    .section-title {
-        font-size: 2.6rem;
-        font-weight: 800;
-        margin-bottom: 15px;
-    }
-    .section-desc { color: var(--text-muted); max-width: 550px; }
-
-    /* Brands strip */
     .brands-section {
         padding: 60px 0;
-        border-top: 1px solid var(--border-glass);
-        border-bottom: 1px solid var(--border-glass);
+        border-top: 1px solid rgba(255,255,255,0.08);
+        border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .brand-pill {
-        background: var(--bg-card);
-        border: 1px solid var(--border-glass);
-        padding: 18px 35px;
-        border-radius: 16px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 18px 34px;
+        border-radius: 22px;
         transition: var(--transition);
         display: flex;
         align-items: center;
         justify-content: center;
-        min-width: 150px;
+        min-width: 160px;
+        backdrop-filter: blur(14px);
     }
     .brand-pill:hover {
-        border-color: var(--gold);
+        border-color: rgba(212,175,55,0.4);
         transform: translateY(-6px);
-        box-shadow: var(--shadow-gold);
+        box-shadow: 0 22px 60px rgba(212,175,55,0.14);
     }
-    .brand-pill img { max-height: 40px; filter: grayscale(1) brightness(2); transition: var(--transition); }
+    .brand-pill img { max-height: 42px; filter: grayscale(1) brightness(1.45); transition: var(--transition); }
     .brand-pill:hover img { filter: none; }
     .brand-pill span { color: var(--text-light); font-weight: 700; font-family: 'Poppins', sans-serif; }
 
     .cars-section { padding: 110px 0; }
+    .cars-section.alternate { background: rgba(255,255,255,0.02); }
 
     .cta-banner {
-        background: linear-gradient(135deg, #1B1B29, #14141F);
-        border: 1px solid var(--border-glass);
-        border-radius: 32px;
+        background: linear-gradient(135deg, rgba(18,18,30,0.98), rgba(14,14,22,0.96));
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 34px;
         padding: 70px;
         position: relative;
         overflow: hidden;
-        text-align: center;
+        box-shadow: 0 32px 90px rgba(0,0,0,0.32);
+        text-align: left;
     }
     .cta-banner::before {
         content: '';
         position: absolute;
-        top: -50%; right: -10%;
-        width: 400px; height: 400px;
-        background: radial-gradient(circle, rgba(212,175,55,0.15), transparent 70%);
+        top: -45%;
+        right: -10%;
+        width: 420px;
+        height: 420px;
+        background: radial-gradient(circle, rgba(212,175,55,0.18), transparent 70%);
         border-radius: 50%;
     }
 
     @media (max-width: 768px) {
-        .hero-title { font-size: 2.5rem; }
-        .hero-stats { flex-wrap: wrap; gap: 25px; }
+        .hero-title { font-size: 2.8rem; }
+        .hero-stats { gap: 20px; }
     }
 </style>
 
@@ -203,14 +195,14 @@
                 {% include 'cars/_car_card.html' %}
             </div>
             {% empty %}
-            <p class="text-center" style="color: var(--text-muted);">No featured vehicles at the moment.</p>
+            <p class="text-center text-muted">No featured vehicles at the moment.</p>
             {% endfor %}
         </div>
     </div>
 </section>
 
 <!-- LATEST CARS -->
-<section class="cars-section" style="background: var(--bg-dark); border-top: 1px solid var(--border-glass); border-bottom: 1px solid var(--border-glass);">
+<section class="cars-section dark">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
             <span class="section-tag">Fresh Arrivals</span>
@@ -231,11 +223,11 @@
 </section>
 
 <!-- CONSULTATION + FINANCE -->
-<section class="cars-section" style="background: var(--bg-dark); border-top: 1px solid var(--border-glass);">
+<section class="cars-section dark">
     <div class="container">
         <div class="row g-4 align-items-stretch">
             <div class="col-lg-7" data-aos="fade-right">
-                <div class="cta-banner text-start" style="padding: 40px;">
+                <div class="cta-banner text-start compact">
                     <span class="section-tag">Personalized Assistance</span>
                     <h2 class="section-title">Need help finding the right car?</h2>
                     <p class="section-desc mb-4">Tell us what you want and our team will help you pick the ideal vehicle, financing option, and delivery plan.</p>
@@ -263,9 +255,9 @@
                 </div>
             </div>
             <div class="col-lg-5" data-aos="fade-left">
-                <div class="cta-banner text-start" style="padding: 40px;">
+                <div class="cta-banner text-start compact">
                     <span class="section-tag">Finance Calculator</span>
-                    <h3 class="section-title" style="font-size: 1.7rem;">Estimate your monthly payment</h3>
+                    <h3 class="section-title section-title-sm">Estimate your monthly payment</h3>
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label text-muted">Vehicle Price</label>
@@ -284,9 +276,9 @@
                             <input type="number" id="rateInput" class="form-control" value="6" min="0" step="0.1">
                         </div>
                         <div class="col-12">
-                            <div class="p-3 rounded-3" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass);">
-                                <div class="text-muted small">Estimated monthly payment</div>
-                                <div id="paymentResult" class="fs-2 fw-bold" style="color: var(--gold);">$0</div>
+                            <div class="panel-box">
+                                <span class="panel-label">Estimated monthly payment</span>
+                                <div id="paymentResult" class="fs-2 fw-bold result-price">$0</div>
                             </div>
                         </div>
                     </div>
@@ -301,10 +293,10 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-6" data-aos="fade-up">
-                <div class="cta-banner text-start" style="padding: 40px;">
+                <div class="cta-banner text-start compact">
                     <span class="section-tag">Why buyers trust LUXORA</span>
-                    <h3 class="section-title" style="font-size: 1.7rem;">Premium service, transparent process, fast delivery</h3>
-                    <ul style="color: var(--text-muted); line-height: 2;">
+                    <h3 class="section-title section-title-sm">Premium service, transparent process, fast delivery</h3>
+                    <ul class="text-muted faq-list">
                         <li>Verified vehicles with full history support</li>
                         <li>Flexible financing and consultation support</li>
                         <li>Fast delivery and concierge-level guidance</li>
@@ -313,27 +305,27 @@
                 </div>
             </div>
             <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                <div class="cta-banner text-start" style="padding: 40px;">
+                <div class="cta-banner text-start compact">
                     <span class="section-tag">Frequently Asked Questions</span>
-                    <div class="accordion" id="faqAccordion">
-                        <div class="accordion-item" style="background: transparent; border-color: var(--border-glass);">
+                    <div class="accordion faq-accordion" id="faqAccordion">
+                        <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" style="background: transparent; color: var(--text-light);">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
                                     Can I reserve a car before purchase?
                                 </button>
                             </h2>
                             <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body" style="color: var(--text-muted);">Yes. You can save a vehicle to your wishlist and contact our team for reservation details.</div>
+                                <div class="accordion-body">Yes. You can save a vehicle to your wishlist and contact our team for reservation details.</div>
                             </div>
                         </div>
-                        <div class="accordion-item" style="background: transparent; border-color: var(--border-glass);">
+                        <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" style="background: transparent; color: var(--text-light);">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
                                     Do you offer financing help?
                                 </button>
                             </h2>
                             <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body" style="color: var(--text-muted);">Yes. Our advisors can guide you through rates, down payments, and monthly payment planning.</div>
+                                <div class="accordion-body text-muted">Yes. Our advisors can guide you through rates, down payments, and monthly payment planning.</div>
                             </div>
                         </div>
                     </div>

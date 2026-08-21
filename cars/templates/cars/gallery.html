@@ -5,25 +5,36 @@
     .gallery-hero {
         padding: 140px 0 60px;
         text-align: center;
-        background: linear-gradient(180deg, rgba(124,92,255,0.08), transparent);
+        position: relative;
+        overflow: hidden;
     }
-    .gallery-hero h1 { font-size: 2.8rem; margin-bottom: 12px; }
-    .gallery-hero p { color: var(--text-muted); }
+    .gallery-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 50% 20%, rgba(124,92,255,0.12), transparent 34%),
+                    radial-gradient(circle at 20% 85%, rgba(212,175,55,0.08), transparent 28%);
+        pointer-events: none;
+    }
+    .gallery-hero h1 { font-size: clamp(2.8rem, 4vw, 3.4rem); margin-bottom: 12px; line-height: 1.05; }
+    .gallery-hero p { color: var(--text-muted); max-width: 720px; margin: 0 auto; line-height: 1.9; }
 
     .filter-panel {
-        background: var(--bg-card);
+        background: rgba(12,12,22,0.95);
         border: 1px solid var(--border-glass);
-        border-radius: 24px;
-        padding: 30px;
+        border-radius: 28px;
+        padding: 32px;
         position: sticky;
         top: 100px;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.24);
     }
     .filter-panel h5 {
         font-size: 1.1rem;
         margin-bottom: 22px;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
+        color: var(--text-light);
     }
     .filter-panel h5 i { color: var(--gold); }
     .filter-group { margin-bottom: 18px; }
@@ -39,16 +50,16 @@
         background: rgba(255,255,255,0.04) !important;
         border: 1px solid var(--border-glass) !important;
         color: var(--text-light) !important;
-        border-radius: 12px !important;
-        padding: 10px 14px !important;
-        font-size: 0.9rem;
+        border-radius: 14px !important;
+        padding: 12px 14px !important;
+        font-size: 0.95rem;
     }
     .filter-panel select:focus, .filter-panel input:focus {
         outline: none;
         border-color: var(--gold) !important;
         box-shadow: 0 0 0 3px rgba(212,175,55,0.15) !important;
     }
-    .filter-panel option { background: var(--bg-card); }
+    .filter-panel option { background: rgba(18,18,28,0.98); }
 
     .empty-state {
         text-align: center;
@@ -59,7 +70,7 @@
 
     .pagination { --bs-pagination-bg: transparent; }
     .page-link {
-        background: var(--bg-card) !important;
+        background: rgba(255,255,255,0.04) !important;
         border: 1px solid var(--border-glass) !important;
         color: var(--text-light) !important;
         margin: 0 4px;
@@ -70,11 +81,20 @@
         border-color: var(--gold) !important;
         color: #000 !important;
     }
+    .gold-text { color: var(--gold); }
+    .empty-result {
+        color: var(--text-muted);
+        padding: 60px;
+    }
+    .empty-result .bi {
+        color: var(--gold);
+        opacity: 0.35;
+    }
 </style>
 
 <section class="gallery-hero">
     <div class="container" data-aos="fade-up">
-        <h1>Explore Our <span style="color: var(--gold);">Collection</span></h1>
+        <h1>Explore Our <span class="gold-text">Collection</span></h1>
         <p>Find the perfect car that matches your style, budget, and needs.</p>
     </div>
 </section>
