@@ -7,6 +7,8 @@ from django.contrib.sitemaps.views import sitemap
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 from cars.models import Car
+from django.views.static import serve
+from django.urls import re_path
 
 
 class StaticViewSitemap(Sitemap):
@@ -53,3 +55,7 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+]
