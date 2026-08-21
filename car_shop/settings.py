@@ -17,11 +17,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [
-    '.pythonanywhere.com',
-    '127.0.0.1',
-    'localhost',
-]
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1', '*']
 
 
 # Application definition
@@ -135,7 +131,7 @@ LOGOUT_REDIRECT_URL = 'core:home'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.pythonanywhere.com',
+    'https://*.onrender.com',
 ]
 
 # django.contrib.sites requires a SITE_ID. Default to env var or 1 for local development.
