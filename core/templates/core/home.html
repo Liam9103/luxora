@@ -2,150 +2,446 @@
 {% block content %}
 
 <style>
+    /* ============ GLOBAL ANIMATIONS ============ */
+    @keyframes floatUp {
+        from { opacity: 0; transform: translateY(60px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+    }
+    @keyframes glowPulse {
+        0%, 100% { box-shadow: 0 0 20px rgba(212,175,55,0.3); }
+        50% { box-shadow: 0 0 40px rgba(212,175,55,0.6); }
+    }
+    @keyframes rotate360 {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    @keyframes fadeInScale {
+        from { opacity: 0; transform: scale(0.85); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    /* ============ HERO SECTION ============ */
     .hero-luxora {
         min-height: 100vh;
         display: flex;
         align-items: center;
         position: relative;
-        background:
-            linear-gradient(180deg, rgba(8, 8, 12, 0.92), rgba(8, 8, 12, 0.82)),
-            url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000') center/cover no-repeat;
         overflow: hidden;
+        background: #0a0a10;
+    }
+    .hero-bg-layer {
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(180deg, rgba(8,8,12,0.85), rgba(8,8,12,0.92)),
+            url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000') center/cover no-repeat;
+        will-change: transform;
+        transform: translateZ(0);
     }
     .hero-luxora::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at 25% 20%, rgba(124,92,255,0.18), transparent 25%),
-                    radial-gradient(circle at 80% 10%, rgba(212,175,55,0.16), transparent 22%);
+        background:
+            radial-gradient(circle at 20% 30%, rgba(124,92,255,0.22), transparent 40%),
+            radial-gradient(circle at 80% 20%, rgba(212,175,55,0.20), transparent 35%),
+            radial-gradient(circle at 50% 90%, rgba(212,175,55,0.15), transparent 40%);
         pointer-events: none;
+        z-index: 1;
+        animation: bgShift 15s ease-in-out infinite alternate;
     }
-    .hero-content { position: relative; z-index: 2; }
+    @keyframes bgShift {
+        0% { transform: scale(1) rotate(0deg); opacity: 0.9; }
+        100% { transform: scale(1.1) rotate(2deg); opacity: 1; }
+    }
+
+    .floating-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.4;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .orb-1 { width: 300px; height: 300px; background: var(--gold); top: 20%; left: 10%; animation: float 8s ease-in-out infinite; }
+    .orb-2 { width: 200px; height: 200px; background: #7c5cff; bottom: 15%; right: 15%; animation: float 10s ease-in-out infinite reverse; }
+    @keyframes float {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(30px, -40px); }
+    }
+
+    .hero-content { position: relative; z-index: 3; }
     .hero-badge {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.12);
+        gap: 12px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(212,175,55,0.3);
         color: var(--gold);
-        padding: 12px 24px;
+        padding: 12px 26px;
         border-radius: 999px;
         font-size: 0.88rem;
         font-weight: 700;
         margin-bottom: 30px;
-        backdrop-filter: blur(12px);
+        backdrop-filter: blur(20px);
+        animation: floatUp 0.8s ease-out, glowPulse 3s ease-in-out infinite 1s;
     }
+    .hero-badge i { animation: rotate360 4s linear infinite; }
+
     .hero-title {
-        font-size: clamp(3rem, 5vw, 4.4rem);
+        font-size: clamp(2.8rem, 5.5vw, 4.8rem);
         font-weight: 900;
         line-height: 1.05;
         margin-bottom: 24px;
+        animation: floatUp 1s ease-out 0.2s backwards;
     }
     .hero-title .highlight {
-        background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+        background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark), var(--gold));
+        background-size: 200% auto;
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
+        animation: shimmer 3s linear infinite;
+        display: inline-block;
     }
     .hero-sub {
         font-size: 1.15rem;
         color: var(--text-muted);
-        max-width: 600px;
+        max-width: 620px;
         margin-bottom: 42px;
-        line-height: 1.85;
+        line-height: 1.9;
+        animation: floatUp 1s ease-out 0.4s backwards;
     }
+    .hero-cta-group {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        animation: floatUp 1s ease-out 0.6s backwards;
+    }
+
     .hero-stats {
         display: flex;
         flex-wrap: wrap;
-        gap: 32px;
-        margin-top: 55px;
+        gap: 40px;
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        animation: floatUp 1s ease-out 0.8s backwards;
     }
+    .hero-stats .stat-item { position: relative; }
     .hero-stats .stat-num {
-        font-size: 2.4rem;
+        font-size: 2.6rem;
         font-weight: 800;
         color: var(--gold);
         font-family: 'Poppins', sans-serif;
+        line-height: 1;
+        display: block;
     }
-    .hero-stats .stat-label { color: var(--text-muted); font-size: 0.95rem; }
+    .hero-stats .stat-label {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-top: 6px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
     .scroll-indicator {
         position: absolute;
-        bottom: 44px;
+        bottom: 40px;
         left: 50%;
         transform: translateX(-50%);
         color: var(--text-muted);
-        z-index: 2;
-        animation: bounce 2s infinite;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
     }
-    @keyframes bounce {
-        0%, 100% { transform: translate(-50%, 0); }
-        50% { transform: translate(-50%, 12px); }
+    .scroll-indicator .mouse {
+        width: 26px;
+        height: 42px;
+        border: 2px solid var(--gold);
+        border-radius: 20px;
+        position: relative;
+    }
+    .scroll-indicator .mouse::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 8px;
+        background: var(--gold);
+        border-radius: 2px;
+        animation: scrollDot 2s ease-in-out infinite;
+    }
+    @keyframes scrollDot {
+        0% { opacity: 1; transform: translate(-50%, 0); }
+        100% { opacity: 0; transform: translate(-50%, 14px); }
     }
 
+    /* ============ SECTION FRAMEWORK ============ */
+    .lux-section {
+        padding: 130px 0;
+        position: relative;
+    }
+    .lux-section.compact { padding: 90px 0; }
+    .lux-section.alt-bg {
+        background: linear-gradient(180deg, transparent, rgba(255,255,255,0.02), transparent);
+    }
+    .section-header {
+        text-align: center;
+        max-width: 720px;
+        margin: 0 auto 70px;
+    }
+    .section-divider {
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        margin: 20px auto 0;
+        border-radius: 2px;
+    }
+
+    /* ============ BRANDS ============ */
     .brands-section {
-        padding: 60px 0;
-        border-top: 1px solid rgba(255,255,255,0.08);
-        border-bottom: 1px solid rgba(255,255,255,0.08);
+        padding: 70px 0;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        position: relative;
+        overflow: hidden;
+    }
+    .brands-track {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
     }
     .brand-pill {
         background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.1);
-        padding: 18px 34px;
-        border-radius: 22px;
-        transition: var(--transition);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 20px 36px;
+        border-radius: 24px;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         align-items: center;
         justify-content: center;
-        min-width: 160px;
+        min-width: 170px;
         backdrop-filter: blur(14px);
-    }
-    .brand-pill:hover {
-        border-color: rgba(212,175,55,0.4);
-        transform: translateY(-6px);
-        box-shadow: 0 22px 60px rgba(212,175,55,0.14);
-    }
-    .brand-pill img { max-height: 42px; filter: grayscale(1) brightness(1.45); transition: var(--transition); }
-    .brand-pill:hover img { filter: none; }
-    .brand-pill span { color: var(--text-light); font-weight: 700; font-family: 'Poppins', sans-serif; }
-
-    .cars-section { padding: 110px 0; }
-    .cars-section.alternate { background: rgba(255,255,255,0.02); }
-
-    .cta-banner {
-        background: linear-gradient(135deg, rgba(18,18,30,0.98), rgba(14,14,22,0.96));
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 34px;
-        padding: 70px;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 32px 90px rgba(0,0,0,0.32);
-        text-align: left;
     }
-    .cta-banner::before {
+    .brand-pill::before {
         content: '';
         position: absolute;
-        top: -45%;
-        right: -10%;
-        width: 420px;
-        height: 420px;
-        background: radial-gradient(circle, rgba(212,175,55,0.18), transparent 70%);
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(212,175,55,0.15), transparent);
+        transition: left 0.6s ease;
+    }
+    .brand-pill:hover::before { left: 100%; }
+    .brand-pill:hover {
+        border-color: rgba(212,175,55,0.5);
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 25px 60px rgba(212,175,55,0.2);
+    }
+    .brand-pill img {
+        max-height: 44px;
+        filter: grayscale(1) brightness(1.5);
+        transition: all 0.5s ease;
+    }
+    .brand-pill:hover img { filter: none; transform: scale(1.1); }
+    .brand-pill span { color: var(--text-light); font-weight: 700; font-family: 'Poppins', sans-serif; }
+
+    /* ============ ELEGANT PANELS ============ */
+    .lux-panel {
+        background: linear-gradient(145deg, rgba(20,20,32,0.95), rgba(14,14,22,0.92));
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 32px;
+        padding: 50px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        transition: all 0.5s ease;
+        height: 100%;
+    }
+    .lux-panel::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 500px; height: 500px;
+        background: radial-gradient(circle, rgba(212,175,55,0.15), transparent 70%);
         border-radius: 50%;
+        animation: bgShift 20s ease-in-out infinite alternate;
+    }
+    .lux-panel::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 32px;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(212,175,55,0.4), transparent 40%, transparent 60%, rgba(212,175,55,0.2));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    .lux-panel:hover::after { opacity: 1; }
+    .lux-panel > * { position: relative; z-index: 1; }
+
+    .cta-mega {
+        text-align: center;
+        padding: 90px 60px;
+        background: linear-gradient(135deg, rgba(20,20,32,0.98), rgba(14,14,22,0.96));
+        border-radius: 40px;
+        border: 1px solid rgba(212,175,55,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    .cta-mega::before {
+        content: '';
+        position: absolute;
+        top: -50%; left: -10%;
+        width: 600px; height: 600px;
+        background: radial-gradient(circle, rgba(212,175,55,0.2), transparent 70%);
+        border-radius: 50%;
+        animation: bgShift 12s ease-in-out infinite alternate;
+    }
+    .cta-mega::after {
+        content: '';
+        position: absolute;
+        bottom: -30%; right: -10%;
+        width: 400px; height: 400px;
+        background: radial-gradient(circle, rgba(124,92,255,0.15), transparent 70%);
+        border-radius: 50%;
+        animation: bgShift 15s ease-in-out infinite alternate-reverse;
+    }
+    .cta-mega > * { position: relative; z-index: 1; }
+
+    /* ============ FORM STYLING ============ */
+    .lux-form-control {
+        background: rgba(255,255,255,0.04) !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+        color: var(--text-light) !important;
+        padding: 14px 18px !important;
+        border-radius: 14px !important;
+        transition: all 0.3s ease !important;
+    }
+    .lux-form-control:focus {
+        border-color: var(--gold) !important;
+        box-shadow: 0 0 0 4px rgba(212,175,55,0.12) !important;
+        background: rgba(255,255,255,0.06) !important;
+    }
+    .lux-form-control::placeholder { color: rgba(255,255,255,0.4); }
+
+    .result-box {
+        background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.03));
+        border: 1px solid rgba(212,175,55,0.3);
+        border-radius: 18px;
+        padding: 24px;
+        text-align: center;
+        margin-top: 10px;
+    }
+    .result-box .panel-label {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        display: block;
+        margin-bottom: 8px;
+    }
+    .result-price {
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* ============ FAQ ============ */
+    .faq-accordion .accordion-item {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08) !important;
+        border-radius: 16px !important;
+        margin-bottom: 12px;
+        overflow: hidden;
+    }
+    .faq-accordion .accordion-button {
+        background: transparent !important;
+        color: var(--text-light) !important;
+        font-weight: 600;
+        padding: 20px 24px;
+        box-shadow: none !important;
+    }
+    .faq-accordion .accordion-button:not(.collapsed) {
+        background: rgba(212,175,55,0.08) !important;
+        color: var(--gold) !important;
+    }
+    .faq-accordion .accordion-body {
+        color: var(--text-muted);
+        padding: 0 24px 20px;
+    }
+    .faq-list { list-style: none; padding: 0; }
+    .faq-list li {
+        padding: 14px 0 14px 32px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        position: relative;
+    }
+    .faq-list li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        top: 14px;
+        color: var(--gold);
+        font-weight: bold;
+        background: rgba(212,175,55,0.15);
+        width: 22px; height: 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+    }
+
+    /* ============ CARD REVEAL ANIMATION ============ */
+    .reveal-card {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal-card.visible {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     @media (max-width: 768px) {
-        .hero-title { font-size: 2.8rem; }
-        .hero-stats { gap: 20px; }
+        .hero-title { font-size: 2.6rem; }
+        .hero-stats { gap: 24px; }
+        .lux-panel, .cta-mega { padding: 35px 25px; }
+        .lux-section { padding: 80px 0; }
     }
 </style>
 
-<!-- HERO -->
+<!-- ============ HERO ============ -->
 <section class="hero-luxora">
+    <div class="hero-bg-layer" id="heroBg"></div>
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+
     <div class="container hero-content">
         <div class="row">
-            <div class="col-lg-7" data-aos="fade-up">
+            <div class="col-lg-8">
                 <span class="hero-badge"><i class="bi bi-patch-check-fill"></i> Certified Premium Dealership</span>
-                <h1 class="hero-title">Discover Your <span class="highlight">Dream Machine</span> Today</h1>
+                <h1 class="hero-title">Discover Your <span class="highlight">Dream Machine</span><br>Today</h1>
                 <p class="hero-sub">Explore an exclusive curated collection of the world's finest automobiles. Uncompromising quality, verified authenticity, and a seamless buying experience.</p>
-                <div class="d-flex gap-3 flex-wrap">
+                <div class="hero-cta-group">
                     <a href="{% url 'cars:gallery' %}" class="btn-luxora">
                         Explore Gallery <i class="bi bi-arrow-right"></i>
                     </a>
@@ -154,20 +450,32 @@
                     </a>
                 </div>
                 <div class="hero-stats">
-                    <div><div class="stat-num">500+</div><div class="stat-label">Cars Sold</div></div>
-                    <div><div class="stat-num">1200+</div><div class="stat-label">Happy Clients</div></div>
-                    <div><div class="stat-num">15+</div><div class="stat-label">Top Brands</div></div>
+                    <div class="stat-item">
+                        <span class="stat-num" data-count="500">0</span><span style="color:var(--gold);font-size:2rem;">+</span>
+                        <div class="stat-label">Cars Sold</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num" data-count="1200">0</span><span style="color:var(--gold);font-size:2rem;">+</span>
+                        <div class="stat-label">Happy Clients</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num" data-count="15">0</span><span style="color:var(--gold);font-size:2rem;">+</span>
+                        <div class="stat-label">Top Brands</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="scroll-indicator"><i class="bi bi-mouse fs-3"></i></div>
+    <div class="scroll-indicator">
+        <div class="mouse"></div>
+        <span>Scroll</span>
+    </div>
 </section>
 
-<!-- BRANDS -->
+<!-- ============ BRANDS ============ -->
 <section class="brands-section">
     <div class="container">
-        <div class="d-flex flex-wrap justify-content-center gap-4">
+        <div class="brands-track">
             {% for brand in brands %}
                 <div class="brand-pill" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:1 }}00">
                     {% if brand.logo %}
@@ -181,13 +489,14 @@
     </div>
 </section>
 
-<!-- FEATURED CARS -->
-<section class="cars-section">
+<!-- ============ FEATURED CARS ============ -->
+<section class="lux-section">
     <div class="container">
-        <div class="text-center mb-5" data-aos="fade-up">
+        <div class="section-header" data-aos="fade-up">
             <span class="section-tag">Handpicked Selection</span>
             <h2 class="section-title">Featured Vehicles</h2>
-            <p class="section-desc mx-auto">Our top-rated and most desired vehicles, chosen for exceptional quality and performance.</p>
+            <p class="section-desc">Our top-rated and most desired vehicles, chosen for exceptional quality and performance.</p>
+            <div class="section-divider"></div>
         </div>
         <div class="row g-4">
             {% for car in featured_cars %}
@@ -201,13 +510,14 @@
     </div>
 </section>
 
-<!-- LATEST CARS -->
-<section class="cars-section dark">
+<!-- ============ LATEST CARS ============ -->
+<section class="lux-section alt-bg">
     <div class="container">
-        <div class="text-center mb-5" data-aos="fade-up">
+        <div class="section-header" data-aos="fade-up">
             <span class="section-tag">Fresh Arrivals</span>
             <h2 class="section-title">Latest Additions</h2>
-            <p class="section-desc mx-auto">Just added to our collection — be the first to grab these exclusive rides.</p>
+            <p class="section-desc">Just added to our collection — be the first to grab these exclusive rides.</p>
+            <div class="section-divider"></div>
         </div>
         <div class="row g-4">
             {% for car in latest_cars %}
@@ -222,61 +532,61 @@
     </div>
 </section>
 
-<!-- CONSULTATION + FINANCE -->
-<section class="cars-section dark">
+<!-- ============ CONSULTATION + FINANCE ============ -->
+<section class="lux-section">
     <div class="container">
         <div class="row g-4 align-items-stretch">
-            <div class="col-lg-7" data-aos="fade-right">
-                <div class="cta-banner text-start compact">
+            <div class="col-lg-7" data-aos="fade-right" data-aos-duration="1000">
+                <div class="lux-panel">
                     <span class="section-tag">Personalized Assistance</span>
-                    <h2 class="section-title">Need help finding the right car?</h2>
+                    <h2 class="section-title mb-3">Need help finding the right car?</h2>
                     <p class="section-desc mb-4">Tell us what you want and our team will help you pick the ideal vehicle, financing option, and delivery plan.</p>
                     <form method="post" action="{% url 'core:consultation_request' %}" class="row g-3">
                         {% csrf_token %}
                         <div class="col-md-6">
-                            <input type="text" name="full_name" class="form-control" placeholder="Your full name" required>
+                            <input type="text" name="full_name" class="form-control lux-form-control" placeholder="Your full name" required>
                         </div>
                         <div class="col-md-6">
-                            <input type="email" name="email" class="form-control" placeholder="Your email" required>
+                            <input type="email" name="email" class="form-control lux-form-control" placeholder="Your email" required>
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="phone" class="form-control" placeholder="Your phone" required>
+                            <input type="text" name="phone" class="form-control lux-form-control" placeholder="Your phone" required>
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="preferred_car" class="form-control" placeholder="Preferred vehicle">
+                            <input type="text" name="preferred_car" class="form-control lux-form-control" placeholder="Preferred vehicle">
                         </div>
                         <div class="col-12">
-                            <textarea name="message" class="form-control" rows="3" placeholder="Tell us about your goals or budget"></textarea>
+                            <textarea name="message" class="form-control lux-form-control" rows="3" placeholder="Tell us about your goals or budget"></textarea>
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn-luxora">Request Consultation</button>
+                            <button type="submit" class="btn-luxora">Request Consultation <i class="bi bi-send"></i></button>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="col-lg-5" data-aos="fade-left">
-                <div class="cta-banner text-start compact">
+            <div class="col-lg-5" data-aos="fade-left" data-aos-duration="1000">
+                <div class="lux-panel">
                     <span class="section-tag">Finance Calculator</span>
-                    <h3 class="section-title section-title-sm">Estimate your monthly payment</h3>
+                    <h3 class="section-title section-title-sm mb-4">Estimate your monthly payment</h3>
                     <div class="row g-3">
                         <div class="col-12">
-                            <label class="form-label text-muted">Vehicle Price</label>
-                            <input type="number" id="priceInput" class="form-control" value="80000" min="1000">
+                            <label class="form-label text-muted small">Vehicle Price</label>
+                            <input type="number" id="priceInput" class="form-control lux-form-control" value="80000" min="1000">
                         </div>
                         <div class="col-6">
-                            <label class="form-label text-muted">Down Payment</label>
-                            <input type="number" id="downInput" class="form-control" value="20000" min="0">
+                            <label class="form-label text-muted small">Down Payment</label>
+                            <input type="number" id="downInput" class="form-control lux-form-control" value="20000" min="0">
                         </div>
                         <div class="col-6">
-                            <label class="form-label text-muted">Years</label>
-                            <input type="number" id="yearsInput" class="form-control" value="5" min="1" max="10">
+                            <label class="form-label text-muted small">Years</label>
+                            <input type="number" id="yearsInput" class="form-control lux-form-control" value="5" min="1" max="10">
                         </div>
                         <div class="col-12">
-                            <label class="form-label text-muted">Interest Rate (%)</label>
-                            <input type="number" id="rateInput" class="form-control" value="6" min="0" step="0.1">
+                            <label class="form-label text-muted small">Interest Rate (%)</label>
+                            <input type="number" id="rateInput" class="form-control lux-form-control" value="6" min="0" step="0.1">
                         </div>
                         <div class="col-12">
-                            <div class="panel-box">
+                            <div class="result-box">
                                 <span class="panel-label">Estimated monthly payment</span>
                                 <div id="paymentResult" class="fs-2 fw-bold result-price">$0</div>
                             </div>
@@ -288,15 +598,20 @@
     </div>
 </section>
 
-<!-- TRUST / FAQ -->
-<section class="cars-section">
+<!-- ============ TRUST / FAQ ============ -->
+<section class="lux-section alt-bg">
     <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-tag">Why Choose Us</span>
+            <h2 class="section-title">Trusted by Thousands</h2>
+            <div class="section-divider"></div>
+        </div>
         <div class="row g-4">
             <div class="col-lg-6" data-aos="fade-up">
-                <div class="cta-banner text-start compact">
+                <div class="lux-panel">
                     <span class="section-tag">Why buyers trust LUXORA</span>
-                    <h3 class="section-title section-title-sm">Premium service, transparent process, fast delivery</h3>
-                    <ul class="text-muted faq-list">
+                    <h3 class="section-title section-title-sm mb-4">Premium service, transparent process</h3>
+                    <ul class="faq-list">
                         <li>Verified vehicles with full history support</li>
                         <li>Flexible financing and consultation support</li>
                         <li>Fast delivery and concierge-level guidance</li>
@@ -304,9 +619,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                <div class="cta-banner text-start compact">
-                    <span class="section-tag">Frequently Asked Questions</span>
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="150">
+                <div class="lux-panel">
+                    <span class="section-tag">FAQ</span>
+                    <h3 class="section-title section-title-sm mb-4">Frequently Asked Questions</h3>
                     <div class="accordion faq-accordion" id="faqAccordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
@@ -325,7 +641,17 @@
                                 </button>
                             </h2>
                             <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text-muted">Yes. Our advisors can guide you through rates, down payments, and monthly payment planning.</div>
+                                <div class="accordion-body">Yes. Our advisors can guide you through rates, down payments, and monthly payment planning.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    Is delivery available nationwide?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">Absolutely. We provide secure nationwide delivery with tracking and insurance included.</div>
                             </div>
                         </div>
                     </div>
@@ -335,11 +661,11 @@
     </div>
 </section>
 
-<!-- CTA -->
-<section class="cars-section">
+<!-- ============ CTA MEGA ============ -->
+<section class="lux-section compact">
     <div class="container">
-        <div class="cta-banner" data-aos="zoom-in">
-            <h2 class="section-title">Ready to Find Your Perfect Ride?</h2>
+        <div class="cta-mega" data-aos="zoom-in" data-aos-duration="1000">
+            <h2 class="section-title" style="font-size:clamp(2rem, 4vw, 3.2rem);">Ready to Find Your Perfect Ride?</h2>
             <p class="section-desc mx-auto mb-4">Join thousands of satisfied customers who found their dream car with LUXORA.</p>
             <a href="{% url 'cars:gallery' %}" class="btn-luxora">Start Browsing <i class="bi bi-arrow-right"></i></a>
         </div>
@@ -347,6 +673,41 @@
 </section>
 
 <script>
+    // ============ PARALLAX HERO ============
+    const heroBg = document.getElementById('heroBg');
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        if (heroBg && scrolled < window.innerHeight) {
+            heroBg.style.transform = `translateY(${scrolled * 0.4}px) scale(${1 + scrolled * 0.0005})`;
+        }
+    }, { passive: true });
+
+    // ============ COUNTER ANIMATION ============
+    const counters = document.querySelectorAll('[data-count]');
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const target = parseInt(el.dataset.count);
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        el.textContent = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        el.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 16);
+                counterObserver.unobserve(el);
+            }
+        });
+    }, { threshold: 0.5 });
+    counters.forEach(c => counterObserver.observe(c));
+
+    // ============ FINANCE CALCULATOR ============
     function calculatePayment() {
         const price = parseFloat(document.getElementById('priceInput').value || 0);
         const down = parseFloat(document.getElementById('downInput').value || 0);
@@ -358,7 +719,6 @@
         const payment = monthlyRate > 0 ? (principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months)) : principal / months;
         document.getElementById('paymentResult').textContent = '$' + payment.toLocaleString(undefined, { maximumFractionDigits: 0 });
     }
-
     ['priceInput','downInput','yearsInput','rateInput'].forEach(id => {
         document.getElementById(id)?.addEventListener('input', calculatePayment);
     });

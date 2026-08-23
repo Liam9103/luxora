@@ -352,76 +352,6 @@
             line-height: 1.9;
         }
 
-        .footer-luxora {
-            background: rgba(8, 8, 12, 0.9);
-            border-top: 1px solid rgba(255,255,255,0.06);
-            padding: 80px 0 25px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer-luxora p,
-        .footer-luxora a {
-            color: var(--text-muted);
-            font-size: 0.92rem;
-            text-decoration: none;
-            transition: var(--transition);
-            line-height: 2;
-        }
-
-        .footer-separator {
-            border-color: var(--border-glass);
-            margin: 40px 0 20px;
-        }
-
-        .footer-copy {
-            font-size: 0.82rem;
-            color: rgba(255,255,255,0.4);
-            margin: 0;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.06);
-        }
-
-        .text-gold {
-            color: var(--gold);
-        }
-
-        .footer-subcopy {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.35);
-            margin-top: 8px;
-        }
-
-        .footer-heart {
-            color: var(--gold);
-        }
-
-        .footer-luxora a:hover {
-            color: var(--gold);
-            padding-left: 6px;
-        }
-
-        .footer-social {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.05);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            margin-right: 10px;
-            transition: var(--transition);
-        }
-
-        .footer-social:hover {
-            background: var(--gold);
-            color: #000;
-            transform: translateY(-4px);
-        }
-
         .swal-custom {
             border-radius: 24px !important;
             font-family: 'Inter', sans-serif !important;
@@ -434,6 +364,317 @@
             .nav-search { display: none; }
             .nav-link-custom { padding: 10px 12px !important; }
         }
+        /* ============ FOOTER STYLES ============ */
+    .lux-footer {
+        background: #06060a;
+        position: relative;
+        overflow: hidden;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding-top: 80px;
+        color: #e1e1e6;
+    }
+
+    /* افکت پترن پس‌زمینه و گالری نوری فوتر */
+    .lux-footer::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 50%;
+        transform: translateX(-50%);
+        width: 100%; max-width: 1400px; height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(212,175,55,0.4), transparent);
+    }
+    .footer-glow {
+        position: absolute;
+        bottom: -150px;
+        left: 10%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(212,175,55,0.06), transparent 70%);
+        pointer-events: none;
+        border-radius: 50%;
+    }
+    .footer-glow-2 {
+        position: absolute;
+        top: -100px;
+        right: 10%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(124,92,255,0.05), transparent 70%);
+        pointer-events: none;
+        border-radius: 50%;
+    }
+
+    /* کارت خبرنامه شیشه‌ای بالایی */
+    .footer-newsletter-card {
+        background: linear-gradient(135deg, rgba(20,20,32,0.7), rgba(14,14,22,0.7));
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 28px;
+        padding: 40px;
+        backdrop-filter: blur(20px);
+        margin-bottom: 70px;
+        position: relative;
+        overflow: hidden;
+    }
+    .footer-newsletter-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 28px;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(212,175,55,0.3), transparent, rgba(124,92,255,0.2));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+
+    .newsletter-title {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 8px;
+    }
+    .newsletter-title span {
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* دکمه و اینپوت خبرنامه */
+    .newsletter-form {
+        position: relative;
+        display: flex;
+        gap: 10px;
+    }
+    .newsletter-input {
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 16px !important;
+        color: #fff !important;
+        padding: 16px 24px !important;
+        font-size: 0.95rem;
+        transition: all 0.4s ease;
+    }
+    .newsletter-input:focus {
+        border-color: var(--gold) !important;
+        box-shadow: 0 0 25px rgba(212,175,55,0.15) !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+    }
+    .newsletter-btn {
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        color: #000;
+        border: none;
+        padding: 0 30px;
+        border-radius: 16px;
+        font-weight: 700;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .newsletter-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(212,175,55,0.4);
+        color: #000;
+    }
+
+    /* ستون‌های فوتر */
+    .footer-brand-logo {
+        font-size: 1.8rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+        color: #fff;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+    .footer-brand-logo span {
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .footer-desc {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        line-height: 1.8;
+        margin-bottom: 25px;
+    }
+
+    /* دکمه‌های اجتماعی با هاور مغناطیسی */
+    .social-links {
+        display: flex;
+        gap: 12px;
+    }
+    .social-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        text-decoration: none;
+    }
+    .social-btn:hover {
+        background: var(--gold);
+        color: #000;
+        border-color: var(--gold);
+        transform: translateY(-6px) rotate(8deg);
+        box-shadow: 0 10px 20px rgba(212,175,55,0.3);
+    }
+
+    /* لینک‌های فوتر با انیمیشن خط کشیده */
+    .footer-col-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 25px;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    .footer-col-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0;
+        width: 35px; height: 2px;
+        background: var(--gold);
+    }
+    .footer-links-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .footer-links-list li {
+        margin-bottom: 14px;
+    }
+    .footer-link {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0px;
+    }
+    .footer-link::before {
+        content: '→';
+        color: var(--gold);
+        font-weight: bold;
+        margin-right: 0px;
+        opacity: 0;
+        width: 0;
+        transition: all 0.3s ease;
+    }
+    .footer-link:hover {
+        color: #fff;
+        padding-left: 8px;
+    }
+    .footer-link:hover::before {
+        opacity: 1;
+        width: 15px;
+        margin-right: 5px;
+    }
+
+    /* اطلاعات تماس مدرن */
+    .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 18px;
+    }
+    .contact-icon {
+        width: 36px; height: 36px;
+        background: rgba(212,175,55,0.1);
+        border: 1px solid rgba(212,175,55,0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        flex-shrink: 0;
+    }
+    .contact-text {
+        font-size: 0.92rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+    }
+    .contact-text strong {
+        color: #fff;
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    /* حق کپی رایت پایین */
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 30px 0;
+        margin-top: 60px;
+        position: relative;
+        z-index: 2;
+    }
+    .footer-bottom-text {
+        font-size: 0.88rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin: 0;
+    }
+    .footer-bottom-links {
+        display: flex;
+        gap: 20px;
+        justify-content: flex-end;
+    }
+    .footer-bottom-links a {
+        color: rgba(255, 255, 255, 0.5);
+        text-decoration: none;
+        font-size: 0.88rem;
+        transition: color 0.3s ease;
+    }
+    .footer-bottom-links a:hover {
+        color: var(--gold);
+    }
+
+    /* دکمه شیک بک تو تاپ */
+    .back-to-top {
+        position: absolute;
+        right: 40px;
+        top: -25px;
+        width: 50px; height: 50px;
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        color: #000;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 25px rgba(212,175,55,0.4);
+        border: none;
+        z-index: 10;
+    }
+    .back-to-top:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(212,175,55,0.6);
+    }
+    .back-to-top i {
+        animation: arrowBounce 1.5s infinite;
+    }
+    @keyframes arrowBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
+    }
+
+    @media (max-width: 991px) {
+        .footer-newsletter-card { padding: 30px 20px; }
+        .footer-bottom-links { justify-content: flex-start; margin-top: 15px; }
+        .back-to-top { right: 20px; }
+    }
+
     </style>
 
     {% block extra_css %}{% endblock %}
@@ -483,53 +724,133 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="footer-luxora">
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-4">
-                    <!-- Logo Footer -->
-                    <a class="brand-logo-footer" href="{% url 'core:home' %}">
-                        <img src="{% static 'images/luxora-logo.png' %}" alt="LUXORA Logo">
-                    </a>
-                    <p>The ultimate destination for premium and luxury vehicles. Curated collection, verified quality, unmatched experience.</p>
-                    <div class="mt-3">
-                        <a href="https://www.instagram.com/nova.skills.offical/" class="footer-social" target="_blank"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="footer-social" target="_blank"><i class="bi bi-linkedin"></i></a>
-                        <a href="https://www.youtube.com/@Nova_Skills" class="footer-social" target="_blank"><i class="bi bi-youtube"></i></a>
-                    </div>
+<footer class="lux-footer">
+    <div class="footer-glow"></div>
+    <div class="footer-glow-2"></div>
+
+    <div class="container position-relative">
+
+        <!-- دکمه بازگشت به بالا -->
+        <button onclick="scrollToTop()" class="back-to-top" title="Back to Top">
+            <i class="bi bi-arrow-up"></i>
+        </button>
+
+        <!-- بخش خبرنامه لوکس و بالا آمدنی -->
+        <div class="footer-newsletter-card" data-aos="fade-up" data-aos-duration="1000">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-6">
+                    <h4 class="newsletter-title">Join the <span>LUXORA Circle</span></h4>
+                    <p class="text-muted mb-0">Subscribe to receive exclusive offers, early access to new arrivals, and VIP invitations.</p>
                 </div>
-                <div class="col-lg-2 col-6">
-                    <h5>Explore</h5>
-                    <p><a href="{% url 'core:home' %}">Home</a></p>
-                    <p><a href="{% url 'cars:gallery' %}">Gallery</a></p>
-                    <p><a href="{% url 'core:about' %}">About Us</a></p>
-                </div>
-                <div class="col-lg-2 col-6">
-                    <h5>Account</h5>
-                    <p><a href="{% url 'accounts:profile' %}">My Profile</a></p>
-                    <p><a href="{% url 'cars:wishlist' %}">My Wishlist</a></p>
-                    <p><a href="{% url 'cart:detail' %}">My Cart</a></p>
-                </div>
-                <div class="col-lg-4">
-                    <h5>Contact Us</h5>
-                    <p><i class="bi bi-geo-alt me-2"></i> 5th Avenue, New York, USA</p>
-                    <p><i class="bi bi-telephone me-2"></i> +1 (800) 123-4567</p>
-                    <p><i class="bi bi-envelope me-2"></i> iliapirmarzabad@gmail.com</p>
+                <div class="col-lg-6">
+                    <form class="newsletter-form" onsubmit="event.preventDefault();">
+                        <input type="email" class="form-control newsletter-input" placeholder="Enter your business email" required>
+                        <button type="submit" class="newsletter-btn">
+                            Subscribe <i class="bi bi-envelope-paper"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
-            <hr class="footer-separator">
         </div>
-        <div class="text-center mt-4 pt-4 footer-bottom">
-            <p class="footer-copy">
-                &copy; {% now "Y" %} LUXORA. All rights reserved.
-            </p>
-            <p class="footer-subcopy">
-                Designed & Developed with <i class="bi bi-suit-heart-fill footer-heart"></i> by
-                <strong class="text-gold">Ilia Pirmarzabad</strong>
-            </p>
+
+        <!-- بدنه اصلی فوتر -->
+        <div class="row g-5">
+            <!-- ستون برند و درباره -->
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <a href="#" class="footer-brand-logo">
+                    <span>LUXORA</span>
+                </a>
+                <p class="footer-desc">Curating the world's most exceptional hypercars and luxury automobiles. We deliver unmatched prestige, engineering mastery, and transparent global brokerage services.</p>
+                <div class="social-links">
+                    <a href="#" class="social-btn"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-btn"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="social-btn"><i class="bi bi-youtube"></i></a>
+                    <a href="#" class="social-btn"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+
+            <!-- ستون لینک‌های مفید -->
+            <div class="col-lg-2 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <h5 class="footer-col-title">Quick Links</h5>
+                <ul class="footer-links-list">
+                    <li><a href="{% url 'cars:gallery' %}" class="footer-link">Find Cars</a></li>
+                    <li><a href="{% url 'core:about' %}" class="footer-link">Our Story</a></li>
+                    <li><a href="#" class="footer-link">Financial Services</a></li>
+                    <li><a href="#" class="footer-link">VIP Lounge</a></li>
+                    <li><a href="#" class="footer-link">Latest News</a></li>
+                </ul>
+            </div>
+
+            <!-- ستون خودروهای پیشنهادی -->
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <h5 class="footer-col-title">Showroom</h5>
+                <ul class="footer-links-list">
+                    <li><a href="#" class="footer-link">Supercars & Hypercars</a></li>
+                    <li><a href="#" class="footer-link">Luxury Sedans</a></li>
+                    <li><a href="#" class="footer-link">Prestige SUVs</a></li>
+                    <li><a href="#" class="footer-link">Classic Collectibles</a></li>
+                    <li><a href="#" class="footer-link">Electric Performance</a></li>
+                </ul>
+            </div>
+
+            <!-- ستون اطلاعات تماس VIP -->
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <h5 class="footer-col-title">VIP Concierge</h5>
+
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-geo-alt"></i></div>
+                    <div class="contact-text">
+                        <strong>HQ Address</strong>
+                        5th Avenue, Luxury District, NY
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-telephone"></i></div>
+                    <div class="contact-text">
+                        <strong>Global Hotline</strong>
+                        +1 (800) 555-LUXORA
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-envelope"></i></div>
+                    <div class="contact-text">
+                        <strong>Inquiries</strong>
+                        concierge@luxora.com
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- بخش نهایی کپی‌رایت -->
+        <div class="footer-bottom">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="footer-bottom-text">© 2026 LUXORA Premium Dealership. All Rights Reserved. Engineered for excellence.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="footer-bottom-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Sitemap</a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+
+    </div>
+</footer>
+
+<script>
+    // تابع اسکرول نرم به بالای صفحه
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

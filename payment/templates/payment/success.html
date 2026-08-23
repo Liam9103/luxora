@@ -3,43 +3,476 @@
 {% block content %}
 
 <style>
-    .success-wrapper { padding: 160px 0; text-align: center; }
-    .success-icon {
-        width: 110px; height: 110px;
-        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    @keyframes floatUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scaleIn {
+        0% { transform: scale(0); opacity: 0; }
+        60% { transform: scale(1.15); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes drawCheck {
+        from { stroke-dashoffset: 60; }
+        to { stroke-dashoffset: 0; }
+    }
+    @keyframes ripple {
+        0% { transform: scale(1); opacity: 0.8; }
+        100% { transform: scale(2.5); opacity: 0; }
+    }
+    @keyframes floatOrb {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(30px, -40px); }
+    }
+    @keyframes glowPulse {
+        0%, 100% { box-shadow: 0 0 30px rgba(212,175,55,0.4); }
+        50% { box-shadow: 0 0 70px rgba(212,175,55,0.7); }
+    }
+    @keyframes confetti-fall {
+        0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+    }
+
+    /* ============ WRAPPER ============ */
+    .success-wrapper {
+        padding: 160px 0 100px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+    }
+    .success-wrapper::before,
+    .success-wrapper::after {
+        content: '';
+        position: absolute;
         border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
+        filter: blur(80px);
+        pointer-events: none;
+        z-index: 0;
+    }
+    .success-wrapper::before {
+        top: 15%; left: 15%;
+        width: 400px; height: 400px;
+        background: radial-gradient(circle, rgba(212,175,55,0.2), transparent 70%);
+        animation: floatOrb 15s ease-in-out infinite;
+    }
+    .success-wrapper::after {
+        bottom: 15%; right: 15%;
+        width: 350px; height: 350px;
+        background: radial-gradient(circle, rgba(16,185,129,0.15), transparent 70%);
+        animation: floatOrb 20s ease-in-out infinite reverse;
+    }
+
+    .success-content {
+        position: relative;
+        z-index: 2;
+        max-width: 640px;
+        margin: 0 auto;
+    }
+
+    /* ============ CONFETTI ============ */
+    .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .confetti:nth-child(1) { background: var(--gold); left: 10%; animation: confetti-fall 4s linear 0.2s infinite; }
+    .confetti:nth-child(2) { background: #10b981; left: 20%; animation: confetti-fall 5s linear 0.5s infinite; }
+    .confetti:nth-child(3) { background: #7c5cff; left: 30%; animation: confetti-fall 4.5s linear 0.8s infinite; }
+    .confetti:nth-child(4) { background: var(--gold-light); left: 40%; animation: confetti-fall 5.5s linear 1s infinite; }
+    .confetti:nth-child(5) { background: #10b981; left: 50%; animation: confetti-fall 4s linear 1.3s infinite; }
+    .confetti:nth-child(6) { background: var(--gold); left: 60%; animation: confetti-fall 5s linear 0.6s infinite; }
+    .confetti:nth-child(7) { background: #7c5cff; left: 70%; animation: confetti-fall 4.5s linear 0.9s infinite; }
+    .confetti:nth-child(8) { background: var(--gold-light); left: 80%; animation: confetti-fall 5.5s linear 1.2s infinite; }
+    .confetti:nth-child(9) { background: var(--gold); left: 90%; animation: confetti-fall 4s linear 0.4s infinite; }
+    .confetti:nth-child(2n) { border-radius: 50%; }
+    .confetti:nth-child(3n) { transform: rotate(45deg); }
+
+    /* ============ SUCCESS ICON ============ */
+    .success-icon-wrap {
+        position: relative;
+        width: 140px;
+        height: 140px;
+        margin: 0 auto 40px;
+        animation: scaleIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .success-icon-wrap::before,
+    .success-icon-wrap::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 2px solid var(--gold);
+        opacity: 0;
+    }
+    .success-icon-wrap::before {
+        animation: ripple 2s ease-out infinite;
+    }
+    .success-icon-wrap::after {
+        animation: ripple 2s ease-out 0.5s infinite;
+    }
+
+    .success-icon {
+        width: 140px; height: 140px;
+        background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+        animation: glowPulse 2.5s ease-in-out infinite;
+    }
+    .success-icon svg {
+        width: 60px;
+        height: 60px;
+        color: #06060A;
+    }
+    .success-icon svg path {
+        stroke: #06060A;
+        stroke-width: 4;
+        fill: none;
+        stroke-dasharray: 60;
+        stroke-dashoffset: 60;
+        animation: drawCheck 0.8s ease-out 0.6s forwards;
+    }
+
+    /* ============ TITLE ============ */
+    .success-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(16,185,129,0.15);
+        border: 1px solid rgba(16,185,129,0.3);
+        color: #10b981;
+        padding: 8px 20px;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        animation: floatUp 0.8s ease-out 0.8s backwards;
+    }
+    .success-wrapper h2 {
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        margin-bottom: 12px;
+        font-weight: 900;
+        animation: floatUp 0.8s ease-out 1s backwards;
+    }
+    .success-wrapper h2 .highlight {
+        background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark), var(--gold));
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 3s linear infinite;
+    }
+    .success-note {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        line-height: 1.8;
+        max-width: 480px;
         margin: 0 auto 30px;
-        box-shadow: 0 18px 55px rgba(212,175,55,0.32);
+        animation: floatUp 0.8s ease-out 1.2s backwards;
     }
-    .success-icon i { font-size: 3rem; color: #06060A; }
-    .success-wrapper h2 { font-size: clamp(2rem, 3vw, 2.4rem); margin-bottom: 15px; }
-    .success-note { color: var(--text-muted); }
-    .tracking-label { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 6px; display: block; }
-    .tracking-amount { color: var(--gold); }
+
+    /* ============ TRACKING BOX ============ */
     .tracking-box {
+        background: linear-gradient(145deg, rgba(20,20,32,0.85), rgba(14,14,22,0.75));
+        border: 1px solid rgba(212,175,55,0.3);
+        padding: 30px 50px;
+        border-radius: 24px;
+        margin: 30px auto;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        backdrop-filter: blur(20px);
         display: inline-block;
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        padding: 22px 42px;
-        border-radius: 20px;
-        margin: 25px 0;
-        box-shadow: 0 30px 70px rgba(0,0,0,0.22);
+        position: relative;
+        overflow: hidden;
+        animation: floatUp 0.8s ease-out 1.4s backwards;
     }
-    .tracking-box .code { font-family: 'Poppins', monospace; font-size: 1.4rem; color: var(--gold); font-weight: 700; letter-spacing: 2px; }
+    .tracking-box::before {
+        content: '';
+        position: absolute;
+        top: -50%; right: -30%;
+        width: 250px; height: 250px;
+        background: radial-gradient(circle, rgba(212,175,55,0.15), transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    .tracking-box > * { position: relative; z-index: 1; }
+
+    .tracking-icon-wrap {
+        width: 44px; height: 44px;
+        background: rgba(212,175,55,0.15);
+        border: 1px solid rgba(212,175,55,0.3);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 14px;
+        color: var(--gold);
+        font-size: 1.2rem;
+    }
+    .tracking-label {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        margin-bottom: 8px;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    .tracking-code {
+        font-family: 'Poppins', monospace;
+        font-size: 1.5rem;
+        color: var(--gold);
+        font-weight: 800;
+        letter-spacing: 3px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        justify-content: center;
+    }
+    .copy-btn {
+        background: rgba(212,175,55,0.1);
+        border: 1px solid rgba(212,175,55,0.3);
+        color: var(--gold);
+        width: 36px; height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+    }
+    .copy-btn:hover {
+        background: var(--gold);
+        color: #000;
+        transform: scale(1.1);
+    }
+    .copy-btn.copied {
+        background: #10b981;
+        border-color: #10b981;
+        color: #fff;
+    }
+
+    /* ============ ORDER INFO CARD ============ */
+    .order-info-card {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin: 30px auto;
+        max-width: 600px;
+        animation: floatUp 0.8s ease-out 1.6s backwards;
+    }
+    .info-item {
+        background: linear-gradient(145deg, rgba(20,20,32,0.7), rgba(14,14,22,0.6));
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        padding: 20px 16px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    .info-item:hover {
+        border-color: rgba(212,175,55,0.3);
+        transform: translateY(-4px);
+    }
+    .info-item i {
+        color: var(--gold);
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+    .info-item .info-label {
+        color: var(--text-muted);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: block;
+        margin-bottom: 4px;
+    }
+    .info-item .info-value {
+        color: var(--text-light);
+        font-weight: 700;
+        font-size: 0.95rem;
+    }
+    .info-item .info-value.amount {
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1rem;
+    }
+
+    @media (max-width: 640px) {
+        .order-info-card { grid-template-columns: 1fr; }
+        .tracking-box { padding: 24px 30px; }
+        .tracking-code { font-size: 1.2rem; letter-spacing: 2px; }
+    }
+
+    /* ============ ACTION BUTTONS ============ */
+    .success-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+        animation: floatUp 0.8s ease-out 1.8s backwards;
+    }
+    .action-btn-primary {
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        color: #000;
+        border: none;
+        padding: 14px 30px;
+        border-radius: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.4s ease;
+    }
+    .action-btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(212,175,55,0.5);
+        color: #000;
+    }
+    .action-btn-outline {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: var(--text-light);
+        padding: 14px 30px;
+        border-radius: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.4s ease;
+    }
+    .action-btn-outline:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+        transform: translateY(-3px);
+    }
+
+    /* ============ THANK YOU NOTE ============ */
+    .thank-you-note {
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        animation: floatUp 0.8s ease-out 2s backwards;
+    }
+    .thank-you-note strong {
+        color: var(--gold);
+    }
 </style>
 
-<div class="container success-wrapper">
-    <div data-aos="zoom-in">
-        <div class="success-icon"><i class="bi bi-check-lg"></i></div>
-        <h2>Payment Successful!</h2>
-        <p class="success-note">Thank you for your purchase. Your order has been confirmed.</p>
-        <div class="tracking-box">
-            <div class="tracking-label">TRACKING CODE</div>
-            <div class="code">{{ order.tracking_code }}</div>
+<div class="success-wrapper">
+    <!-- Confetti -->
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+
+    <div class="container">
+        <div class="success-content">
+            <!-- Success Icon -->
+            <div class="success-icon-wrap">
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Badge -->
+            <span class="success-badge">
+                <i class="bi bi-check-circle-fill"></i> Payment Confirmed
+            </span>
+
+            <!-- Title -->
+            <h2>Payment <span class="highlight">Successful!</span></h2>
+            <p class="success-note">Thank you for your purchase. Your order has been confirmed and is being processed. You will receive an email confirmation shortly.</p>
+
+            <!-- Tracking Box -->
+            <div class="tracking-box">
+                <div class="tracking-icon-wrap">
+                    <i class="bi bi-receipt"></i>
+                </div>
+                <span class="tracking-label">Tracking Code</span>
+                <div class="tracking-code">
+                    <span id="trackCode">{{ order.tracking_code }}</span>
+                    <button class="copy-btn" onclick="copyCode()" title="Copy tracking code">
+                        <i class="bi bi-clipboard" id="copyIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Order Info Cards -->
+            <div class="order-info-card">
+                <div class="info-item">
+                    <i class="bi bi-cash-stack"></i>
+                    <span class="info-label">Amount</span>
+                    <span class="info-value amount">${{ order.total_price|intcomma }}</span>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-shield-check"></i>
+                    <span class="info-label">Status</span>
+                    <span class="info-value">Paid</span>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-truck"></i>
+                    <span class="info-label">Delivery</span>
+                    <span class="info-value">In Progress</span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="success-actions">
+                <a href="{% url 'accounts:profile' %}" class="action-btn-primary">
+                    <i class="bi bi-person-circle"></i> View My Orders
+                </a>
+                <a href="{% url 'cars:gallery' %}" class="action-btn-outline">
+                    <i class="bi bi-search"></i> Continue Shopping
+                </a>
+            </div>
+
+            <!-- Thank You Note -->
+            <p class="thank-you-note">
+                🎉 Thank you for choosing <strong>LUXORA</strong>. We appreciate your business!
+            </p>
         </div>
-        <p>Amount Paid: <strong class="tracking-amount">${{ order.total_price|intcomma }}</strong></p>
-        <a href="{% url 'accounts:profile' %}" class="btn-luxora mt-3">View My Orders</a>
     </div>
 </div>
+
+<script>
+    function copyCode() {
+        const code = document.getElementById('trackCode').textContent;
+        const btn = document.querySelector('.copy-btn');
+        const icon = document.getElementById('copyIcon');
+
+        navigator.clipboard.writeText(code).then(() => {
+            btn.classList.add('copied');
+            icon.className = 'bi bi-check-lg';
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                icon.className = 'bi bi-clipboard';
+            }, 2000);
+        });
+    }
+</script>
 {% endblock %}

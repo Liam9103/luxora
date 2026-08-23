@@ -1,25 +1,220 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="mb-2">Your Wishlist</h1>
-            <p class="text-muted">Save the cars you love and pick them up later.</p>
+
+<style>
+    @keyframes heartBeat {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+    }
+    @keyframes floatUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============ HERO ============ */
+    .wishlist-hero {
+        padding: 150px 0 70px;
+        position: relative;
+        overflow: hidden;
+    }
+    .wishlist-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(circle at 20% 30%, rgba(255,71,87,0.1), transparent 40%),
+            radial-gradient(circle at 80% 60%, rgba(212,175,55,0.1), transparent 40%);
+        pointer-events: none;
+    }
+    .wishlist-hero-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 30px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 2;
+    }
+    .wishlist-hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255,71,87,0.1);
+        border: 1px solid rgba(255,71,87,0.3);
+        color: #ff4757;
+        padding: 10px 22px;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    .wishlist-hero-badge i {
+        animation: heartBeat 1.8s ease-in-out infinite;
+    }
+    .wishlist-hero h1 {
+        font-size: clamp(2.2rem, 4vw, 3rem);
+        margin-bottom: 10px;
+        font-weight: 900;
+    }
+    .wishlist-hero h1 .highlight {
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .wishlist-hero p {
+        color: var(--text-muted);
+        margin: 0;
+        font-size: 1.05rem;
+    }
+
+    /* ============ STATS ROW ============ */
+    .wishlist-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        margin-bottom: 40px;
+    }
+    .stat-card {
+        background: linear-gradient(145deg, rgba(20,20,32,0.7), rgba(14,14,22,0.6));
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 20px;
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: all 0.4s ease;
+    }
+    .stat-card:hover {
+        border-color: rgba(212,175,55,0.3);
+        transform: translateY(-4px);
+    }
+    .stat-icon {
+        width: 50px; height: 50px;
+        background: linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05));
+        border: 1px solid rgba(212,175,55,0.3);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        font-size: 1.4rem;
+        flex-shrink: 0;
+    }
+    .stat-content .stat-value {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text-light);
+        font-family: 'Poppins', sans-serif;
+        line-height: 1;
+    }
+    .stat-content .stat-label {
+        color: var(--text-muted);
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 6px;
+    }
+
+    /* ============ EMPTY WISHLIST ============ */
+    .empty-wishlist {
+        background: linear-gradient(145deg, rgba(20,20,32,0.7), rgba(14,14,22,0.6));
+        border: 1px dashed rgba(255,255,255,0.1);
+        border-radius: 32px;
+        padding: 100px 40px;
+        text-align: center;
+    }
+    .empty-heart-icon {
+        width: 120px; height: 120px;
+        margin: 0 auto 30px;
+        background: rgba(255,71,87,0.08);
+        border: 1px solid rgba(255,71,87,0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ff4757;
+        font-size: 3.5rem;
+    }
+    .empty-heart-icon i {
+        animation: heartBeat 2s ease-in-out infinite;
+    }
+    .empty-wishlist h3 {
+        color: var(--text-light);
+        margin-bottom: 14px;
+        font-size: 1.8rem;
+    }
+    .empty-wishlist p {
+        color: var(--text-muted);
+        max-width: 450px;
+        margin: 0 auto 30px;
+        line-height: 1.8;
+    }
+</style>
+
+<!-- ============ HERO ============ -->
+<section class="wishlist-hero">
+    <div class="container">
+        <div class="wishlist-hero-inner" data-aos="fade-up">
+            <div>
+                <span class="wishlist-hero-badge">
+                    <i class="bi bi-heart-fill"></i> My Collection
+                </span>
+                <h1>Your <span class="highlight">Wishlist</span></h1>
+                <p>Save the cars you love and pick them up later.</p>
+            </div>
+            <a href="{% url 'cars:gallery' %}" class="btn-luxora-outline">
+                <i class="bi bi-plus-circle"></i> Browse More
+            </a>
         </div>
-        <a href="{% url 'cars:gallery' %}" class="btn-luxora-outline">Browse More</a>
+    </div>
+</section>
+
+<div class="container pb-5">
+    {% if items %}
+    <!-- Stats Row -->
+    <div class="wishlist-stats" data-aos="fade-up">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-heart-fill"></i></div>
+            <div class="stat-content">
+                <div class="stat-value">{{ items|length }}</div>
+                <div class="stat-label">Saved Cars</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-eye"></i></div>
+            <div class="stat-content">
+                <div class="stat-value">Browse</div>
+                <div class="stat-label">& Compare</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-bag-check"></i></div>
+            <div class="stat-content">
+                <div class="stat-value">Ready</div>
+                <div class="stat-label">To Purchase</div>
+            </div>
+        </div>
     </div>
 
-    {% if items %}
+    <!-- Items Grid -->
     <div class="row g-4">
         {% for item in items %}
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}0">
             {% include 'cars/_car_card.html' with car=item.car %}
         </div>
         {% endfor %}
     </div>
     {% else %}
-    <div class="text-center py-5">
-        <p class="text-muted">No cars in your wishlist yet.</p>
+    <div class="empty-wishlist" data-aos="fade-up">
+        <div class="empty-heart-icon">
+            <i class="bi bi-heart"></i>
+        </div>
+        <h3>Your Wishlist is Empty</h3>
+        <p>Start exploring our premium collection and save your favorite vehicles here. They'll be ready when you are.</p>
+        <a href="{% url 'cars:gallery' %}" class="btn-luxora">
+            <i class="bi bi-search"></i> Discover Vehicles
+        </a>
     </div>
     {% endif %}
 </div>

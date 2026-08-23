@@ -3,88 +3,506 @@
 {% block content %}
 
 <style>
-    .profile-wrapper { padding: 130px 0 80px; }
+    @keyframes floatUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseRing {
+        0% { transform: scale(0.95); opacity: 0.7; }
+        50% { transform: scale(1); opacity: 0.3; }
+        100% { transform: scale(0.95); opacity: 0.7; }
+    }
+    @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+    }
+    @keyframes rotate360 {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .profile-wrapper {
+        padding: 140px 0 80px;
+        position: relative;
+    }
+    .profile-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 100px; left: 0; right: 0;
+        height: 400px;
+        background:
+            radial-gradient(circle at 20% 30%, rgba(212,175,55,0.1), transparent 40%),
+            radial-gradient(circle at 80% 60%, rgba(124,92,255,0.08), transparent 40%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    /* ============ HEADER ============ */
+    .profile-header {
+        margin-bottom: 40px;
+    }
+    .profile-header h1 {
+        font-size: clamp(2rem, 3.5vw, 2.8rem);
+        margin-bottom: 8px;
+        font-weight: 900;
+    }
+    .profile-header h1 .highlight {
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .profile-header p {
+        color: var(--text-muted);
+        margin: 0;
+    }
+
+    /* ============ PROFILE CARD ============ */
     .profile-card {
-        background: rgba(255,255,255,0.04);
+        background: linear-gradient(145deg, rgba(20,20,32,0.85), rgba(14,14,22,0.75));
         border: 1px solid rgba(255,255,255,0.08);
         border-radius: 28px;
-        padding: 38px;
+        padding: 36px 32px;
         text-align: center;
-        box-shadow: 0 30px 80px rgba(0,0,0,0.24);
+        box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        backdrop-filter: blur(20px);
+        position: sticky;
+        top: 100px;
+        overflow: hidden;
+    }
+    .profile-card::before {
+        content: '';
+        position: absolute;
+        top: -50%; right: -30%;
+        width: 300px; height: 300px;
+        background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    .profile-card > * { position: relative; z-index: 1; }
+
+    .avatar-wrap {
+        position: relative;
+        width: 130px;
+        height: 130px;
+        margin: 0 auto 20px;
+    }
+    .avatar-wrap::before {
+        content: '';
+        position: absolute;
+        inset: -8px;
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark), var(--gold));
+        border-radius: 50%;
+        animation: pulseRing 2.5s ease-in-out infinite;
+        z-index: 0;
+    }
+    .avatar-wrap::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border: 2px dashed var(--gold);
+        border-radius: 50%;
+        opacity: 0.4;
+        animation: rotate360 20s linear infinite;
     }
     .profile-avatar {
-        width: 120px; height: 120px;
+        width: 130px; height: 130px;
         border-radius: 50%;
         object-fit: cover;
-        border: 3px solid var(--gold);
-        margin-bottom: 18px;
+        border: 4px solid var(--bg-dark, #0a0a10);
+        position: relative;
+        z-index: 1;
     }
-    .profile-card h4 { margin-bottom: 4px; }
-    .profile-card .email { color: var(--text-muted); margin-bottom: 25px; }
+    .avatar-edit-btn {
+        position: absolute;
+        bottom: 5px; right: 5px;
+        width: 34px; height: 34px;
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        color: #000;
+        border: 3px solid var(--bg-dark, #0a0a10);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 2;
+        transition: transform 0.3s ease;
+    }
+    .avatar-edit-btn:hover {
+        transform: rotate(15deg) scale(1.1);
+    }
+
+    .profile-card h4 {
+        margin-bottom: 4px;
+        font-weight: 700;
+        font-size: 1.3rem;
+    }
+    .profile-card .email {
+        color: var(--text-muted);
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+    }
+
+    .profile-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05));
+        border: 1px solid rgba(212,175,55,0.3);
+        color: var(--gold);
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        margin-bottom: 24px;
+    }
+
+    .profile-mini-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 28px;
+        padding: 20px 0;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .mini-stat .num {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--gold);
+        font-family: 'Poppins', sans-serif;
+    }
+    .mini-stat .label {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 4px;
+    }
+
+    /* ============ PROFILE FORM ============ */
     .profile-form { text-align: left; }
-    .profile-form label { color: var(--text-muted); font-size: 0.82rem; display: block; margin: 14px 0 6px; }
-    .profile-form input[type="text"], .profile-form input[type="file"] {
+    .profile-form label {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        display: block;
+        margin: 16px 0 8px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .profile-form input[type="text"],
+    .profile-form input[type="file"] {
         width: 100%;
         background: rgba(255,255,255,0.04);
-        border: 1px solid var(--border-glass);
+        border: 1px solid rgba(255,255,255,0.08);
         color: var(--text-light);
         padding: 13px 16px;
         border-radius: 14px;
+        transition: all 0.3s ease;
     }
-    .profile-form input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(212,175,55,0.12); }
+    .profile-form input:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 4px rgba(212,175,55,0.12);
+        background: rgba(255,255,255,0.06);
+    }
+    .update-btn {
+        width: 100%;
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        color: #000;
+        border: none;
+        padding: 14px;
+        border-radius: 14px;
+        font-weight: 700;
+        margin-top: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.4s ease;
+    }
+    .update-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(212,175,55,0.4);
+    }
 
-    .orders-title { font-size: 1.8rem; margin-bottom: 25px; }
+    /* ============ ORDERS SECTION ============ */
+    .orders-section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .orders-title {
+        font-size: 1.6rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+    }
+    .orders-title .icon {
+        width: 40px; height: 40px;
+        background: linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05));
+        border: 1px solid rgba(212,175,55,0.3);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+    }
+    .orders-count {
+        background: rgba(212,175,55,0.15);
+        color: var(--gold);
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
     .order-card {
-        background: rgba(255,255,255,0.03);
+        background: linear-gradient(145deg, rgba(20,20,32,0.7), rgba(14,14,22,0.6));
         border: 1px solid rgba(255,255,255,0.08);
         border-radius: 22px;
         padding: 24px;
         margin-bottom: 16px;
-        transition: var(--transition);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
     }
-    .order-card:hover { transform: translateY(-3px); border-color: rgba(212,175,55,0.25); }
-    .order-card .top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-    .order-card .track { font-weight: 700; font-family: 'Poppins', monospace; }
+    .order-card::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 0;
+        width: 4px; height: 100%;
+        background: var(--gold);
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform 0.4s ease;
+    }
+    .order-card:hover::before { transform: scaleY(1); }
+    .order-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(212,175,55,0.3);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+
+    .order-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+    .track-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .track-icon {
+        width: 40px; height: 40px;
+        background: rgba(212,175,55,0.1);
+        border: 1px solid rgba(212,175,55,0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+    }
+    .track-details .label {
+        color: var(--text-muted);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .track {
+        font-weight: 700;
+        font-family: 'Poppins', monospace;
+        color: var(--text-light);
+        font-size: 1rem;
+    }
+
     .status-badge {
-        padding: 6px 16px; border-radius: 999px;
-        font-size: 0.78rem; font-weight: 700;
+        padding: 7px 16px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .status-badge::before {
+        content: '';
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        box-shadow: 0 0 8px currentColor;
     }
     .status-paid { background: rgba(16,185,129,0.15); color: #10B981; }
     .status-pending { background: rgba(251,191,36,0.15); color: #FBBF24; }
     .status-failed { background: rgba(255,71,87,0.15); color: #ff4757; }
-    .order-card .amount { color: var(--gold); font-weight: 700; margin-top: 10px; }
+
+    .order-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 16px;
+        border-top: 1px dashed rgba(255,255,255,0.08);
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .order-date {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .order-date i { color: var(--gold); }
+    .order-amount {
+        font-size: 1.4rem;
+        font-weight: 800;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* ============ EMPTY ORDERS ============ */
+    .empty-orders {
+        background: linear-gradient(145deg, rgba(20,20,32,0.5), rgba(14,14,22,0.4));
+        border: 1px dashed rgba(255,255,255,0.1);
+        border-radius: 28px;
+        padding: 70px 40px;
+        text-align: center;
+    }
+    .empty-orders-icon {
+        width: 90px; height: 90px;
+        margin: 0 auto 24px;
+        background: rgba(212,175,55,0.08);
+        border: 1px solid rgba(212,175,55,0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        font-size: 2.5rem;
+    }
+    .empty-orders h4 {
+        color: var(--text-light);
+        margin-bottom: 10px;
+    }
+    .empty-orders p {
+        color: var(--text-muted);
+        margin: 0 auto 24px;
+        max-width: 350px;
+    }
+
+    @media (max-width: 991px) {
+        .profile-card { position: static; margin-bottom: 30px; }
+    }
 </style>
 
 <div class="container profile-wrapper">
-    <div class="row g-5">
+    <div class="profile-header" data-aos="fade-up">
+        <h1>My <span class="highlight">Profile</span></h1>
+        <p>Manage your personal information and view your orders.</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Profile Card -->
         <div class="col-lg-4" data-aos="fade-right">
             <div class="profile-card">
-                <img src="{{ request.user.profile.avatar_url }}" class="profile-avatar" alt="{{ request.user.username }}">
+                <div class="avatar-wrap">
+                    <img src="{{ request.user.profile.avatar_url }}" class="profile-avatar" alt="{{ request.user.username }}">
+                    <label class="avatar-edit-btn" for="{{ form.avatar.id_for_label }}" title="Change Avatar">
+                        <i class="bi bi-camera"></i>
+                    </label>
+                </div>
+
                 <h4>{{ request.user.first_name }} {{ request.user.last_name }}</h4>
                 <p class="email">{{ request.user.email }}</p>
+
+                <span class="profile-badge">
+                    <i class="bi bi-patch-check-fill"></i> Verified Member
+                </span>
+
+                <div class="profile-mini-stats">
+                    <div class="mini-stat">
+                        <div class="num">{{ orders|length }}</div>
+                        <div class="label">Orders</div>
+                    </div>
+                    <div class="mini-stat">
+                        <div class="num">VIP</div>
+                        <div class="label">Status</div>
+                    </div>
+                </div>
+
                 <form method="post" enctype="multipart/form-data" class="profile-form">
                     {% csrf_token %}
-                    <label>Profile Picture</label>
+                    <label><i class="bi bi-image"></i> Profile Picture</label>
                     {{ form.avatar }}
-                    <label>Phone Number</label>
+                    <label><i class="bi bi-telephone"></i> Phone Number</label>
                     {{ form.phone }}
-                    <button class="btn-luxora w-100 mt-4">Update Profile</button>
+                    <button class="update-btn">
+                        <i class="bi bi-check-circle"></i> Update Profile
+                    </button>
                 </form>
             </div>
         </div>
+
+        <!-- Orders Section -->
         <div class="col-lg-8" data-aos="fade-left">
-            <h4 class="orders-title">Order History</h4>
+            <div class="orders-section-header">
+                <h4 class="orders-title">
+                    <span class="icon"><i class="bi bi-bag-check"></i></span>
+                    Order History
+                </h4>
+                <span class="orders-count">{{ orders|length }} Orders</span>
+            </div>
+
             {% for order in orders %}
-            <div class="order-card">
-                <div class="top">
-                    <span class="track">#{{ order.tracking_code }}</span>
-                    <span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span>
+            <div class="order-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}0">
+                <div class="order-top">
+                    <div class="track-info">
+                        <div class="track-icon">
+                            <i class="bi bi-receipt"></i>
+                        </div>
+                        <div class="track-details">
+                            <div class="label">Tracking Code</div>
+                            <div class="track">#{{ order.tracking_code }}</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-{{ order.status }}">
+                        {{ order.get_status_display }}
+                    </span>
                 </div>
-                <div class="amount">${{ order.total_price|intcomma }}</div>
-                <small class="text-muted">{{ order.created_at|date:"M d, Y" }}</small>
+                <div class="order-bottom">
+                    <div class="order-date">
+                        <i class="bi bi-calendar3"></i>
+                        {{ order.created_at|date:"M d, Y" }}
+                    </div>
+                    <div class="order-amount">${{ order.total_price|intcomma }}</div>
+                </div>
             </div>
             {% empty %}
-            <p class="text-muted">You haven't placed any orders yet.</p>
+            <div class="empty-orders">
+                <div class="empty-orders-icon">
+                    <i class="bi bi-bag-x"></i>
+                </div>
+                <h4>No Orders Yet</h4>
+                <p>You haven't placed any orders yet. Start exploring our premium collection.</p>
+                <a href="{% url 'cars:gallery' %}" class="btn-luxora">
+                    <i class="bi bi-search"></i> Browse Vehicles
+                </a>
+            </div>
             {% endfor %}
         </div>
     </div>

@@ -1,13 +1,31 @@
 {% load humanize %}
+<style>
+    .empty-result {
+        padding: 80px 20px;
+        background: rgba(255,255,255,0.02);
+        border: 1px dashed rgba(255,255,255,0.1);
+        border-radius: 24px;
+        color: var(--text-muted);
+    }
+    .empty-result i {
+        color: var(--gold);
+        opacity: 0.6;
+        margin-bottom: 20px;
+        display: block;
+    }
+</style>
 <div class="row g-4">
     {% for car in cars %}
-    <div class="col-md-4" data-aos="fade-up">
+    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}0">
         {% include 'cars/_car_card.html' %}
     </div>
     {% empty %}
-    <div class="col-12 text-center empty-result">
-        <i class="bi bi-emoji-frown fs-1"></i>
-        <p class="fs-5">No vehicles found.</p>
+    <div class="col-12 text-center">
+        <div class="empty-result">
+            <i class="bi bi-emoji-frown display-1"></i>
+            <p class="fs-5 mb-0">No vehicles found.</p>
+            <p class="small mt-2">Try adjusting your filters or search terms.</p>
+        </div>
     </div>
     {% endfor %}
 </div>

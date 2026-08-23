@@ -3,117 +3,515 @@
 {% block content %}
 
 <style>
+    @keyframes floatUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes glowPulse {
+        0%, 100% { box-shadow: 0 0 30px rgba(212,175,55,0.2); }
+        50% { box-shadow: 0 0 60px rgba(212,175,55,0.4); }
+    }
+    @keyframes floatOrb {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(30px, -40px); }
+    }
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+    @keyframes cardFlip {
+        0% { transform: perspective(1000px) rotateY(0); }
+        100% { transform: perspective(1000px) rotateY(180deg); }
+    }
+    @keyframes chipShine {
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 1; }
+    }
+
+    /* ============ WRAPPER ============ */
     .gateway-wrapper {
-        padding: 130px 0 80px;
+        padding: 140px 0 80px;
         display: flex;
         justify-content: center;
-    }
-    .bank-card {
-        width: 100%;
-        max-width: 520px;
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 32px;
-        padding: 45px;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 34px 90px rgba(0,0,0,0.28);
-        backdrop-filter: blur(14px);
+        min-height: 100vh;
+    }
+    .gateway-wrapper::before,
+    .gateway-wrapper::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        pointer-events: none;
+        z-index: 0;
+    }
+    .gateway-wrapper::before {
+        top: 10%; left: 15%;
+        width: 400px; height: 400px;
+        background: radial-gradient(circle, rgba(212,175,55,0.18), transparent 70%);
+        animation: floatOrb 15s ease-in-out infinite;
+    }
+    .gateway-wrapper::after {
+        bottom: 10%; right: 15%;
+        width: 350px; height: 350px;
+        background: radial-gradient(circle, rgba(124,92,255,0.15), transparent 70%);
+        animation: floatOrb 20s ease-in-out infinite reverse;
+    }
+
+    /* ============ BANK CARD ============ */
+    .bank-card {
+        width: 100%;
+        max-width: 540px;
+        background: linear-gradient(145deg, rgba(20,20,32,0.85), rgba(14,14,22,0.75));
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 32px;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+        backdrop-filter: blur(24px);
+        z-index: 2;
     }
     .bank-card::before {
         content: '';
-        position: absolute; top: -80px; right: -80px;
-        width: 250px; height: 250px;
+        position: absolute;
+        inset: 0;
+        border-radius: 32px;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(212,175,55,0.5), transparent 40%, transparent 60%, rgba(124,92,255,0.3));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+    .bank-card::after {
+        content: '';
+        position: absolute;
+        top: -80px; right: -80px;
+        width: 300px; height: 300px;
         background: radial-gradient(circle, rgba(212,175,55,0.18), transparent 70%);
         border-radius: 50%;
+        pointer-events: none;
     }
-    .bank-header { text-align: center; margin-bottom: 35px; position: relative; z-index: 1; }
-    .bank-header i { font-size: 2.8rem; color: var(--gold); }
-    .bank-header h4 { margin: 12px 0 6px; font-size: 1.8rem; }
-    .bank-header .amount { color: var(--gold); font-weight: 800; font-size: 1.4rem; font-family: 'Poppins', sans-serif; }
 
-    .virtual-card {
-        background: linear-gradient(135deg, rgba(33,33,52,0.95), rgba(17,17,28,0.95));
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 22px;
-        padding: 24px;
+    /* ============ HEADER ============ */
+    .bank-header {
+        text-align: center;
         margin-bottom: 30px;
         position: relative;
-        min-height: 170px;
-        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+        z-index: 1;
     }
-    .virtual-card .chip { width: 48px; height: 34px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); border-radius: 8px; margin-bottom: 26px; }
-    .virtual-card .card-num { font-family: 'Poppins', monospace; font-size: 1.35rem; letter-spacing: 3px; color: #fff; margin-bottom: 20px; min-height: 30px; }
-    .virtual-card .card-bottom { display: flex; justify-content: space-between; color: #ccc; font-size: 0.85rem; }
-    .virtual-card .visa { position: absolute; top: 25px; right: 25px; font-size: 1.5rem; font-style: italic; font-weight: 800; color: #fff; }
+    .bank-logo-wrap {
+        width: 76px; height: 76px;
+        background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+        border-radius: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        transform: rotate(-8deg);
+        box-shadow: 0 15px 40px rgba(212,175,55,0.4);
+        animation: glowPulse 3s ease-in-out infinite;
+    }
+    .bank-logo-wrap i { font-size: 2rem; color: #06060A; }
 
-    .form-group-lux { margin-bottom: 20px; position: relative; z-index: 1; }
-    .form-group-lux label { display: block; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 8px; }
+    .bank-header h4 {
+        margin: 0 0 8px;
+        font-size: 1.7rem;
+        font-weight: 800;
+    }
+    .bank-header h4 .highlight {
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .amount-display {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(212,175,55,0.1);
+        border: 1px solid rgba(212,175,55,0.3);
+        padding: 8px 20px;
+        border-radius: 999px;
+        margin-top: 10px;
+    }
+    .amount-display .label {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+    }
+    .amount-display .amount {
+        color: var(--gold);
+        font-weight: 800;
+        font-size: 1.15rem;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    /* ============ VIRTUAL CARD ============ */
+    .virtual-card-wrap {
+        perspective: 1000px;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 1;
+    }
+    .virtual-card {
+        background:
+            linear-gradient(135deg, rgba(212,175,55,0.15), transparent 50%),
+            linear-gradient(135deg, #1a1a2a, #0f0f18);
+        border: 1px solid rgba(212,175,55,0.2);
+        border-radius: 20px;
+        padding: 26px;
+        position: relative;
+        min-height: 200px;
+        box-shadow:
+            inset 0 0 0 1px rgba(255,255,255,0.05),
+            0 20px 50px rgba(0,0,0,0.4);
+        overflow: hidden;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .virtual-card:hover {
+        transform: rotateY(-3deg) rotateX(3deg);
+    }
+    .virtual-card::before {
+        content: '';
+        position: absolute;
+        top: -50%; right: -20%;
+        width: 300px; height: 300px;
+        background: radial-gradient(circle, rgba(212,175,55,0.15), transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    .virtual-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
+        background-size: 200% 100%;
+        animation: shimmer 4s linear infinite;
+        pointer-events: none;
+    }
+
+    .card-brand-tag {
+        position: absolute;
+        top: 26px;
+        left: 26px;
+        color: var(--gold);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        z-index: 2;
+    }
+
+    .visa {
+        position: absolute;
+        top: 26px;
+        right: 26px;
+        font-size: 1.8rem;
+        font-style: italic;
+        font-weight: 800;
+        color: #fff;
+        z-index: 2;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .chip-wrap {
+        margin-top: 40px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        z-index: 2;
+    }
+    .chip {
+        width: 50px; height: 38px;
+        background: linear-gradient(135deg, #d4af37, #b8941f, #f0d878);
+        border-radius: 8px;
+        position: relative;
+        animation: chipShine 3s ease-in-out infinite;
+        box-shadow: 0 4px 12px rgba(212,175,55,0.3);
+    }
+    .chip::before {
+        content: '';
+        position: absolute;
+        inset: 4px;
+        background:
+            linear-gradient(90deg, transparent 45%, rgba(0,0,0,0.2) 47%, rgba(0,0,0,0.2) 53%, transparent 55%),
+            linear-gradient(0deg, transparent 45%, rgba(0,0,0,0.2) 47%, rgba(0,0,0,0.2) 53%, transparent 55%);
+        border-radius: 4px;
+    }
+    .contactless-icon {
+        color: rgba(255,255,255,0.6);
+        font-size: 1.4rem;
+        transform: rotate(90deg);
+    }
+
+    .card-num {
+        font-family: 'Poppins', monospace;
+        font-size: 1.4rem;
+        letter-spacing: 3px;
+        color: #fff;
+        margin-bottom: 22px;
+        min-height: 30px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        position: relative;
+        z-index: 2;
+        transition: all 0.3s ease;
+    }
+    .card-bottom {
+        display: flex;
+        justify-content: space-between;
+        color: #ccc;
+        font-size: 0.85rem;
+        position: relative;
+        z-index: 2;
+    }
+    .card-bottom .label {
+        display: block;
+        color: rgba(255,255,255,0.4);
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+    }
+    .card-bottom .value {
+        font-family: 'Poppins', monospace;
+        color: #fff;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+
+    /* ============ FORM FIELDS ============ */
+    .form-group-lux {
+        margin-bottom: 18px;
+        position: relative;
+        z-index: 1;
+    }
+    .form-group-lux label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .input-wrap-lux {
+        position: relative;
+    }
+    .input-wrap-lux .input-icon {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        pointer-events: none;
+        transition: color 0.3s ease;
+        z-index: 2;
+    }
+    .input-wrap-lux:focus-within .input-icon {
+        color: var(--gold);
+    }
     .form-group-lux input {
         width: 100%;
         background: rgba(255,255,255,0.04);
-        border: 1px solid var(--border-glass);
+        border: 1.5px solid rgba(255,255,255,0.08);
         color: var(--text-light);
-        padding: 14px 16px;
-        border-radius: 16px;
+        padding: 14px 18px 14px 48px;
+        border-radius: 14px;
         font-family: 'Poppins', monospace;
         letter-spacing: 1px;
-        transition: var(--transition);
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
     }
-    .form-group-lux input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(212,175,55,0.15); }
-    .form-row { display: flex; gap: 15px; flex-wrap: wrap; }
-    .form-row .form-group-lux { flex: 1; min-width: 140px; }
+    .form-group-lux input:focus {
+        outline: none;
+        border-color: var(--gold);
+        background: rgba(255,255,255,0.07);
+        box-shadow: 0 0 0 4px rgba(212,175,55,0.15);
+    }
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    /* Card type indicator */
+    .card-type-badge {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .card-type-badge.visa { background: #1a1f71; color: #fff; opacity: 1; }
+    .card-type-badge.master { background: #ff5f00; color: #fff; opacity: 1; }
+
+    /* ============ SUBMIT BUTTON ============ */
+    .pay-submit-btn {
+        width: 100%;
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        color: #000;
+        border: none;
+        padding: 17px;
+        border-radius: 16px;
+        font-weight: 700;
+        font-size: 1rem;
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        animation: glowPulse 3s ease-in-out infinite;
+    }
+    .pay-submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s ease;
+    }
+    .pay-submit-btn:hover::before { left: 100%; }
+    .pay-submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(212,175,55,0.5);
+        color: #000;
+    }
+
+    /* ============ SECURITY BADGES ============ */
+    .security-badges {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 24px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .security-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-muted);
+        font-size: 0.78rem;
+    }
+    .security-badge i { color: var(--gold); }
 
     .fake-note {
-        text-align: center; color: var(--text-muted); font-size: 0.8rem;
-        margin-top: 20px; position: relative; z-index: 1;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        margin-top: 14px;
+        padding: 10px;
+        background: rgba(212,175,55,0.05);
+        border: 1px dashed rgba(212,175,55,0.2);
+        border-radius: 10px;
     }
+    .fake-note i { color: var(--gold); }
 </style>
 
 <div class="container">
     <div class="gateway-wrapper">
-        <div class="bank-card" data-aos="flip-left">
+        <div class="bank-card" data-aos="zoom-in" data-aos-duration="1000">
+            <!-- Header -->
             <div class="bank-header">
-                <i class="bi bi-bank2"></i>
-                <h4>LUXORA Secure Pay</h4>
-                <div class="amount">${{ total|intcomma }}</div>
-            </div>
-
-            <div class="virtual-card">
-                <span class="visa">VISA</span>
-                <div class="chip"></div>
-                <div class="card-num" id="cardPreview">•••• •••• •••• ••••</div>
-                <div class="card-bottom">
-                    <span id="namePreview">FULL NAME</span>
-                    <span id="expPreview">MM/YY</span>
+                <div class="bank-logo-wrap">
+                    <i class="bi bi-bank2"></i>
+                </div>
+                <h4>LUXORA <span class="highlight">Secure Pay</span></h4>
+                <div class="amount-display">
+                    <span class="label">Amount:</span>
+                    <span class="amount">${{ total|intcomma }}</span>
                 </div>
             </div>
 
+            <!-- Virtual Card Preview -->
+            <div class="virtual-card-wrap">
+                <div class="virtual-card">
+                    <span class="card-brand-tag">Premium Card</span>
+                    <span class="visa">VISA</span>
+                    <div class="chip-wrap">
+                        <div class="chip"></div>
+                        <i class="bi bi-wifi contactless-icon"></i>
+                    </div>
+                    <div class="card-num" id="cardPreview">•••• •••• •••• ••••</div>
+                    <div class="card-bottom">
+                        <div>
+                            <span class="label">Card Holder</span>
+                            <span class="value" id="namePreview">FULL NAME</span>
+                        </div>
+                        <div>
+                            <span class="label">Expires</span>
+                            <span class="value" id="expPreview">MM/YY</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form -->
             <form method="post" id="payForm">
                 {% csrf_token %}
                 <div class="form-group-lux">
                     <label>Card Number</label>
-                    <input type="text" name="card_number" id="cardInput" maxlength="19" placeholder="4242 4242 4242 4242" required>
+                    <div class="input-wrap-lux">
+                        <i class="bi bi-credit-card-2-front input-icon"></i>
+                        <input type="text" name="card_number" id="cardInput" maxlength="19" placeholder="4242 4242 4242 4242" required>
+                    </div>
                 </div>
                 <div class="form-group-lux">
                     <label>Cardholder Name</label>
-                    <input type="text" id="nameInput" placeholder="JOHN DOE" required>
+                    <div class="input-wrap-lux">
+                        <i class="bi bi-person input-icon"></i>
+                        <input type="text" id="nameInput" placeholder="JOHN DOE" required>
+                    </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group-lux">
                         <label>Expiry Date</label>
-                        <input type="text" id="expInput" placeholder="MM/YY" maxlength="5" required>
+                        <div class="input-wrap-lux">
+                            <i class="bi bi-calendar-event input-icon"></i>
+                            <input type="text" id="expInput" placeholder="MM/YY" maxlength="5" required>
+                        </div>
                     </div>
                     <div class="form-group-lux">
                         <label>CVV</label>
-                        <input type="password" placeholder="•••" maxlength="4" required>
+                        <div class="input-wrap-lux">
+                            <i class="bi bi-shield-lock input-icon"></i>
+                            <input type="password" placeholder="•••" maxlength="4" required>
+                        </div>
                     </div>
                 </div>
-                <button type="submit" class="btn-luxora w-100 mt-3">
-                    <i class="bi bi-lock-fill"></i> Pay ${{ total|intcomma }}
+                <button type="submit" class="pay-submit-btn">
+                    <i class="bi bi-lock-fill"></i> Pay ${{ total|intcomma }} <i class="bi bi-arrow-right"></i>
                 </button>
             </form>
-            <p class="fake-note"><i class="bi bi-shield-check"></i> This is a simulated payment gateway. No real transaction occurs.</p>
+
+            <!-- Security Badges -->
+            <div class="security-badges">
+                <div class="security-badge">
+                    <i class="bi bi-shield-check"></i> SSL Secured
+                </div>
+                <div class="security-badge">
+                    <i class="bi bi-lock-fill"></i> 256-bit Encrypted
+                </div>
+                <div class="security-badge">
+                    <i class="bi bi-patch-check"></i> Verified
+                </div>
+            </div>
+
+            <p class="fake-note">
+                <i class="bi bi-info-circle"></i> This is a simulated payment gateway. No real transaction occurs.
+            </p>
         </div>
     </div>
 </div>
@@ -139,6 +537,35 @@
         if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
         e.target.value = v;
         expPreview.textContent = v || 'MM/YY';
+    });
+</script>
+<script>
+    // تابعی برای خواندن کوکی CSRF
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
+    // هنگام ارسال fetch با متد POST حتماً هدر زیر را اضافه کنید:
+    fetch('/your-endpoint/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken   // <--- ارسال توکن در هدر
+        },
+        body: JSON.stringify({ ... })
     });
 </script>
 {% endblock %}

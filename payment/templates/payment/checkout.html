@@ -3,51 +3,578 @@
 {% block content %}
 
 <style>
-    .checkout-wrapper { padding: 130px 0 80px; }
+    @keyframes floatUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+    }
+    @keyframes glowPulse {
+        0%, 100% { box-shadow: 0 0 20px rgba(212,175,55,0.2); }
+        50% { box-shadow: 0 0 40px rgba(212,175,55,0.4); }
+    }
+    @keyframes floatOrb {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(30px, -40px); }
+    }
+    @keyframes drawLine {
+        from { stroke-dashoffset: 100; }
+        to { stroke-dashoffset: 0; }
+    }
+    @keyframes checkPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    /* ============ WRAPPER ============ */
+    .checkout-wrapper {
+        padding: 140px 0 80px;
+        position: relative;
+        overflow: hidden;
+    }
+    .checkout-wrapper::before,
+    .checkout-wrapper::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        pointer-events: none;
+        z-index: 0;
+    }
+    .checkout-wrapper::before {
+        top: 15%; left: 10%;
+        width: 350px; height: 350px;
+        background: radial-gradient(circle, rgba(212,175,55,0.15), transparent 70%);
+        animation: floatOrb 15s ease-in-out infinite;
+    }
+    .checkout-wrapper::after {
+        bottom: 15%; right: 10%;
+        width: 300px; height: 300px;
+        background: radial-gradient(circle, rgba(124,92,255,0.12), transparent 70%);
+        animation: floatOrb 18s ease-in-out infinite reverse;
+    }
+
+    /* ============ STEPPER ============ */
+    .checkout-stepper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 50px;
+        position: relative;
+        z-index: 2;
+        flex-wrap: wrap;
+    }
+    .step-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .step-circle {
+        width: 40px; height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-family: 'Poppins', sans-serif;
+        border: 2px solid rgba(255,255,255,0.1);
+        background: rgba(255,255,255,0.03);
+        color: var(--text-muted);
+        transition: all 0.3s ease;
+    }
+    .step-item.completed .step-circle {
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        border-color: var(--gold);
+        color: #000;
+        box-shadow: 0 0 20px rgba(212,175,55,0.4);
+    }
+    .step-item.active .step-circle {
+        background: rgba(212,175,55,0.15);
+        border-color: var(--gold);
+        color: var(--gold);
+        animation: checkPulse 2s ease-in-out infinite;
+    }
+    .step-label {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    .step-item.active .step-label,
+    .step-item.completed .step-label {
+        color: var(--text-light);
+    }
+    .step-line {
+        width: 60px;
+        height: 2px;
+        background: rgba(255,255,255,0.08);
+        position: relative;
+    }
+    .step-line.completed {
+        background: var(--gold);
+    }
+    @media (max-width: 640px) {
+        .step-line { width: 30px; }
+        .step-label { display: none; }
+    }
+
+    /* ============ MAIN LAYOUT ============ */
+    .checkout-grid {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 30px;
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+    }
+    @media (max-width: 991px) {
+        .checkout-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============ ORDER SUMMARY CARD ============ */
     .checkout-card {
-        background: rgba(255,255,255,0.04);
+        background: linear-gradient(145deg, rgba(20,20,32,0.85), rgba(14,14,22,0.75));
         border: 1px solid rgba(255,255,255,0.08);
         border-radius: 32px;
-        padding: 50px;
-        max-width: 560px;
-        margin: 0 auto;
-        box-shadow: 0 34px 90px rgba(0,0,0,0.28);
-        backdrop-filter: blur(14px);
+        padding: 40px;
+        box-shadow: 0 40px 100px rgba(0,0,0,0.4);
+        backdrop-filter: blur(24px);
+        position: relative;
+        overflow: hidden;
     }
-    .checkout-card h3 { text-align: center; margin-bottom: 35px; font-size: 2rem; }
-    .checkout-list { list-style: none; padding: 0; margin-bottom: 25px; }
-    .checkout-list li {
-        display: flex; justify-content: space-between;
-        padding: 16px 0;
+    .checkout-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 32px;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(212,175,55,0.4), transparent 40%, transparent 60%, rgba(124,92,255,0.3));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+    .checkout-card::after {
+        content: '';
+        position: absolute;
+        top: -50%; right: -30%;
+        width: 400px; height: 400px;
+        background: radial-gradient(circle, rgba(212,175,55,0.1), transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    .checkout-card > * { position: relative; z-index: 1; }
+
+    .checkout-card-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 30px;
+        padding-bottom: 24px;
         border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .header-icon {
+        width: 52px; height: 52px;
+        background: linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05));
+        border: 1px solid rgba(212,175,55,0.3);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        font-size: 1.5rem;
+    }
+    .checkout-card h3 {
+        margin: 0;
+        font-size: 1.6rem;
+        font-weight: 800;
+    }
+    .checkout-card h3 .highlight {
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .checkout-card .subtitle {
         color: var(--text-muted);
+        margin: 4px 0 0;
+        font-size: 0.9rem;
     }
-    .checkout-list li.total {
-        font-weight: 800; color: var(--gold); font-size: 1.25rem;
-        border-bottom: none; padding-top: 22px;
+
+    /* ============ ITEMS LIST ============ */
+    .checkout-list {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 25px;
     }
+    .checkout-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 20px;
+        margin-bottom: 10px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        gap: 16px;
+    }
+    .checkout-list li:hover {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(212,175,55,0.2);
+        transform: translateX(4px);
+    }
+    .item-info {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex: 1;
+        min-width: 0;
+    }
+    .item-icon {
+        width: 40px; height: 40px;
+        background: rgba(212,175,55,0.1);
+        border: 1px solid rgba(212,175,55,0.2);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        flex-shrink: 0;
+    }
+    .item-name {
+        color: var(--text-light);
+        font-weight: 600;
+    }
+    .item-price {
+        color: var(--gold);
+        font-weight: 800;
+        font-family: 'Poppins', sans-serif;
+        white-space: nowrap;
+    }
+
+    /* ============ SUMMARY SIDEBAR ============ */
+    .summary-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        position: sticky;
+        top: 100px;
+        height: fit-content;
+    }
+    .summary-panel {
+        background: linear-gradient(145deg, rgba(20,20,32,0.85), rgba(14,14,22,0.75));
+        border: 1px solid rgba(212,175,55,0.2);
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        backdrop-filter: blur(20px);
+        position: relative;
+        overflow: hidden;
+    }
+    .summary-panel::before {
+        content: '';
+        position: absolute;
+        top: -50%; right: -30%;
+        width: 300px; height: 300px;
+        background: radial-gradient(circle, rgba(212,175,55,0.15), transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    .summary-panel > * { position: relative; z-index: 1; }
+
+    .summary-title {
+        font-size: 1.15rem;
+        font-weight: 800;
+        margin-bottom: 22px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .summary-title i { color: var(--gold); }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+    .summary-row .value {
+        color: var(--text-light);
+        font-weight: 600;
+    }
+    .summary-row .free-badge {
+        color: var(--gold);
+        font-size: 0.75rem;
+        background: rgba(212,175,55,0.15);
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-weight: 700;
+    }
+    .summary-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 20px 0 10px;
+        margin-top: 8px;
+        border-top: 1px dashed rgba(255,255,255,0.15);
+    }
+    .summary-total .label {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    .checkout-total {
+        font-size: 2.2rem;
+        font-weight: 800;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1;
+    }
+
+    .pay-btn {
+        width: 100%;
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        color: #000;
+        border: none;
+        padding: 18px;
+        border-radius: 16px;
+        font-weight: 700;
+        font-size: 1rem;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        animation: glowPulse 3s ease-in-out infinite;
+    }
+    .pay-btn::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: left 0.6s ease;
+    }
+    .pay-btn:hover::before { left: 100%; }
+    .pay-btn:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(212,175,55,0.5);
+        color: #000;
+    }
+    .pay-btn i { transition: transform 0.3s ease; }
+    .pay-btn:hover i { transform: translateX(4px); }
+
+    /* ============ TRUST BADGES ============ */
+    .trust-panel {
+        background: linear-gradient(145deg, rgba(20,20,32,0.7), rgba(14,14,22,0.6));
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 24px;
+        padding: 24px;
+        backdrop-filter: blur(20px);
+    }
+    .trust-panel h6 {
+        color: var(--text-light);
+        font-size: 0.85rem;
+        margin-bottom: 18px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+    .trust-badges {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+    .trust-badge {
+        text-align: center;
+        padding: 12px 6px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 14px;
+        transition: all 0.3s ease;
+    }
+    .trust-badge:hover {
+        border-color: rgba(212,175,55,0.3);
+        transform: translateY(-3px);
+    }
+    .trust-badge i {
+        color: var(--gold);
+        font-size: 1.5rem;
+        display: block;
+        margin-bottom: 6px;
+    }
+    .trust-badge span {
+        color: var(--text-muted);
+        font-size: 0.7rem;
+        display: block;
+        line-height: 1.3;
+    }
+
+    /* ============ SECURE NOTE ============ */
     .secure-note {
         text-align: center;
         color: var(--text-muted);
         font-size: 0.82rem;
-        margin-top: 22px;
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
     }
+    .secure-note i { color: var(--gold); }
 </style>
 
 <div class="container checkout-wrapper">
-    <div class="checkout-card" data-aos="zoom-in">
-        <h3>Order Summary</h3>
-        <ul class="checkout-list">
-            {% for item in cart %}
-            <li><span>{{ item.car }}</span><span>${{ item.price|intcomma }}</span></li>
-            {% endfor %}
-            <li class="total"><span>Total</span><span>${{ cart.get_total_price|intcomma }}</span></li>
-        </ul>
-        <form method="post">
-            {% csrf_token %}
-            <button class="btn-luxora w-100"><i class="bi bi-shield-lock"></i> Continue to Secure Payment</button>
-        </form>
-        <p class="secure-note"><i class="bi bi-lock-fill"></i> 256-bit SSL encrypted transaction</p>
+    <!-- Stepper -->
+    <div class="checkout-stepper" data-aos="fade-down">
+        <div class="step-item completed">
+            <div class="step-circle"><i class="bi bi-check-lg"></i></div>
+            <span class="step-label">Cart</span>
+        </div>
+        <div class="step-line completed"></div>
+        <div class="step-item active">
+            <div class="step-circle">2</div>
+            <span class="step-label">Review</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-item">
+            <div class="step-circle">3</div>
+            <span class="step-label">Payment</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-item">
+            <div class="step-circle">4</div>
+            <span class="step-label">Confirm</span>
+        </div>
+    </div>
+
+    <div class="checkout-grid">
+        <!-- Order Summary Card -->
+        <div class="checkout-card" data-aos="fade-up">
+            <div class="checkout-card-header">
+                <div class="header-icon"><i class="bi bi-receipt"></i></div>
+                <div>
+                    <h3>Order <span class="highlight">Summary</span></h3>
+                    <p class="subtitle">Review your items before payment</p>
+                </div>
+            </div>
+
+            <ul class="checkout-list">
+                {% for item in cart %}
+                <li data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}0">
+                    <div class="item-info">
+                        <div class="item-icon"><i class="bi bi-car-front"></i></div>
+                        <span class="item-name">{{ item.car }}</span>
+                    </div>
+                    <span class="item-price">${{ item.price|intcomma }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Summary Sidebar -->
+        <div class="summary-sidebar">
+            <div class="summary-panel" data-aos="fade-left">
+                <h5 class="summary-title"><i class="bi bi-calculator"></i> Total Amount</h5>
+
+                <div class="summary-row">
+                    <span>Subtotal ({{ cart|length }} items)</span>
+                    <span class="value">${{ cart.get_total_price|intcomma }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery</span>
+                    <span class="free-badge">FREE</span>
+                </div>
+                <div class="summary-row">
+                    <span>Insurance</span>
+                    <span class="value">Included</span>
+                </div>
+                <div class="summary-row">
+                    <span>Taxes</span>
+                    <span class="value">$0</span>
+                </div>
+
+                <div class="summary-total">
+                    <div>
+                        <span class="label">Total</span>
+                    </div>
+                    <div class="checkout-total">${{ cart.get_total_price|intcomma }}</div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="pay-btn">
+                        <i class="bi bi-shield-lock"></i> Secure Payment <i class="bi bi-arrow-right"></i>
+                    </button>
+                </form>
+
+                <p class="secure-note">
+                    <i class="bi bi-lock-fill"></i> 256-bit SSL encrypted
+                </p>
+            </div>
+
+            <div class="trust-panel" data-aos="fade-left" data-aos-delay="100">
+                <h6>We Accept</h6>
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <i class="bi bi-shield-check"></i>
+                        <span>Secure<br>Payment</span>
+                    </div>
+                    <div class="trust-badge">
+                        <i class="bi bi-truck"></i>
+                        <span>Free<br>Delivery</span>
+                    </div>
+                    <div class="trust-badge">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                        <span>Easy<br>Returns</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<script>
+    // تابعی برای خواندن کوکی CSRF
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
+    // هنگام ارسال fetch با متد POST حتماً هدر زیر را اضافه کنید:
+    fetch('/your-endpoint/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken   // <--- ارسال توکن در هدر
+        },
+        body: JSON.stringify({ ... })
+    });
+</script>
 {% endblock %}

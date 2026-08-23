@@ -1,94 +1,231 @@
 {% load humanize %}
 <style>
     .lux-car-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-glass);
-        border-radius: 22px;
+        background: linear-gradient(145deg, rgba(20,20,32,0.95), rgba(14,14,22,0.9));
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 24px;
         overflow: hidden;
-        transition: var(--transition);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         height: 100%;
         display: flex;
         flex-direction: column;
+        position: relative;
     }
+    .lux-car-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 24px;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(212,175,55,0.5), transparent 40%, transparent 60%, rgba(212,175,55,0.3));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .lux-car-card:hover::before { opacity: 1; }
     .lux-car-card:hover {
-        transform: translateY(-10px);
-        border-color: rgba(212, 175, 55, 0.4);
-        box-shadow: 0 25px 50px rgba(0,0,0,0.5), var(--shadow-gold);
+        transform: translateY(-14px);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 40px rgba(212,175,55,0.15);
     }
+
     .lux-car-img-wrap {
         position: relative;
-        height: 210px;
+        height: 230px;
         overflow: hidden;
     }
     .lux-car-img {
         width: 100%; height: 100%;
         object-fit: cover;
-        transition: transform 0.6s ease;
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .lux-car-card:hover .lux-car-img { transform: scale(1.12); }
+    .lux-car-card:hover .lux-car-img { transform: scale(1.15) rotate(1deg); }
     .lux-car-img-wrap::after {
         content: '';
         position: absolute; inset: 0;
-        background: linear-gradient(180deg, transparent 50%, rgba(20,20,31,0.9) 100%);
+        background: linear-gradient(180deg, transparent 40%, rgba(20,20,31,0.95) 100%);
     }
+
     .lux-badge {
-        position: absolute; top: 14px;
-        padding: 5px 14px;
+        position: absolute; top: 16px;
+        padding: 6px 16px;
         border-radius: 50px;
         font-size: 0.72rem;
         font-weight: 700;
-        z-index: 2;
+        z-index: 3;
         font-family: 'Poppins', sans-serif;
+        letter-spacing: 1px;
+        backdrop-filter: blur(10px);
     }
-    .lux-badge.featured { left: 14px; background: var(--gold); color: #000; }
-    .lux-badge.sold { right: 14px; background: #ff4757; color: #fff; }
-    .lux-car-body { padding: 22px; flex: 1; display: flex; flex-direction: column; }
-    .lux-car-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
-    .lux-car-meta { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px; }
-    .lux-car-meta i { color: var(--gold); margin-right: 4px; }
-    .lux-rating { color: var(--gold); font-size: 0.85rem; margin-bottom: 14px; }
-    .lux-rating .count { color: var(--text-muted); }
+    .lux-badge.featured {
+        left: 16px;
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        color: #000;
+        box-shadow: 0 8px 20px rgba(212,175,55,0.4);
+    }
+    .lux-badge.sold {
+        right: 16px;
+        background: linear-gradient(135deg, #ff4757, #c0392b);
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(255,71,87,0.4);
+    }
+
+    .quick-view {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        width: 44px; height: 44px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        z-index: 3;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.4s ease;
+    }
+    .lux-car-card:hover .quick-view {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .quick-view:hover {
+        background: var(--gold);
+        color: #000;
+        transform: scale(1.1);
+    }
+
+    .lux-car-body {
+        padding: 24px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        z-index: 2;
+    }
+    .lux-car-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        transition: color 0.3s ease;
+    }
+    .lux-car-card:hover .lux-car-title { color: var(--gold); }
+
+    .lux-car-meta {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin-bottom: 14px;
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+    .lux-car-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .lux-car-meta i { color: var(--gold); }
+
+    .lux-rating {
+        color: var(--gold);
+        font-size: 0.9rem;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .lux-rating .count { color: var(--text-muted); font-size: 0.82rem; }
+
+    .lux-car-price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 18px;
+        padding-bottom: 18px;
+        border-bottom: 1px dashed rgba(255,255,255,0.08);
+    }
     .lux-car-price {
         font-family: 'Poppins', sans-serif;
-        font-size: 1.4rem;
+        font-size: 1.55rem;
         font-weight: 800;
         background: linear-gradient(135deg, var(--gold-light), var(--gold));
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 16px;
+    }
+    .price-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+
+    .lux-card-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: auto;
+    }
+    .lux-btn-wishlist {
+        flex: 0 0 44px;
+        width: 44px; height: 44px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 14px;
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    .lux-btn-wishlist:hover {
+        background: rgba(255,71,87,0.15);
+        border-color: rgba(255,71,87,0.5);
+        color: #ff4757;
+        transform: scale(1.05);
     }
     .lux-btn-detail {
-        margin-top: auto;
+        flex: 1;
         background: rgba(255,255,255,0.05);
-        border: 1px solid var(--border-glass);
+        border: 1px solid rgba(255,255,255,0.1);
         color: var(--text-light);
-        padding: 11px;
+        padding: 12px;
         border-radius: 14px;
         text-align: center;
         font-weight: 600;
+        font-size: 0.9rem;
         text-decoration: none;
-        transition: var(--transition);
-        display: block;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
     }
     .lux-btn-detail:hover {
-        background: var(--gold);
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
         color: #000;
         border-color: var(--gold);
+        box-shadow: 0 10px 25px rgba(212,175,55,0.3);
     }
+    .lux-btn-detail i { transition: transform 0.3s ease; }
+    .lux-btn-detail:hover i { transform: translateX(4px); }
 </style>
 
 <div class="lux-car-card">
     <div class="lux-car-img-wrap">
         <img src="{{ car.main_image.url }}" class="lux-car-img" alt="{{ car }}" loading="lazy">
-        {% if car.is_featured %}<span class="lux-badge featured">FEATURED</span>{% endif %}
+        {% if car.is_featured %}<span class="lux-badge featured"><i class="bi bi-star-fill"></i> FEATURED</span>{% endif %}
         {% if car.status == 'sold' %}<span class="lux-badge sold">SOLD</span>{% endif %}
+        <a href="{% url 'cars:detail' car.pk %}" class="quick-view" title="Quick View">
+            <i class="bi bi-eye"></i>
+        </a>
     </div>
     <div class="lux-car-body">
         <h5 class="lux-car-title">{{ car.brand.name }} {{ car.model_name }}</h5>
         <div class="lux-car-meta">
-            <i class="bi bi-calendar3"></i> {{ car.year }} &nbsp;|&nbsp;
-            <i class="bi bi-speedometer2"></i> {{ car.mileage|intcomma }} mi
+            <span><i class="bi bi-calendar3"></i> {{ car.year }}</span>
+            <span><i class="bi bi-speedometer2"></i> {{ car.mileage|intcomma }} mi</span>
         </div>
         <div class="lux-rating">
             {% for i in "12345" %}
@@ -96,10 +233,19 @@
             {% endfor %}
             <span class="count">({{ car.review_count }})</span>
         </div>
-        <div class="lux-car-price">${{ car.price|intcomma }}</div>
-        <div class="d-flex gap-2 mt-2">
-<a href="{% url 'cars:toggle_wishlist' car.pk %}" class="btn-ghost flex-grow-1 text-center">Wishlist</a>
+        <div class="lux-car-price-row">
+            <div>
+                <div class="price-label">Price</div>
+                <div class="lux-car-price">${{ car.price|intcomma }}</div>
+            </div>
         </div>
-        <a href="{% url 'cars:detail' car.pk %}" class="lux-btn-detail">View Details <i class="bi bi-arrow-right"></i></a>
+        <div class="lux-card-actions">
+            <a href="{% url 'cars:toggle_wishlist' car.pk %}" class="lux-btn-wishlist" title="Add to Wishlist">
+                <i class="bi bi-heart"></i>
+            </a>
+            <a href="{% url 'cars:detail' car.pk %}" class="lux-btn-detail">
+                View Details <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
     </div>
 </div>
